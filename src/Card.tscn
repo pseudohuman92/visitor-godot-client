@@ -1,0 +1,70 @@
+[gd_scene load_steps=3 format=3 uid="uid://clexxwmmvnwak"]
+
+[ext_resource type="Script" path="res://src/Card.gd" id="1_ksdsi"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_c16bl"]
+
+[node name="Card" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 200.0
+offset_bottom = 280.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+script = ExtResource("1_ksdsi")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 0.714
+alignment_horizontal = 0
+alignment_vertical = 0
+
+[node name="CardImage" type="ColorRect" parent="AspectRatioContainer"]
+show_behind_parent = true
+layout_mode = 2
+mouse_filter = 1
+color = Color(0, 0.0156863, 0.0862745, 1)
+
+[node name="Contents" type="VBoxContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+
+[node name="Cost" type="Label" parent="AspectRatioContainer/Contents"]
+layout_mode = 2
+text = "2"
+label_settings = SubResource("LabelSettings_c16bl")
+
+[node name="Name" type="Label" parent="AspectRatioContainer/Contents"]
+layout_mode = 2
+text = "CardName"
+
+[node name="Control" type="Control" parent="AspectRatioContainer/Contents"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="Type" type="Label" parent="AspectRatioContainer/Contents"]
+layout_mode = 2
+text = "Type"
+
+[node name="Ability" type="RichTextLabel" parent="AspectRatioContainer/Contents"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+bbcode_enabled = true
+text = "Ability"
+
+[node name="Stats" type="Label" parent="AspectRatioContainer/Contents"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Stats"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="AspectRatioContainer" to="AspectRatioContainer" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="AspectRatioContainer" to="AspectRatioContainer" method="_on_mouse_exited"]

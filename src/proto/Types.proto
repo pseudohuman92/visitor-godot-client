@@ -1,0 +1,177 @@
+syntax = "proto3";
+option java_package = "com.visitor.protocol";
+
+
+/**
+ * Custom type messages. Should not be sent directly.
+ */
+enum Phase {
+    NOPHASE = 0;
+    REDRAW = 1;
+    BEGIN = 2;
+    MAIN_BEFORE = 3;
+    ATTACK = 4;
+    ATTACK_PLAY = 5;
+    BLOCK = 6;
+    BLOCK_PLAY = 7;
+    MAIN_AFTER = 8;
+    END = 9;
+}
+
+enum SelectFromType {
+    NOTYPE = 0;
+    LIST = 1;
+    HAND = 3;
+    PLAY = 4;
+    DISCARD_PILE = 5;
+    VOID = 6;
+    STACK = 7;
+}
+
+enum GameType {
+    NOGAME = 0;
+    BO1_CONSTRUCTED = 1;
+    P2_DRAFT = 2;
+    P2_DRAFT_GAME = 3;
+    AI_BO1_CONSTRUCTED = 4;
+}
+ 
+message Table
+{
+    string id = 1;
+    string creator = 2;
+    string opponent = 3;
+}
+
+enum Knowledge {
+    NONE = 0;
+    PURPLE = 1;
+    GREEN = 2;
+    RED = 3;
+    BLUE = 4;
+    YELLOW = 5;
+}
+
+message KnowledgeGroup {
+    Knowledge knowledge = 1;
+    int32 count = 2;
+}
+
+enum Counter {
+    NOCOUNTER = 0;
+    CHARGE = 1;
+}
+
+message CounterGroup {
+    Counter counter = 1;
+    int32 count = 2;
+}
+
+message Blocker {
+    string blockerId = 1;
+    repeated string possibleBlockTargets = 2;
+}
+
+message Attacker {
+    string attackerId = 1;
+    repeated string possibleAttackTargets = 2;
+}
+
+message AttackerAssignment {
+    string attackerId = 1;
+    string attacksTo = 2;
+}
+
+message BlockerAssignment {
+    string blockerId = 1;
+    string blockedBy = 2;
+}
+
+message DamageAssignment {
+    string targetId = 1;
+    int32 damage = 2;
+}
+
+message Combat {
+    int32 health = 1;
+    int32 shield = 2;
+    int32 attack = 3;
+    bool deploying = 4;
+    string blockedAttacker = 5;
+    string attackTarget = 6;
+    repeated string combatAbilities = 7;
+}
+
+message Targeting {
+    repeated string possibleTargets = 1;
+    int32 minTargets = 2;
+    int32 maxTargets = 3;
+    string targetMessage = 4;
+}
+
+message CardP {
+    string id = 1;
+    string name = 2;
+    repeated CounterGroup counters = 3;
+    bool depleted = 4;
+    bool marked = 5;
+    repeated string targets = 6;
+    bool canAttack = 7;
+    string cost = 8;
+    repeated KnowledgeGroup knowledgeCost = 9;
+    repeated string types = 10;
+    bool canBlock = 11;
+    repeated string subtypes = 12;
+    int32 delay = 13;
+    int32 loyalty = 14;
+    bool canActivate = 15;
+    Combat combat = 16;
+    string set = 17;
+    repeated string attachments = 18;
+    string description = 19;
+    bool canPlay = 20;
+    bool canStudy = 21;
+    Targeting playTargets = 22;
+    repeated Targeting activateTargets = 23;
+}
+
+message Player {
+    string id = 1;
+    string username = 2;
+    int32 deckSize = 3;
+    int32 energy = 4;
+    int32 maxEnergy = 5;
+    repeated CardP hand = 6;
+    repeated CardP play = 7;
+    repeated CardP discardPile = 8;
+    repeated CardP void = 9;
+    repeated KnowledgeGroup knowledgePool = 10;
+    int32 shield = 11;
+    int32 handSize = 12;
+    int32 health = 13;
+    int32 time = 14;
+    repeated KnowledgeGroup deckColors = 15;
+}
+
+message GameStateP {
+    string id = 1;
+    Player player = 2;
+    Player opponent = 3;
+    string turnPlayer =  4;
+    string activePlayer = 5;
+    repeated CardP stack = 6;
+    repeated string canPlay = 7;
+    repeated string canActivate = 8;
+    repeated string canStudy = 9;
+    Phase phase = 10;
+    repeated string attackers = 11;
+    repeated string blockers = 12;
+}
+
+message DraftState {
+    string id = 1;
+    repeated string decklist = 2;
+    bool completed = 3;
+    string playerId = 4;
+}
+

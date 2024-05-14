@@ -1,0 +1,97 @@
+syntax = "proto3";
+import "Types.proto";
+option java_package = "com.visitor.protocol";
+
+/**
+ * Messages that will be send by the client during a game 
+ */
+
+//This will be send when player plays a card from hand
+message PlayCard {
+    string cardID = 1;
+    repeated string targets = 2;
+}
+
+//This will be send when player activates a card in play
+message ActivateCard {
+    string cardID = 1;
+    repeated string targets = 2;
+}
+
+//This will be send when player studies a card in hand
+message StudyCard {
+    string cardID = 1;
+    Knowledge selectedKnowledge = 2;
+}
+
+//This will be send when player passes initiative
+message Pass {}
+
+
+//This will be send when player mulligans his starting hand
+message Redraw {
+}
+
+//This will be send when player keeps his starting hand
+message Keep {
+}
+
+//This will be send when player concedes from a game
+message Concede {
+}
+
+//This will be send as a response to OrderCards message from server
+message OrderCardsResponse {
+    repeated string orderedCards = 1;
+}
+
+//This will be send as a response to SelectFromList message from server
+message SelectFromResponse {
+    SelectFromType messageType = 1;
+    repeated string selected = 2;
+}
+
+message SelectXValueResponse {
+    int32 selectedXValue = 1;
+}
+
+message SelectAttackersResponse {
+    repeated AttackerAssignment attackers = 1;
+}
+
+message SelectBlockersResponse {
+    repeated BlockerAssignment blockers = 1;
+}
+
+message AssignDamageResponse {
+    repeated DamageAssignment damageAssignments = 1;
+}
+
+message SelectKnowledgeResponse {
+    Knowledge selectedKnowledge = 1;
+}
+
+message PickCardResponse {
+    string pickedCard = 1;
+}
+
+
+message ClientGameMessage {
+    oneof payload {
+        PlayCard                        playCard = 1;
+        ActivateCard                    activateCard = 2;
+        StudyCard                       studyCard = 3;
+        Pass                            pass = 4;
+        Redraw                          redraw = 5;
+        Keep                            keep = 6;
+        Concede                         concede = 7;
+        OrderCardsResponse              orderCardsResponse = 8;
+        SelectFromResponse              selectFromResponse = 9;
+        SelectXValueResponse            selectXValueResponse = 10;
+        SelectAttackersResponse         selectAttackersResponse = 11;
+        SelectBlockersResponse          selectBlockersResponse = 12;
+        AssignDamageResponse            assignDamageResponse = 13;
+        SelectKnowledgeResponse         selectKnowledgeResponse = 14;
+        PickCardResponse                pickCardResponse = 15;
+    }
+}

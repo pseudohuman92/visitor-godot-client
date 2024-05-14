@@ -1,0 +1,200 @@
+[gd_scene load_steps=12 format=3 uid="uid://bp45jp7mbjext"]
+
+[ext_resource type="Script" path="res://src/MainContainer.gd" id="1_3j5wc"]
+[ext_resource type="Script" path="res://src/main.gd" id="1_85lmg"]
+[ext_resource type="PackedScene" uid="uid://bcgsar6u8rg5g" path="res://src/HandAreas/PlayerDisplay.tscn" id="3_4kfpk"]
+[ext_resource type="Texture2D" uid="uid://bungwp4fci82i" path="res://assets/discard-pile-grunge-white.png" id="4_5yup7"]
+[ext_resource type="Script" path="res://src/DropArea.gd" id="4_d87gk"]
+[ext_resource type="Texture2D" uid="uid://clxwqjxri4v7i" path="res://assets/buttons/grunge-highlight-black.png" id="4_gv8c8"]
+[ext_resource type="Texture2D" uid="uid://bpsgv1oascmnk" path="res://assets/buttons/8-grunge-plus-sign-2.png" id="5_sifij"]
+[ext_resource type="Texture2D" uid="uid://dlec7yng4t4cg" path="res://assets/card-back-3.png" id="6_ec33b"]
+[ext_resource type="PackedScene" uid="uid://b60pwu1v5lgr4" path="res://src/HandAreas/OpponentDisplay.tscn" id="6_vf0n5"]
+[ext_resource type="Script" path="res://src/XSelector.gd" id="11_6a40w"]
+[ext_resource type="Script" path="res://src/ButtonsScript.gd" id="11_l8hsm"]
+
+[node name="main" type="Node2D"]
+script = ExtResource("1_85lmg")
+
+[node name="MainContainer" type="HBoxContainer" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_3j5wc")
+
+[node name="LeftArea" type="VBoxContainer" parent="MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OpponentHandArea" type="HBoxContainer" parent="MainContainer/LeftArea"]
+layout_mode = 2
+
+[node name="OpponentDisplayArea" type="VBoxContainer" parent="MainContainer/LeftArea/OpponentHandArea"]
+layout_mode = 2
+alignment = 1
+
+[node name="OpponentDeckArea" type="HBoxContainer" parent="MainContainer/LeftArea/OpponentHandArea/OpponentDisplayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="MainContainer/LeftArea/OpponentHandArea/OpponentDisplayArea/OpponentDeckArea"]
+layout_mode = 2
+
+[node name="OpponentDiscard" type="TextureRect" parent="MainContainer/LeftArea/OpponentHandArea/OpponentDisplayArea/OpponentDeckArea/PanelContainer"]
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_5yup7")
+expand_mode = 3
+script = ExtResource("4_d87gk")
+
+[node name="PanelContainer2" type="PanelContainer" parent="MainContainer/LeftArea/OpponentHandArea/OpponentDisplayArea/OpponentDeckArea"]
+custom_minimum_size = Vector2(50, 75)
+layout_mode = 2
+
+[node name="OpponentDeck" type="TextureRect" parent="MainContainer/LeftArea/OpponentHandArea/OpponentDisplayArea/OpponentDeckArea/PanelContainer2"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_ec33b")
+expand_mode = 3
+script = ExtResource("4_d87gk")
+
+[node name="OpponentDisplay" parent="MainContainer/LeftArea/OpponentHandArea/OpponentDisplayArea" instance=ExtResource("6_vf0n5")]
+layout_mode = 2
+
+[node name="OpponentHand" type="HBoxContainer" parent="MainContainer/LeftArea/OpponentHandArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="PlayArea" type="VBoxContainer" parent="MainContainer/LeftArea"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_d87gk")
+
+[node name="OpponentPlayArea" type="HBoxContainer" parent="MainContainer/LeftArea/PlayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="PlayerPlayArea" type="HBoxContainer" parent="MainContainer/LeftArea/PlayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="PlayerHandArea" type="HBoxContainer" parent="MainContainer/LeftArea"]
+layout_mode = 2
+
+[node name="PlayerDisplayArea" type="VBoxContainer" parent="MainContainer/LeftArea/PlayerHandArea"]
+layout_mode = 2
+alignment = 1
+
+[node name="PlayerDisplay" parent="MainContainer/LeftArea/PlayerHandArea/PlayerDisplayArea" instance=ExtResource("3_4kfpk")]
+layout_mode = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/LeftArea/PlayerHandArea/PlayerDisplayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="PlayerDiscard" type="PanelContainer" parent="MainContainer/LeftArea/PlayerHandArea/PlayerDisplayArea/HBoxContainer"]
+custom_minimum_size = Vector2(200, 280)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+script = ExtResource("4_d87gk")
+
+[node name="PlayerDiscardBG" type="TextureRect" parent="MainContainer/LeftArea/PlayerHandArea/PlayerDisplayArea/HBoxContainer/PlayerDiscard"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_5yup7")
+expand_mode = 5
+
+[node name="PlayerDeck" type="PanelContainer" parent="MainContainer/LeftArea/PlayerHandArea/PlayerDisplayArea/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+script = ExtResource("4_d87gk")
+
+[node name="PlayerDeckBG" type="TextureRect" parent="MainContainer/LeftArea/PlayerHandArea/PlayerDisplayArea/HBoxContainer/PlayerDeck"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_ec33b")
+expand_mode = 5
+
+[node name="PlayerHand" type="HBoxContainer" parent="MainContainer/LeftArea/PlayerHandArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="StackContainer" type="VBoxContainer" parent="MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Stack" type="VBoxContainer" parent="MainContainer/StackContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Buttons" type="VBoxContainer" parent="MainContainer/StackContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="XSelector" type="HBoxContainer" parent="MainContainer/StackContainer/Buttons"]
+layout_mode = 2
+script = ExtResource("11_6a40w")
+
+[node name="MinusButton" type="TextureButton" parent="MainContainer/StackContainer/Buttons/XSelector"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = ExtResource("4_gv8c8")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="XValue" type="Label" parent="MainContainer/StackContainer/Buttons/XSelector"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlusButton" type="TextureButton" parent="MainContainer/StackContainer/Buttons/XSelector"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = ExtResource("5_sifij")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="MaxButton" type="Button" parent="MainContainer/StackContainer/Buttons/XSelector"]
+layout_mode = 2
+text = "MAX"
+
+[node name="ButtonContainer" type="VBoxContainer" parent="MainContainer/StackContainer/Buttons"]
+layout_mode = 2
+
+[node name="Pass" type="Button" parent="MainContainer/StackContainer/Buttons/ButtonContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+text = "PASS"
+expand_icon = true
+script = ExtResource("11_l8hsm")
+
+[node name="Keep" type="Button" parent="MainContainer/StackContainer/Buttons/ButtonContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+text = "KEEP"
+expand_icon = true
+script = ExtResource("11_l8hsm")
+
+[node name="Redraw" type="Button" parent="MainContainer/StackContainer/Buttons/ButtonContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+text = "REDRAW"
+expand_icon = true
+script = ExtResource("11_l8hsm")
+
+[connection signal="pressed" from="MainContainer/StackContainer/Buttons/ButtonContainer/Pass" to="MainContainer/StackContainer/Buttons/ButtonContainer/Pass" method="_on_pressed"]
+[connection signal="pressed" from="MainContainer/StackContainer/Buttons/ButtonContainer/Keep" to="MainContainer/StackContainer/Buttons/ButtonContainer/Keep" method="_on_pressed"]
+[connection signal="pressed" from="MainContainer/StackContainer/Buttons/ButtonContainer/Redraw" to="MainContainer/StackContainer/Buttons/ButtonContainer/Redraw" method="_on_pressed"]

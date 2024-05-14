@@ -1,0 +1,103 @@
+[gd_scene load_steps=7 format=3 uid="uid://dpjjtpkohrwke"]
+
+[ext_resource type="LabelSettings" uid="uid://bx7tppt0u01gu" path="res://src/HandAreas/KnowledgeDisplayNumbers.tres" id="1_h0bbe"]
+[ext_resource type="Texture2D" uid="uid://bla5kmox0uutt" path="res://assets/card-components/knowledge-G.png" id="2_66ra7"]
+[ext_resource type="Texture2D" uid="uid://ctiwq73fpxfx1" path="res://assets/card-components/knowledge-R.png" id="3_10g2d"]
+[ext_resource type="Texture2D" uid="uid://dwu5afbcd83mf" path="res://assets/card-components/knowledge-U.png" id="4_1mivt"]
+[ext_resource type="Texture2D" uid="uid://ubacjv4amyn1" path="res://assets/card-components/knowledge-P.png" id="5_ctlwh"]
+[ext_resource type="Texture2D" uid="uid://cnnp27dobkbl6" path="res://assets/card-components/knowledge-Y.png" id="6_nsdvn"]
+
+[node name="KnowledgeDisplay" type="HBoxContainer"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="GreenKnowledge" type="Label" parent="."]
+layout_mode = 2
+text = "2"
+label_settings = ExtResource("1_h0bbe")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GreenKnowledgeBG" type="TextureRect" parent="GreenKnowledge"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_66ra7")
+expand_mode = 3
+
+[node name="RedKnowledge" type="Label" parent="."]
+layout_mode = 2
+text = "2"
+label_settings = ExtResource("1_h0bbe")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RedKnowledgeBG" type="TextureRect" parent="RedKnowledge"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_10g2d")
+expand_mode = 3
+
+[node name="BlueKnowledge" type="Label" parent="."]
+layout_mode = 2
+text = "2"
+label_settings = ExtResource("1_h0bbe")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BlueKnowledgeBG" type="TextureRect" parent="BlueKnowledge"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_1mivt")
+expand_mode = 3
+
+[node name="PurpleKnowledge" type="Label" parent="."]
+layout_mode = 2
+text = "2"
+label_settings = ExtResource("1_h0bbe")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PurpleKnowledgeBG" type="TextureRect" parent="PurpleKnowledge"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_ctlwh")
+expand_mode = 3
+
+[node name="YellowKnowledge" type="Label" parent="."]
+layout_mode = 2
+text = "2"
+label_settings = ExtResource("1_h0bbe")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="YellowKnowledgeBG" type="TextureRect" parent="YellowKnowledge"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_nsdvn")
+expand_mode = 3

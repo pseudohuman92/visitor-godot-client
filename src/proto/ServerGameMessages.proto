@@ -1,0 +1,89 @@
+syntax = "proto3";
+import "Types.proto";
+option java_package = "com.visitor.protocol";
+
+/**
+ * Messages that will be send by the server during a game
+ */
+
+//This will be send when a game state changes to notify the client to update display 
+message UpdateGameStateP {
+    GameStateP game = 1;
+}
+
+//This will be send when a player loses a game
+message GameEnd {
+    GameStateP game = 1;
+    bool win = 2;
+}
+
+//This will be send when a player needs order a list of cards
+message OrderCards {
+    GameStateP game = 1;
+    repeated CardP cardsToOrder = 2;
+    string messageP = 3;
+}
+
+message SelectFrom {
+    SelectFromType messageType = 1;
+    GameStateP game = 2;
+    int32 selectionCount = 3;
+    repeated CardP candidates = 4;
+    repeated string selectable = 5;
+    bool upTo = 6;
+    string messageP = 7;
+}
+
+message SelectXValue {
+    GameStateP game = 1;
+    int32 maxXValue = 2;
+    string messageP = 3;
+}
+
+message SelectAttackers {
+    GameStateP game = 1;
+    repeated Attacker possibleAttackers = 2;
+}
+
+message SelectBlockers {
+    GameStateP game = 1;
+    repeated Blocker possibleBlockers = 2;
+}
+
+message AssignDamage {
+    GameStateP game = 1;
+    string damageSource = 2;
+    repeated string possibleTargets = 3;
+    int32 totalDamage = 4;
+    bool trample = 5;
+}
+
+message SelectKnowledge {
+    GameStateP game = 1;
+    repeated Knowledge knowledgeList = 2;
+}
+
+
+//Draft Messages
+message PickCard {
+    DraftState draft = 1;
+    repeated CardP candidates = 2;
+    string messageP = 3;
+}
+
+//TODO: Add draft state update message so you can instantly show that they picked the card.
+
+message ServerGameMessage {
+    oneof payload {
+        UpdateGameStateP         updateGameStateP = 1;
+        GameEnd                 gameEnd = 2;
+        OrderCards              orderCards = 3;
+        SelectFrom              selectFrom = 4;
+        SelectXValue            selectXValue = 5;
+        SelectAttackers         selectAttackers = 6;
+        SelectBlockers          selectBlockers = 7;
+        AssignDamage            assignDamage = 8;
+        SelectKnowledge         selectKnowledge = 9;
+        PickCard                pickCard = 10;
+    }
+}

@@ -1,0 +1,29 @@
+syntax = "proto3";
+option java_package = "com.visitor.protocol";
+import "Types.proto";
+/**
+ * Messages from client to server.
+ */
+
+message JoinQueue {
+    repeated string decklist = 1;
+    GameType gameType = 2;
+    string draftId = 3; //To be used when starting a draft game between two matched opponents
+}
+
+message LoadGame {
+    string filename = 1;
+}
+
+message RegisterGameConnection {
+    string gameID = 1;
+}
+
+
+message ClientMessage {
+    oneof payload {
+        JoinQueue                       joinQueue = 1;
+        RegisterGameConnection          registerGameConnection = 2;
+        LoadGame                        loadGame = 3;
+    }
+}
