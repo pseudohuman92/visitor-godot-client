@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://y7aot7vogdr6"]
+
+[ext_resource type="FontFile" uid="uid://dhfc6u3d1k04t" path="res://assets/fonts/Depressionist_3_Revisited_2010.ttf" id="1_um27a"]
+
+[resource]
+default_font = ExtResource("1_um27a")

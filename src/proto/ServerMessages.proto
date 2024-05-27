@@ -11,9 +11,9 @@ message LoginResponse {
 }
     
 message NewGame {
-    GameStateP game = 1;
-    GameType gameType = 2;
-    string aiId = 3;
+    GameType gameType = 1;
+    string aiId = 2;
+    GameStateP game = 3;
 }
 
 message NewDraft {

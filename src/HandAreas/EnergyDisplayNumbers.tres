@@ -1,6 +1,9 @@
-[gd_resource type="LabelSettings" format=3 uid="uid://fslojvlky0sj"]
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://fslojvlky0sj"]
+
+[ext_resource type="FontFile" uid="uid://dhfc6u3d1k04t" path="res://assets/fonts/Depressionist_3_Revisited_2010.ttf" id="1_rf3ii"]
 
 [resource]
-font_size = 15
+font = ExtResource("1_rf3ii")
+font_size = 20
 font_color = Color(0, 0, 0, 1)
 outline_size = 5

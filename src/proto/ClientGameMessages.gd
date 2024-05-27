@@ -665,21 +665,36 @@ class PlayCard:
 	func _init():
 		var service
 		
-		__cardID = PBField.new("cardID", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		__cardId = PBField.new("cardId", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
 		service = PBServiceField.new()
-		service.field = __cardID
-		data[__cardID.tag] = service
+		service.field = __cardId
+		data[__cardId.tag] = service
+		
+		var __targets_default: Array[String] = []
+		__targets = PBField.new("targets", PB_DATA_TYPE.STRING, PB_RULE.REPEATED, 2, true, __targets_default)
+		service = PBServiceField.new()
+		service.field = __targets
+		data[__targets.tag] = service
 		
 	var data = {}
 	
-	var __cardID: PBField
-	func get_cardID() -> String:
-		return __cardID.value
-	func clear_cardID() -> void:
+	var __cardId: PBField
+	func get_cardId() -> String:
+		return __cardId.value
+	func clear_cardId() -> void:
 		data[1].state = PB_SERVICE_STATE.UNFILLED
-		__cardID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
-	func set_cardID(value : String) -> void:
-		__cardID.value = value
+		__cardId.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_cardId(value : String) -> void:
+		__cardId.value = value
+	
+	var __targets: PBField
+	func get_targets() -> Array[String]:
+		return __targets.value
+	func clear_targets() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__targets.value = []
+	func add_targets(value : String) -> void:
+		__targets.value.append(value)
 	
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)
@@ -706,21 +721,50 @@ class ActivateCard:
 	func _init():
 		var service
 		
-		__cardID = PBField.new("cardID", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		__cardId = PBField.new("cardId", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
 		service = PBServiceField.new()
-		service.field = __cardID
-		data[__cardID.tag] = service
+		service.field = __cardId
+		data[__cardId.tag] = service
+		
+		__abilityId = PBField.new("abilityId", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		service = PBServiceField.new()
+		service.field = __abilityId
+		data[__abilityId.tag] = service
+		
+		var __targets_default: Array[String] = []
+		__targets = PBField.new("targets", PB_DATA_TYPE.STRING, PB_RULE.REPEATED, 3, true, __targets_default)
+		service = PBServiceField.new()
+		service.field = __targets
+		data[__targets.tag] = service
 		
 	var data = {}
 	
-	var __cardID: PBField
-	func get_cardID() -> String:
-		return __cardID.value
-	func clear_cardID() -> void:
+	var __cardId: PBField
+	func get_cardId() -> String:
+		return __cardId.value
+	func clear_cardId() -> void:
 		data[1].state = PB_SERVICE_STATE.UNFILLED
-		__cardID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
-	func set_cardID(value : String) -> void:
-		__cardID.value = value
+		__cardId.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_cardId(value : String) -> void:
+		__cardId.value = value
+	
+	var __abilityId: PBField
+	func get_abilityId() -> String:
+		return __abilityId.value
+	func clear_abilityId() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__abilityId.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_abilityId(value : String) -> void:
+		__abilityId.value = value
+	
+	var __targets: PBField
+	func get_targets() -> Array[String]:
+		return __targets.value
+	func clear_targets() -> void:
+		data[3].state = PB_SERVICE_STATE.UNFILLED
+		__targets.value = []
+	func add_targets(value : String) -> void:
+		__targets.value.append(value)
 	
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)
@@ -747,21 +791,35 @@ class StudyCard:
 	func _init():
 		var service
 		
-		__cardID = PBField.new("cardID", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		__cardId = PBField.new("cardId", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
 		service = PBServiceField.new()
-		service.field = __cardID
-		data[__cardID.tag] = service
+		service.field = __cardId
+		data[__cardId.tag] = service
+		
+		__selectedKnowledge = PBField.new("selectedKnowledge", PB_DATA_TYPE.ENUM, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.ENUM])
+		service = PBServiceField.new()
+		service.field = __selectedKnowledge
+		data[__selectedKnowledge.tag] = service
 		
 	var data = {}
 	
-	var __cardID: PBField
-	func get_cardID() -> String:
-		return __cardID.value
-	func clear_cardID() -> void:
+	var __cardId: PBField
+	func get_cardId() -> String:
+		return __cardId.value
+	func clear_cardId() -> void:
 		data[1].state = PB_SERVICE_STATE.UNFILLED
-		__cardID.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
-	func set_cardID(value : String) -> void:
-		__cardID.value = value
+		__cardId.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_cardId(value : String) -> void:
+		__cardId.value = value
+	
+	var __selectedKnowledge: PBField
+	func get_selectedKnowledge():
+		return __selectedKnowledge.value
+	func clear_selectedKnowledge() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__selectedKnowledge.value = DEFAULT_VALUES_3[PB_DATA_TYPE.ENUM]
+	func set_selectedKnowledge(value) -> void:
+		__selectedKnowledge.value = value
 	
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)
@@ -1031,7 +1089,7 @@ class SelectXValueResponse:
 			return PB_ERR.PARSE_INCOMPLETE
 		return result
 	
-class SelectAttackersResponse:
+class SelectAttackers:
 	func _init():
 		var service
 		
@@ -1076,7 +1134,7 @@ class SelectAttackersResponse:
 			return PB_ERR.PARSE_INCOMPLETE
 		return result
 	
-class SelectBlockersResponse:
+class SelectBlockers:
 	func _init():
 		var service
 		
@@ -1312,17 +1370,17 @@ class ClientGameMessage:
 		service.func_ref = Callable(self, "new_selectXValueResponse")
 		data[__selectXValueResponse.tag] = service
 		
-		__selectAttackersResponse = PBField.new("selectAttackersResponse", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 11, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
+		__selectAttackers = PBField.new("selectAttackers", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 11, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
 		service = PBServiceField.new()
-		service.field = __selectAttackersResponse
-		service.func_ref = Callable(self, "new_selectAttackersResponse")
-		data[__selectAttackersResponse.tag] = service
+		service.field = __selectAttackers
+		service.func_ref = Callable(self, "new_selectAttackers")
+		data[__selectAttackers.tag] = service
 		
-		__selectBlockersResponse = PBField.new("selectBlockersResponse", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 12, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
+		__selectBlockers = PBField.new("selectBlockers", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 12, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
 		service = PBServiceField.new()
-		service.field = __selectBlockersResponse
-		service.func_ref = Callable(self, "new_selectBlockersResponse")
-		data[__selectBlockersResponse.tag] = service
+		service.field = __selectBlockers
+		service.func_ref = Callable(self, "new_selectBlockers")
+		data[__selectBlockers.tag] = service
 		
 		__assignDamageResponse = PBField.new("assignDamageResponse", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 13, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
 		service = PBServiceField.new()
@@ -1372,9 +1430,9 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1413,9 +1471,9 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1454,9 +1512,9 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1495,9 +1553,9 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1536,9 +1594,9 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1577,9 +1635,9 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1618,9 +1676,9 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1659,9 +1717,9 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1700,9 +1758,9 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.FILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1741,9 +1799,9 @@ class ClientGameMessage:
 		__selectFromResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		data[10].state = PB_SERVICE_STATE.FILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1754,15 +1812,15 @@ class ClientGameMessage:
 		__selectXValueResponse.value = SelectXValueResponse.new()
 		return __selectXValueResponse.value
 	
-	var __selectAttackersResponse: PBField
-	func has_selectAttackersResponse() -> bool:
+	var __selectAttackers: PBField
+	func has_selectAttackers() -> bool:
 		return data[11].state == PB_SERVICE_STATE.FILLED
-	func get_selectAttackersResponse() -> SelectAttackersResponse:
-		return __selectAttackersResponse.value
-	func clear_selectAttackersResponse() -> void:
+	func get_selectAttackers() -> SelectAttackers:
+		return __selectAttackers.value
+	func clear_selectAttackers() -> void:
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
-	func new_selectAttackersResponse() -> SelectAttackersResponse:
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+	func new_selectAttackers() -> SelectAttackers:
 		__playCard.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[1].state = PB_SERVICE_STATE.UNFILLED
 		__activateCard.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
@@ -1784,7 +1842,7 @@ class ClientGameMessage:
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
 		data[11].state = PB_SERVICE_STATE.FILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1792,18 +1850,18 @@ class ClientGameMessage:
 		data[14].state = PB_SERVICE_STATE.UNFILLED
 		__pickCardResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[15].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = SelectAttackersResponse.new()
-		return __selectAttackersResponse.value
+		__selectAttackers.value = SelectAttackers.new()
+		return __selectAttackers.value
 	
-	var __selectBlockersResponse: PBField
-	func has_selectBlockersResponse() -> bool:
+	var __selectBlockers: PBField
+	func has_selectBlockers() -> bool:
 		return data[12].state == PB_SERVICE_STATE.FILLED
-	func get_selectBlockersResponse() -> SelectBlockersResponse:
-		return __selectBlockersResponse.value
-	func clear_selectBlockersResponse() -> void:
+	func get_selectBlockers() -> SelectBlockers:
+		return __selectBlockers.value
+	func clear_selectBlockers() -> void:
 		data[12].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
-	func new_selectBlockersResponse() -> SelectBlockersResponse:
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+	func new_selectBlockers() -> SelectBlockers:
 		__playCard.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[1].state = PB_SERVICE_STATE.UNFILLED
 		__activateCard.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
@@ -1824,7 +1882,7 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
 		data[12].state = PB_SERVICE_STATE.FILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
@@ -1833,8 +1891,8 @@ class ClientGameMessage:
 		data[14].state = PB_SERVICE_STATE.UNFILLED
 		__pickCardResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[15].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = SelectBlockersResponse.new()
-		return __selectBlockersResponse.value
+		__selectBlockers.value = SelectBlockers.new()
+		return __selectBlockers.value
 	
 	var __assignDamageResponse: PBField
 	func has_assignDamageResponse() -> bool:
@@ -1865,9 +1923,9 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		data[13].state = PB_SERVICE_STATE.FILLED
 		__selectKnowledgeResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
@@ -1906,9 +1964,9 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1947,9 +2005,9 @@ class ClientGameMessage:
 		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__selectXValueResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__selectAttackersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectAttackers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__selectBlockersResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+		__selectBlockers.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__assignDamageResponse.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 		data[13].state = PB_SERVICE_STATE.UNFILLED
@@ -1999,8 +2057,7 @@ enum SelectFromType {
 	HAND = 3,
 	PLAY = 4,
 	DISCARD_PILE = 5,
-	VOID = 6,
-	STACK = 7
+	STACK = 6
 }
 
 enum GameType {
@@ -2607,6 +2664,104 @@ class Combat:
 			return PB_ERR.PARSE_INCOMPLETE
 		return result
 	
+class Targeting:
+	func _init():
+		var service
+		
+		__id = PBField.new("id", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		service = PBServiceField.new()
+		service.field = __id
+		data[__id.tag] = service
+		
+		var __possibleTargets_default: Array[String] = []
+		__possibleTargets = PBField.new("possibleTargets", PB_DATA_TYPE.STRING, PB_RULE.REPEATED, 2, true, __possibleTargets_default)
+		service = PBServiceField.new()
+		service.field = __possibleTargets
+		data[__possibleTargets.tag] = service
+		
+		__minTargets = PBField.new("minTargets", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
+		service = PBServiceField.new()
+		service.field = __minTargets
+		data[__minTargets.tag] = service
+		
+		__maxTargets = PBField.new("maxTargets", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 4, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
+		service = PBServiceField.new()
+		service.field = __maxTargets
+		data[__maxTargets.tag] = service
+		
+		__targetMessage = PBField.new("targetMessage", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 5, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		service = PBServiceField.new()
+		service.field = __targetMessage
+		data[__targetMessage.tag] = service
+		
+	var data = {}
+	
+	var __id: PBField
+	func get_id() -> String:
+		return __id.value
+	func clear_id() -> void:
+		data[1].state = PB_SERVICE_STATE.UNFILLED
+		__id.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_id(value : String) -> void:
+		__id.value = value
+	
+	var __possibleTargets: PBField
+	func get_possibleTargets() -> Array[String]:
+		return __possibleTargets.value
+	func clear_possibleTargets() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__possibleTargets.value = []
+	func add_possibleTargets(value : String) -> void:
+		__possibleTargets.value.append(value)
+	
+	var __minTargets: PBField
+	func get_minTargets() -> int:
+		return __minTargets.value
+	func clear_minTargets() -> void:
+		data[3].state = PB_SERVICE_STATE.UNFILLED
+		__minTargets.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT32]
+	func set_minTargets(value : int) -> void:
+		__minTargets.value = value
+	
+	var __maxTargets: PBField
+	func get_maxTargets() -> int:
+		return __maxTargets.value
+	func clear_maxTargets() -> void:
+		data[4].state = PB_SERVICE_STATE.UNFILLED
+		__maxTargets.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT32]
+	func set_maxTargets(value : int) -> void:
+		__maxTargets.value = value
+	
+	var __targetMessage: PBField
+	func get_targetMessage() -> String:
+		return __targetMessage.value
+	func clear_targetMessage() -> void:
+		data[5].state = PB_SERVICE_STATE.UNFILLED
+		__targetMessage.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_targetMessage(value : String) -> void:
+		__targetMessage.value = value
+	
+	func _to_string() -> String:
+		return PBPacker.message_to_string(data)
+		
+	func to_bytes() -> PackedByteArray:
+		return PBPacker.pack_message(data)
+		
+	func from_bytes(bytes : PackedByteArray, offset : int = 0, limit : int = -1) -> int:
+		var cur_limit = bytes.size()
+		if limit != -1:
+			cur_limit = limit
+		var result = PBPacker.unpack_message(data, bytes, offset, cur_limit)
+		if result == cur_limit:
+			if PBPacker.check_required(data):
+				if limit == -1:
+					return PB_ERR.NO_ERRORS
+			else:
+				return PB_ERR.REQUIRED_FIELDS
+		elif limit == -1 && result > 0:
+			return PB_ERR.PARSE_INCOMPLETE
+		return result
+	
 class CardP:
 	func _init():
 		var service
@@ -2724,6 +2879,19 @@ class CardP:
 		service = PBServiceField.new()
 		service.field = __canStudy
 		data[__canStudy.tag] = service
+		
+		__playTargets = PBField.new("playTargets", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 22, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
+		service = PBServiceField.new()
+		service.field = __playTargets
+		service.func_ref = Callable(self, "new_playTargets")
+		data[__playTargets.tag] = service
+		
+		var __activateTargets_default: Array[Targeting] = []
+		__activateTargets = PBField.new("activateTargets", PB_DATA_TYPE.MESSAGE, PB_RULE.REPEATED, 23, true, __activateTargets_default)
+		service = PBServiceField.new()
+		service.field = __activateTargets
+		service.func_ref = Callable(self, "add_activateTargets")
+		data[__activateTargets.tag] = service
 		
 	var data = {}
 	
@@ -2921,6 +3089,27 @@ class CardP:
 	func set_canStudy(value : bool) -> void:
 		__canStudy.value = value
 	
+	var __playTargets: PBField
+	func get_playTargets() -> Targeting:
+		return __playTargets.value
+	func clear_playTargets() -> void:
+		data[22].state = PB_SERVICE_STATE.UNFILLED
+		__playTargets.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
+	func new_playTargets() -> Targeting:
+		__playTargets.value = Targeting.new()
+		return __playTargets.value
+	
+	var __activateTargets: PBField
+	func get_activateTargets() -> Array[Targeting]:
+		return __activateTargets.value
+	func clear_activateTargets() -> void:
+		data[23].state = PB_SERVICE_STATE.UNFILLED
+		__activateTargets.value = []
+	func add_activateTargets() -> Targeting:
+		var element = Targeting.new()
+		__activateTargets.value.append(element)
+		return element
+	
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)
 		
@@ -2992,42 +3181,35 @@ class Player:
 		service.func_ref = Callable(self, "add_discardPile")
 		data[__discardPile.tag] = service
 		
-		var __void_default: Array[CardP] = []
-		__void = PBField.new("void", PB_DATA_TYPE.MESSAGE, PB_RULE.REPEATED, 9, true, __void_default)
-		service = PBServiceField.new()
-		service.field = __void
-		service.func_ref = Callable(self, "add_void")
-		data[__void.tag] = service
-		
 		var __knowledgePool_default: Array[KnowledgeGroup] = []
-		__knowledgePool = PBField.new("knowledgePool", PB_DATA_TYPE.MESSAGE, PB_RULE.REPEATED, 10, true, __knowledgePool_default)
+		__knowledgePool = PBField.new("knowledgePool", PB_DATA_TYPE.MESSAGE, PB_RULE.REPEATED, 9, true, __knowledgePool_default)
 		service = PBServiceField.new()
 		service.field = __knowledgePool
 		service.func_ref = Callable(self, "add_knowledgePool")
 		data[__knowledgePool.tag] = service
 		
-		__shield = PBField.new("shield", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 11, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
+		__shield = PBField.new("shield", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 10, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
 		service = PBServiceField.new()
 		service.field = __shield
 		data[__shield.tag] = service
 		
-		__handSize = PBField.new("handSize", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 12, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
+		__handSize = PBField.new("handSize", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 11, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
 		service = PBServiceField.new()
 		service.field = __handSize
 		data[__handSize.tag] = service
 		
-		__health = PBField.new("health", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 13, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
+		__health = PBField.new("health", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 12, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
 		service = PBServiceField.new()
 		service.field = __health
 		data[__health.tag] = service
 		
-		__time = PBField.new("time", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 14, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
+		__time = PBField.new("time", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 13, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
 		service = PBServiceField.new()
 		service.field = __time
 		data[__time.tag] = service
 		
 		var __deckColors_default: Array[KnowledgeGroup] = []
-		__deckColors = PBField.new("deckColors", PB_DATA_TYPE.MESSAGE, PB_RULE.REPEATED, 15, true, __deckColors_default)
+		__deckColors = PBField.new("deckColors", PB_DATA_TYPE.MESSAGE, PB_RULE.REPEATED, 14, true, __deckColors_default)
 		service = PBServiceField.new()
 		service.field = __deckColors
 		service.func_ref = Callable(self, "add_deckColors")
@@ -3113,22 +3295,11 @@ class Player:
 		__discardPile.value.append(element)
 		return element
 	
-	var __void: PBField
-	func get_void() -> Array[CardP]:
-		return __void.value
-	func clear_void() -> void:
-		data[9].state = PB_SERVICE_STATE.UNFILLED
-		__void.value = []
-	func add_void() -> CardP:
-		var element = CardP.new()
-		__void.value.append(element)
-		return element
-	
 	var __knowledgePool: PBField
 	func get_knowledgePool() -> Array[KnowledgeGroup]:
 		return __knowledgePool.value
 	func clear_knowledgePool() -> void:
-		data[10].state = PB_SERVICE_STATE.UNFILLED
+		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__knowledgePool.value = []
 	func add_knowledgePool() -> KnowledgeGroup:
 		var element = KnowledgeGroup.new()
@@ -3139,7 +3310,7 @@ class Player:
 	func get_shield() -> int:
 		return __shield.value
 	func clear_shield() -> void:
-		data[11].state = PB_SERVICE_STATE.UNFILLED
+		data[10].state = PB_SERVICE_STATE.UNFILLED
 		__shield.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT32]
 	func set_shield(value : int) -> void:
 		__shield.value = value
@@ -3148,7 +3319,7 @@ class Player:
 	func get_handSize() -> int:
 		return __handSize.value
 	func clear_handSize() -> void:
-		data[12].state = PB_SERVICE_STATE.UNFILLED
+		data[11].state = PB_SERVICE_STATE.UNFILLED
 		__handSize.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT32]
 	func set_handSize(value : int) -> void:
 		__handSize.value = value
@@ -3157,7 +3328,7 @@ class Player:
 	func get_health() -> int:
 		return __health.value
 	func clear_health() -> void:
-		data[13].state = PB_SERVICE_STATE.UNFILLED
+		data[12].state = PB_SERVICE_STATE.UNFILLED
 		__health.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT32]
 	func set_health(value : int) -> void:
 		__health.value = value
@@ -3166,7 +3337,7 @@ class Player:
 	func get_time() -> int:
 		return __time.value
 	func clear_time() -> void:
-		data[14].state = PB_SERVICE_STATE.UNFILLED
+		data[13].state = PB_SERVICE_STATE.UNFILLED
 		__time.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT32]
 	func set_time(value : int) -> void:
 		__time.value = value
@@ -3175,7 +3346,7 @@ class Player:
 	func get_deckColors() -> Array[KnowledgeGroup]:
 		return __deckColors.value
 	func clear_deckColors() -> void:
-		data[15].state = PB_SERVICE_STATE.UNFILLED
+		data[14].state = PB_SERVICE_STATE.UNFILLED
 		__deckColors.value = []
 	func add_deckColors() -> KnowledgeGroup:
 		var element = KnowledgeGroup.new()
@@ -3212,69 +3383,51 @@ class GameStateP:
 		service.field = __id
 		data[__id.tag] = service
 		
-		__player = PBField.new("player", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
-		service = PBServiceField.new()
-		service.field = __player
-		service.func_ref = Callable(self, "new_player")
-		data[__player.tag] = service
-		
-		__opponent = PBField.new("opponent", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
-		service = PBServiceField.new()
-		service.field = __opponent
-		service.func_ref = Callable(self, "new_opponent")
-		data[__opponent.tag] = service
-		
-		__turnPlayer = PBField.new("turnPlayer", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 4, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
-		service = PBServiceField.new()
-		service.field = __turnPlayer
-		data[__turnPlayer.tag] = service
-		
-		__activePlayer = PBField.new("activePlayer", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 5, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
-		service = PBServiceField.new()
-		service.field = __activePlayer
-		data[__activePlayer.tag] = service
-		
-		var __stack_default: Array[CardP] = []
-		__stack = PBField.new("stack", PB_DATA_TYPE.MESSAGE, PB_RULE.REPEATED, 6, true, __stack_default)
-		service = PBServiceField.new()
-		service.field = __stack
-		service.func_ref = Callable(self, "add_stack")
-		data[__stack.tag] = service
-		
-		var __canPlay_default: Array[String] = []
-		__canPlay = PBField.new("canPlay", PB_DATA_TYPE.STRING, PB_RULE.REPEATED, 7, true, __canPlay_default)
-		service = PBServiceField.new()
-		service.field = __canPlay
-		data[__canPlay.tag] = service
-		
-		var __canActivate_default: Array[String] = []
-		__canActivate = PBField.new("canActivate", PB_DATA_TYPE.STRING, PB_RULE.REPEATED, 8, true, __canActivate_default)
-		service = PBServiceField.new()
-		service.field = __canActivate
-		data[__canActivate.tag] = service
-		
-		var __canStudy_default: Array[String] = []
-		__canStudy = PBField.new("canStudy", PB_DATA_TYPE.STRING, PB_RULE.REPEATED, 9, true, __canStudy_default)
-		service = PBServiceField.new()
-		service.field = __canStudy
-		data[__canStudy.tag] = service
-		
-		__phase = PBField.new("phase", PB_DATA_TYPE.ENUM, PB_RULE.OPTIONAL, 10, true, DEFAULT_VALUES_3[PB_DATA_TYPE.ENUM])
+		__phase = PBField.new("phase", PB_DATA_TYPE.ENUM, PB_RULE.OPTIONAL, 2, true, DEFAULT_VALUES_3[PB_DATA_TYPE.ENUM])
 		service = PBServiceField.new()
 		service.field = __phase
 		data[__phase.tag] = service
 		
+		__turnPlayer = PBField.new("turnPlayer", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		service = PBServiceField.new()
+		service.field = __turnPlayer
+		data[__turnPlayer.tag] = service
+		
+		__activePlayer = PBField.new("activePlayer", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 4, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		service = PBServiceField.new()
+		service.field = __activePlayer
+		data[__activePlayer.tag] = service
+		
 		var __attackers_default: Array[String] = []
-		__attackers = PBField.new("attackers", PB_DATA_TYPE.STRING, PB_RULE.REPEATED, 11, true, __attackers_default)
+		__attackers = PBField.new("attackers", PB_DATA_TYPE.STRING, PB_RULE.REPEATED, 5, true, __attackers_default)
 		service = PBServiceField.new()
 		service.field = __attackers
 		data[__attackers.tag] = service
 		
 		var __blockers_default: Array[String] = []
-		__blockers = PBField.new("blockers", PB_DATA_TYPE.STRING, PB_RULE.REPEATED, 12, true, __blockers_default)
+		__blockers = PBField.new("blockers", PB_DATA_TYPE.STRING, PB_RULE.REPEATED, 6, true, __blockers_default)
 		service = PBServiceField.new()
 		service.field = __blockers
 		data[__blockers.tag] = service
+		
+		var __stack_default: Array[CardP] = []
+		__stack = PBField.new("stack", PB_DATA_TYPE.MESSAGE, PB_RULE.REPEATED, 7, true, __stack_default)
+		service = PBServiceField.new()
+		service.field = __stack
+		service.func_ref = Callable(self, "add_stack")
+		data[__stack.tag] = service
+		
+		__player = PBField.new("player", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 8, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
+		service = PBServiceField.new()
+		service.field = __player
+		service.func_ref = Callable(self, "new_player")
+		data[__player.tag] = service
+		
+		__opponent = PBField.new("opponent", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 9, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
+		service = PBServiceField.new()
+		service.field = __opponent
+		service.func_ref = Callable(self, "new_opponent")
+		data[__opponent.tag] = service
 		
 	var data = {}
 	
@@ -3287,11 +3440,67 @@ class GameStateP:
 	func set_id(value : String) -> void:
 		__id.value = value
 	
+	var __phase: PBField
+	func get_phase():
+		return __phase.value
+	func clear_phase() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__phase.value = DEFAULT_VALUES_3[PB_DATA_TYPE.ENUM]
+	func set_phase(value) -> void:
+		__phase.value = value
+	
+	var __turnPlayer: PBField
+	func get_turnPlayer() -> String:
+		return __turnPlayer.value
+	func clear_turnPlayer() -> void:
+		data[3].state = PB_SERVICE_STATE.UNFILLED
+		__turnPlayer.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_turnPlayer(value : String) -> void:
+		__turnPlayer.value = value
+	
+	var __activePlayer: PBField
+	func get_activePlayer() -> String:
+		return __activePlayer.value
+	func clear_activePlayer() -> void:
+		data[4].state = PB_SERVICE_STATE.UNFILLED
+		__activePlayer.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_activePlayer(value : String) -> void:
+		__activePlayer.value = value
+	
+	var __attackers: PBField
+	func get_attackers() -> Array[String]:
+		return __attackers.value
+	func clear_attackers() -> void:
+		data[5].state = PB_SERVICE_STATE.UNFILLED
+		__attackers.value = []
+	func add_attackers(value : String) -> void:
+		__attackers.value.append(value)
+	
+	var __blockers: PBField
+	func get_blockers() -> Array[String]:
+		return __blockers.value
+	func clear_blockers() -> void:
+		data[6].state = PB_SERVICE_STATE.UNFILLED
+		__blockers.value = []
+	func add_blockers(value : String) -> void:
+		__blockers.value.append(value)
+	
+	var __stack: PBField
+	func get_stack() -> Array[CardP]:
+		return __stack.value
+	func clear_stack() -> void:
+		data[7].state = PB_SERVICE_STATE.UNFILLED
+		__stack.value = []
+	func add_stack() -> CardP:
+		var element = CardP.new()
+		__stack.value.append(element)
+		return element
+	
 	var __player: PBField
 	func get_player() -> Player:
 		return __player.value
 	func clear_player() -> void:
-		data[2].state = PB_SERVICE_STATE.UNFILLED
+		data[8].state = PB_SERVICE_STATE.UNFILLED
 		__player.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 	func new_player() -> Player:
 		__player.value = Player.new()
@@ -3301,94 +3510,11 @@ class GameStateP:
 	func get_opponent() -> Player:
 		return __opponent.value
 	func clear_opponent() -> void:
-		data[3].state = PB_SERVICE_STATE.UNFILLED
+		data[9].state = PB_SERVICE_STATE.UNFILLED
 		__opponent.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
 	func new_opponent() -> Player:
 		__opponent.value = Player.new()
 		return __opponent.value
-	
-	var __turnPlayer: PBField
-	func get_turnPlayer() -> String:
-		return __turnPlayer.value
-	func clear_turnPlayer() -> void:
-		data[4].state = PB_SERVICE_STATE.UNFILLED
-		__turnPlayer.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
-	func set_turnPlayer(value : String) -> void:
-		__turnPlayer.value = value
-	
-	var __activePlayer: PBField
-	func get_activePlayer() -> String:
-		return __activePlayer.value
-	func clear_activePlayer() -> void:
-		data[5].state = PB_SERVICE_STATE.UNFILLED
-		__activePlayer.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
-	func set_activePlayer(value : String) -> void:
-		__activePlayer.value = value
-	
-	var __stack: PBField
-	func get_stack() -> Array[CardP]:
-		return __stack.value
-	func clear_stack() -> void:
-		data[6].state = PB_SERVICE_STATE.UNFILLED
-		__stack.value = []
-	func add_stack() -> CardP:
-		var element = CardP.new()
-		__stack.value.append(element)
-		return element
-	
-	var __canPlay: PBField
-	func get_canPlay() -> Array[String]:
-		return __canPlay.value
-	func clear_canPlay() -> void:
-		data[7].state = PB_SERVICE_STATE.UNFILLED
-		__canPlay.value = []
-	func add_canPlay(value : String) -> void:
-		__canPlay.value.append(value)
-	
-	var __canActivate: PBField
-	func get_canActivate() -> Array[String]:
-		return __canActivate.value
-	func clear_canActivate() -> void:
-		data[8].state = PB_SERVICE_STATE.UNFILLED
-		__canActivate.value = []
-	func add_canActivate(value : String) -> void:
-		__canActivate.value.append(value)
-	
-	var __canStudy: PBField
-	func get_canStudy() -> Array[String]:
-		return __canStudy.value
-	func clear_canStudy() -> void:
-		data[9].state = PB_SERVICE_STATE.UNFILLED
-		__canStudy.value = []
-	func add_canStudy(value : String) -> void:
-		__canStudy.value.append(value)
-	
-	var __phase: PBField
-	func get_phase():
-		return __phase.value
-	func clear_phase() -> void:
-		data[10].state = PB_SERVICE_STATE.UNFILLED
-		__phase.value = DEFAULT_VALUES_3[PB_DATA_TYPE.ENUM]
-	func set_phase(value) -> void:
-		__phase.value = value
-	
-	var __attackers: PBField
-	func get_attackers() -> Array[String]:
-		return __attackers.value
-	func clear_attackers() -> void:
-		data[11].state = PB_SERVICE_STATE.UNFILLED
-		__attackers.value = []
-	func add_attackers(value : String) -> void:
-		__attackers.value.append(value)
-	
-	var __blockers: PBField
-	func get_blockers() -> Array[String]:
-		return __blockers.value
-	func clear_blockers() -> void:
-		data[12].state = PB_SERVICE_STATE.UNFILLED
-		__blockers.value = []
-	func add_blockers(value : String) -> void:
-		__blockers.value.append(value)
 	
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)

@@ -27,27 +27,14 @@ message OrderCards {
 message SelectFrom {
     SelectFromType messageType = 1;
     GameStateP game = 2;
-    int32 selectionCount = 3;
-    repeated CardP candidates = 4;
-    repeated string selectable = 5;
-    bool upTo = 6;
-    string messageP = 7;
+    Targeting targets = 3;
+    string messageP = 4;
 }
 
 message SelectXValue {
     GameStateP game = 1;
     int32 maxXValue = 2;
     string messageP = 3;
-}
-
-message SelectAttackers {
-    GameStateP game = 1;
-    repeated Attacker possibleAttackers = 2;
-}
-
-message SelectBlockers {
-    GameStateP game = 1;
-    repeated Blocker possibleBlockers = 2;
 }
 
 message AssignDamage {
@@ -80,10 +67,8 @@ message ServerGameMessage {
         OrderCards              orderCards = 3;
         SelectFrom              selectFrom = 4;
         SelectXValue            selectXValue = 5;
-        SelectAttackers         selectAttackers = 6;
-        SelectBlockers          selectBlockers = 7;
-        AssignDamage            assignDamage = 8;
-        SelectKnowledge         selectKnowledge = 9;
-        PickCard                pickCard = 10;
+        AssignDamage            assignDamage = 6;
+        SelectKnowledge         selectKnowledge = 7;
+        PickCard                pickCard = 8;
     }
 }

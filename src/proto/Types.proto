@@ -24,8 +24,7 @@ enum SelectFromType {
     HAND = 3;
     PLAY = 4;
     DISCARD_PILE = 5;
-    VOID = 6;
-    STACK = 7;
+    STACK = 6;
 }
 
 enum GameType {
@@ -103,10 +102,11 @@ message Combat {
 }
 
 message Targeting {
-    repeated string possibleTargets = 1;
-    int32 minTargets = 2;
-    int32 maxTargets = 3;
-    string targetMessage = 4;
+    string id = 1;
+    repeated string possibleTargets = 2;
+    int32 minTargets = 3;
+    int32 maxTargets = 4;
+    string targetMessage = 5;
 }
 
 message CardP {
@@ -144,28 +144,24 @@ message Player {
     repeated CardP hand = 6;
     repeated CardP play = 7;
     repeated CardP discardPile = 8;
-    repeated CardP void = 9;
-    repeated KnowledgeGroup knowledgePool = 10;
-    int32 shield = 11;
-    int32 handSize = 12;
-    int32 health = 13;
-    int32 time = 14;
-    repeated KnowledgeGroup deckColors = 15;
+    repeated KnowledgeGroup knowledgePool = 9;
+    int32 shield = 10;
+    int32 handSize = 11;
+    int32 health = 12;
+    int32 time = 13;
+    repeated KnowledgeGroup deckColors = 14;
 }
 
 message GameStateP {
     string id = 1;
-    Player player = 2;
-    Player opponent = 3;
-    string turnPlayer =  4;
-    string activePlayer = 5;
-    repeated CardP stack = 6;
-    repeated string canPlay = 7;
-    repeated string canActivate = 8;
-    repeated string canStudy = 9;
-    Phase phase = 10;
-    repeated string attackers = 11;
-    repeated string blockers = 12;
+    Phase phase = 2;
+    string turnPlayer =  3;
+    string activePlayer = 4;
+    repeated string attackers = 5;
+    repeated string blockers = 6;
+    repeated CardP stack = 7;
+    Player player = 8;
+    Player opponent = 9;
 }
 
 message DraftState {

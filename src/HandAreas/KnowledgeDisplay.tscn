@@ -1,103 +1,102 @@
-[gd_scene load_steps=7 format=3 uid="uid://dpjjtpkohrwke"]
+[gd_scene load_steps=12 format=3 uid="uid://dpjjtpkohrwke"]
 
 [ext_resource type="LabelSettings" uid="uid://bx7tppt0u01gu" path="res://src/HandAreas/KnowledgeDisplayNumbers.tres" id="1_h0bbe"]
 [ext_resource type="Texture2D" uid="uid://bla5kmox0uutt" path="res://assets/card-components/knowledge-G.png" id="2_66ra7"]
+[ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/ButtonTheme.tres" id="2_nfu6q"]
+[ext_resource type="StyleBox" uid="uid://bb1ulbrelfxxt" path="res://src/HandAreas/KnowledgeLabel.tres" id="2_t0n5q"]
 [ext_resource type="Texture2D" uid="uid://ctiwq73fpxfx1" path="res://assets/card-components/knowledge-R.png" id="3_10g2d"]
-[ext_resource type="Texture2D" uid="uid://dwu5afbcd83mf" path="res://assets/card-components/knowledge-U.png" id="4_1mivt"]
 [ext_resource type="Texture2D" uid="uid://ubacjv4amyn1" path="res://assets/card-components/knowledge-P.png" id="5_ctlwh"]
 [ext_resource type="Texture2D" uid="uid://cnnp27dobkbl6" path="res://assets/card-components/knowledge-Y.png" id="6_nsdvn"]
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ytiu5"]
+texture = ExtResource("2_66ra7")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ijqc5"]
+texture = ExtResource("5_ctlwh")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6t3ot"]
+texture = ExtResource("3_10g2d")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a0uo3"]
+texture = ExtResource("6_nsdvn")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
 [node name="KnowledgeDisplay" type="HBoxContainer"]
+offset_right = 52.0
+offset_bottom = 22.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
-[node name="GreenKnowledge" type="Label" parent="."]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BlueKnowledgeLabel" type="Label" parent="AspectRatioContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme = ExtResource("2_nfu6q")
+theme_override_styles/normal = ExtResource("2_t0n5q")
 text = "2"
 label_settings = ExtResource("1_h0bbe")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="GreenKnowledgeBG" type="TextureRect" parent="GreenKnowledge"]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_66ra7")
-expand_mode = 3
-
-[node name="RedKnowledge" type="Label" parent="."]
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GreenKnowledgeLabel" type="Label" parent="AspectRatioContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxTexture_ytiu5")
 text = "2"
 label_settings = ExtResource("1_h0bbe")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RedKnowledgeBG" type="TextureRect" parent="RedKnowledge"]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_10g2d")
-expand_mode = 3
-
-[node name="BlueKnowledge" type="Label" parent="."]
+[node name="AspectRatioContainer3" type="AspectRatioContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PurpleKnowledgeLabel" type="Label" parent="AspectRatioContainer3"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxTexture_ijqc5")
 text = "2"
 label_settings = ExtResource("1_h0bbe")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BlueKnowledgeBG" type="TextureRect" parent="BlueKnowledge"]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("4_1mivt")
-expand_mode = 3
-
-[node name="PurpleKnowledge" type="Label" parent="."]
+[node name="AspectRatioContainer4" type="AspectRatioContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RedKnowledgeLabel" type="Label" parent="AspectRatioContainer4"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxTexture_6t3ot")
 text = "2"
 label_settings = ExtResource("1_h0bbe")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PurpleKnowledgeBG" type="TextureRect" parent="PurpleKnowledge"]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("5_ctlwh")
-expand_mode = 3
-
-[node name="YellowKnowledge" type="Label" parent="."]
+[node name="AspectRatioContainer5" type="AspectRatioContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="YellowKnowledgeLabel" type="Label" parent="AspectRatioContainer5"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxTexture_a0uo3")
 text = "2"
 label_settings = ExtResource("1_h0bbe")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="YellowKnowledgeBG" type="TextureRect" parent="YellowKnowledge"]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("6_nsdvn")
-expand_mode = 3
