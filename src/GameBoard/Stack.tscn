@@ -1,0 +1,143 @@
+[gd_scene load_steps=9 format=3 uid="uid://cyf4auv3kwlej"]
+
+[ext_resource type="Script" path="res://src/GameBoard/CardContainer.gd" id="1_isthh"]
+[ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="2_b1f2l"]
+[ext_resource type="Texture2D" uid="uid://bjeer40kdm3ir" path="res://assets/buttons/grunge-highlight-red.png" id="3_vi5qa"]
+[ext_resource type="LabelSettings" uid="uid://fslojvlky0sj" path="res://src/Themes/EnergyDisplayNumbers.tres" id="4_76dgi"]
+[ext_resource type="Script" path="res://src/GameBoard/Phase.gd" id="5_0smbc"]
+[ext_resource type="Script" path="res://src/GameBoard/XSelector.gd" id="6_20bhx"]
+[ext_resource type="Script" path="res://src/GameBoard/Buttons.gd" id="7_jjq3l"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6xsbi"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+texture = ExtResource("3_vi5qa")
+
+[node name="StackContainer" type="VBoxContainer"]
+size_flags_horizontal = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 15.0
+horizontal_scroll_mode = 0
+
+[node name="Stack" type="VBoxContainer" parent="ScrollContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 15.0
+script = ExtResource("1_isthh")
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Phase" type="Label" parent="Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme = ExtResource("2_b1f2l")
+theme_override_styles/normal = SubResource("StyleBoxTexture_6xsbi")
+text = "Phase"
+label_settings = ExtResource("4_76dgi")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("5_0smbc")
+
+[node name="XSelector" type="HBoxContainer" parent="Buttons"]
+layout_mode = 2
+script = ExtResource("6_20bhx")
+
+[node name="MinusButton" type="Button" parent="Buttons/XSelector"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme = ExtResource("2_b1f2l")
+text = "-"
+
+[node name="XValue" type="Label" parent="Buttons/XSelector"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_b1f2l")
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlusButton" type="Button" parent="Buttons/XSelector"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme = ExtResource("2_b1f2l")
+text = "+"
+
+[node name="MaxButton" type="Button" parent="Buttons/XSelector"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme = ExtResource("2_b1f2l")
+text = "MAX"
+
+[node name="ButtonContainer" type="VBoxContainer" parent="Buttons"]
+layout_mode = 2
+
+[node name="Pass" type="Button" parent="Buttons/ButtonContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+mouse_filter = 1
+theme = ExtResource("2_b1f2l")
+text = "Pass"
+expand_icon = true
+script = ExtResource("7_jjq3l")
+
+[node name="Keep" type="Button" parent="Buttons/ButtonContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+mouse_filter = 1
+theme = ExtResource("2_b1f2l")
+text = "Keep"
+expand_icon = true
+script = ExtResource("7_jjq3l")
+
+[node name="Redraw" type="Button" parent="Buttons/ButtonContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+mouse_filter = 1
+theme = ExtResource("2_b1f2l")
+text = "Redraw"
+expand_icon = true
+script = ExtResource("7_jjq3l")
+
+[node name="Submit" type="Button" parent="Buttons/ButtonContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+theme = ExtResource("2_b1f2l")
+text = "Submit"
+script = ExtResource("7_jjq3l")
+
+[node name="All Attack" type="Button" parent="Buttons/ButtonContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+theme = ExtResource("2_b1f2l")
+text = "All Attack"
+script = ExtResource("7_jjq3l")
+
+[node name="Cancel" type="Button" parent="Buttons/ButtonContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("2_b1f2l")
+text = "Cancel"
+script = ExtResource("7_jjq3l")
+
+[node name="Buffer" type="Control" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[connection signal="pressed" from="Buttons/ButtonContainer/Pass" to="Buttons/ButtonContainer/Pass" method="_on_pressed"]
+[connection signal="pressed" from="Buttons/ButtonContainer/Keep" to="Buttons/ButtonContainer/Keep" method="_on_pressed"]
+[connection signal="pressed" from="Buttons/ButtonContainer/Redraw" to="Buttons/ButtonContainer/Redraw" method="_on_pressed"]
+[connection signal="pressed" from="Buttons/ButtonContainer/Submit" to="Buttons/ButtonContainer/Submit" method="_on_pressed"]
+[connection signal="pressed" from="Buttons/ButtonContainer/All Attack" to="Buttons/ButtonContainer/All Attack" method="_on_pressed"]
+[connection signal="pressed" from="Buttons/ButtonContainer/Cancel" to="Buttons/ButtonContainer/Cancel" method="_on_pressed"]

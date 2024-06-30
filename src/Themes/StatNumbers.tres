@@ -1,0 +1,7 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://b11lvhq8dg0ny"]
+
+[ext_resource type="FontFile" uid="uid://dhfc6u3d1k04t" path="res://assets/fonts/Depressionist_3_Revisited_2010.ttf" id="1_btm7y"]
+
+[resource]
+font = ExtResource("1_btm7y")
+font_color = Color(0, 0, 0, 1)

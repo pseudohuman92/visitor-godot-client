@@ -13,10 +13,12 @@ func play_card(id):
 	var cm = GS.ClientGameMessages.ClientGameMessage.new()
 	var jq = cm.new_playCard()
 	jq.set_cardId(id)
-	for c in GS.selected:
-		jq.add_targets(c)
-	GS.selected = []
-	GS.selection_info = null
+	for c in SS.selected:
+		var ts = jq.add_targets()
+		ts.set_id(c["selection_id"])
+		for t in c["selected"]:
+			ts.add_targets(t)
+	SS.clear_selection_data()
 	send_message(cm)
 
 func activate_card(id):
@@ -24,11 +26,13 @@ func activate_card(id):
 	var cm = GS.ClientGameMessages.ClientGameMessage.new()
 	var jq = cm.new_activateCard()
 	jq.set_cardId(id)
-	jq.set_abilityId(GS.selection_info.get_id())
-	for c in GS.selected:
-		jq.add_targets(c)
-	GS.selected = []
-	GS.selection_info = null
+	jq.set_abilityId(SS.selection_ability_id)
+	for c in SS.selected:
+		var ts = jq.add_targets()
+		ts.set_id(c["selection_id"])
+		for t in c["selected"]:
+			ts.add_targets(t)
+	SS.clear_selection_data()
 	send_message(cm)
 
 func study_card(id):
@@ -36,9 +40,9 @@ func study_card(id):
 	var cm = GS.ClientGameMessages.ClientGameMessage.new()
 	var jq = cm.new_studyCard()
 	jq.set_cardId(id)
-	if GS.selected.size() > 0:
-		jq.set_selectedKnowledge(GS.selected[0])
-		GS.selected = []
+	if SS.selected.size() > 0:
+		jq.set_selectedKnowledge(SS.selected[0])
+	SS.clear_selection_data()
 	send_message(cm)
 
 func keep():
@@ -63,37 +67,32 @@ func select_attackers():
 	print("Sending Attackers: ")
 	var cm = GS.ClientGameMessages.ClientGameMessage.new()
 	var jq = cm.new_selectAttackers()
-	if GS.selected:
-		for a in GS.selected:
-			var att = jq.add_attackers()
-			att.set_attackerId(a)
-			att.set_attacksTo(GS.gameState.get_opponent().get_id())
-	GS.selected = []
+	for a in SS.selected_single:
+		var att = jq.add_attackers()
+		att.set_attackerId(a)
+		att.set_attacksTo(GS.gameState.get_opponent().get_id())
+	SS.clear_selection_data()
 	send_message(cm)
 
-func select_blockers(blockers = null):
-	print("Sending Blockers: ", blockers)
+func select_blockers():
+	print("Sending Blockers: ")
 	var cm = GS.ClientGameMessages.ClientGameMessage.new()
 	var jq = cm.new_selectBlockers()
-	if GS.selected:
-		for a in GS.selected:
-			var att = jq.add_blockers()
-			att.set_blockerId(a[0])
-			att.set_blockedBy(a[1])
-	GS.selected = []
+	for a in SS.selected:
+		var att = jq.add_blockers()
+		att.set_blockerId(a[0].card.get_id())
+		att.set_blockedBy(a[1].card.get_id())
+	SS.clear_selection_data()
 	send_message(cm)
 
 func select_from():
 	print("Sending SelectFrom: ")
 	var cm = GS.ClientGameMessages.ClientGameMessage.new()
 	var jq = cm.new_selectFromResponse()
-	jq.set_messageType(GS.select_from_type)
-	if GS.selected:
-		for a in GS.selected:
-			jq.add_selected(a)
-	GS.selected = []
-	GS.select_from_type = null
-	GS.selection_info = null
+	jq.set_messageType(SS.select_from_type)
+	for a in SS.selected[0]["selected"]:
+		jq.add_selected(a)
+	GS.clear_selection_data()
 	send_message(cm)
 
 func decode_proto_message(data):
@@ -106,8 +105,6 @@ func decode_proto_message(data):
 		print("GAME ERROR: ", message.to_string())
 		return
 
-
-	#print("Game Data received: ", message.to_string())
 	GS.is_waiting = false
 	if message.has_updateGameStateP():
 		var lr = message.get_updateGameStateP()
@@ -115,9 +112,9 @@ func decode_proto_message(data):
 
 	elif message.has_selectFrom():
 		var lr = message.get_selectFrom()
-		GS.selection_info = lr.get_targets()
-		GS.select_from_type = lr.get_messageType()
-		GS.selected = []
+		GS.clear_selection_data()
+		GS.process_selection(lr.get_targets())
+		SS.select_from_type = lr.get_messageType()
 		update_game_state.emit(lr.get_game())
 
 	elif message.has_gameEnd():
@@ -148,6 +145,8 @@ func _process(_delta):
 		var reason = _client.get_close_reason()
 		print("GameSocket closed with code: %d, reason %s. Clean: %s" % [code, reason, code != -1])
 		set_process(false) # Stop processing.
+		GS.is_waiting = true
+		connect_to_server()
 
 
 func _client_close_request(code, reason):
@@ -177,4 +176,5 @@ func _client_received():
 
 func send_message(data):
 	GS.is_waiting = true
+	print_debug("Sending message: " + data.to_string())
 	_client.send(data.to_bytes(), _write_mode)

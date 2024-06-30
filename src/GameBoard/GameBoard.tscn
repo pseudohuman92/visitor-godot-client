@@ -1,0 +1,418 @@
+[gd_scene load_steps=29 format=3 uid="uid://bp45jp7mbjext"]
+
+[ext_resource type="Script" path="res://src/GameBoard/GameBoard.gd" id="1_vx3oc"]
+[ext_resource type="Texture2D" uid="uid://nskki1s0pkew" path="res://assets/backgrounds/wp10493975-grunge-texture-wallpapers.jpg" id="2_f1afs"]
+[ext_resource type="Script" path="res://src/GameBoard/MainContainer.gd" id="3_5ol85"]
+[ext_resource type="StyleBox" uid="uid://cjylp6j4h6fb3" path="res://src/Themes/PlayerDisplay.tres" id="4_oeguh"]
+[ext_resource type="Script" path="res://src/GameBoard/DiscardPile.gd" id="5_ccn7t"]
+[ext_resource type="Script" path="res://src/GameBoard/CardContainer.gd" id="6_b5knn"]
+[ext_resource type="Texture2D" uid="uid://daonn6kdbknh7" path="res://assets/CardBack.png" id="7_k5ecn"]
+[ext_resource type="Script" path="res://src/GameBoard/DropArea.gd" id="8_82ntk"]
+[ext_resource type="PackedScene" uid="uid://dpjjtpkohrwke" path="res://src/GameBoard/KnowledgeDisplay.tscn" id="9_i3v6k"]
+[ext_resource type="Script" path="res://src/GameBoard/KnowledgeDisplay.gd" id="10_wn45f"]
+[ext_resource type="PackedScene" uid="uid://cjpwowr0mt3cg" path="res://src/GameBoard/EnergyDisplay.tscn" id="11_lfiyj"]
+[ext_resource type="StyleBox" uid="uid://nrrp32xv522l" path="res://src/GameBoard/Card.tres" id="12_5d55m"]
+[ext_resource type="LabelSettings" uid="uid://bt7rrrgqyvj0e" path="res://src/Themes/MessageLabelSettings.tres" id="13_a3uto"]
+[ext_resource type="Script" path="res://src/GameBoard/SelectionText.gd" id="14_er1e3"]
+[ext_resource type="PackedScene" uid="uid://cyf4auv3kwlej" path="res://src/GameBoard/Stack.tscn" id="15_twdm7"]
+[ext_resource type="Script" path="res://src/GameBoard/Popup.gd" id="16_q5ptu"]
+[ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="17_dgrnn"]
+[ext_resource type="Script" path="res://src/GameBoard/Buttons.gd" id="18_14m7r"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_el5bw"]
+texture = ExtResource("2_f1afs")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xdiac"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kh7s4"]
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0shin"]
+texture = ExtResource("7_k5ecn")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p18k1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6e3ar"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3tse0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y2w01"]
+
+[sub_resource type="Theme" id="Theme_vsp2n"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bsd8o"]
+texture = ExtResource("7_k5ecn")
+
+[node name="GameBoard" type="Node2D"]
+script = ExtResource("1_vx3oc")
+
+[node name="MainContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_el5bw")
+script = ExtResource("3_5ol85")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer"]
+layout_mode = 2
+
+[node name="DisplayArea" type="VBoxContainer" parent="MainContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="OpponentDisplay" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 5.0
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("4_oeguh")
+
+[node name="OpponentDisplayArea" type="VBoxContainer" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay"]
+layout_mode = 2
+alignment = 1
+
+[node name="OpponentDeckArea" type="HBoxContainer" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+alignment = 1
+
+[node name="OpponentDiscardClick" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_xdiac")
+script = ExtResource("5_ccn7t")
+
+[node name="OpponentDiscard" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea/OpponentDiscardClick"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_kh7s4")
+script = ExtResource("6_b5knn")
+
+[node name="OpponentDeck" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea"]
+custom_minimum_size = Vector2(200, 280)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_0shin")
+
+[node name="OpponentDisplayFront" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_p18k1")
+script = ExtResource("8_82ntk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDisplayFront"]
+layout_mode = 2
+
+[node name="OpponentKnowledgeDisplay" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDisplayFront/VBoxContainer" instance=ExtResource("9_i3v6k")]
+layout_mode = 2
+size_flags_stretch_ratio = 0.3
+script = ExtResource("10_wn45f")
+
+[node name="OpponentEnergyDisplay" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDisplayFront/VBoxContainer" instance=ExtResource("11_lfiyj")]
+layout_mode = 2
+size_flags_stretch_ratio = 0.3
+
+[node name="ArrowArea" type="VBoxContainer" parent="MainContainer/HBoxContainer/DisplayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="PlayerDisplay" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 5.0
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("4_oeguh")
+
+[node name="PlayerDisplayArea" type="VBoxContainer" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay"]
+layout_mode = 2
+alignment = 1
+
+[node name="PlayerDisplayFront" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_6e3ar")
+script = ExtResource("8_82ntk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDisplayFront"]
+layout_mode = 2
+
+[node name="PlayerEnergyDisplay" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDisplayFront/VBoxContainer" instance=ExtResource("11_lfiyj")]
+layout_mode = 2
+
+[node name="PlayerKnowledgeDisplay" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDisplayFront/VBoxContainer" instance=ExtResource("9_i3v6k")]
+layout_mode = 2
+script = ExtResource("10_wn45f")
+
+[node name="PlayerDeckArea" type="HBoxContainer" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+alignment = 1
+
+[node name="PlayerDiscardClick" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea"]
+custom_minimum_size = Vector2(200, 280)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_3tse0")
+script = ExtResource("5_ccn7t")
+
+[node name="PlayerDiscard" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDiscardClick"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_y2w01")
+script = ExtResource("6_b5knn")
+
+[node name="PlayerDeckContainer" type="VBoxContainer" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="KnowledgeSelection" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDeckContainer" instance=ExtResource("9_i3v6k")]
+layout_mode = 2
+size_flags_stretch_ratio = 0.1
+script = ExtResource("10_wn45f")
+
+[node name="PlayerDeckBorder" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDeckContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 100.0
+theme = SubResource("Theme_vsp2n")
+theme_override_styles/panel = ExtResource("12_5d55m")
+script = ExtResource("8_82ntk")
+
+[node name="PlayerDeck" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDeckContainer/PlayerDeckBorder"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_bsd8o")
+
+[node name="PlayArea" type="VBoxContainer" parent="MainContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 6.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 0
+
+[node name="OpponentHand" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+script = ExtResource("6_b5knn")
+
+[node name="PlayContainer" type="PanelContainer" parent="MainContainer/HBoxContainer/PlayArea"]
+show_behind_parent = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("12_5d55m")
+script = ExtResource("8_82ntk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OpponentAssetArea" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("6_b5knn")
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 0
+
+[node name="OpponentUnitArea" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer/ScrollContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+script = ExtResource("6_b5knn")
+
+[node name="SelectionText" type="Label" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
+z_index = 2
+layout_mode = 2
+text = "Example Selection Text Here"
+label_settings = ExtResource("13_a3uto")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("14_er1e3")
+
+[node name="ScrollContainer3" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 0
+
+[node name="PlayerUnitArea" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer/ScrollContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+script = ExtResource("6_b5knn")
+
+[node name="ScrollContainer5" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayerAssetArea" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer/ScrollContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("6_b5knn")
+
+[node name="ScrollContainer4" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 0
+
+[node name="PlayerHand" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/ScrollContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+script = ExtResource("6_b5knn")
+
+[node name="StackContainer" parent="MainContainer/HBoxContainer" instance=ExtResource("15_twdm7")]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 1
+script = ExtResource("3_5ol85")
+
+[node name="TableBG" type="TextureRect" parent="Control"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_f1afs")
+expand_mode = 3
+
+[node name="Popup" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("16_q5ptu")
+
+[node name="CardArea" type="VBoxContainer" parent="Popup"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 9.0
+
+[node name="Control" type="Control" parent="Popup/CardArea"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="PopupText" type="Label" parent="Popup/CardArea"]
+layout_mode = 2
+theme = ExtResource("17_dgrnn")
+text = "Popup Test"
+label_settings = ExtResource("13_a3uto")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Popup/CardArea"]
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 0
+
+[node name="Cards" type="HBoxContainer" parent="Popup/CardArea/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("17_dgrnn")
+alignment = 1
+script = ExtResource("6_b5knn")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Popup/CardArea"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control2" type="Control" parent="Popup/CardArea/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 8.0
+mouse_filter = 1
+
+[node name="PopupButtons" type="VBoxContainer" parent="Popup/CardArea/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="Popup/CardArea/HBoxContainer/PopupButtons"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.0
+mouse_filter = 1
+
+[node name="Submit" type="Button" parent="Popup/CardArea/HBoxContainer/PopupButtons"]
+layout_mode = 2
+theme = ExtResource("17_dgrnn")
+text = "Submit"
+script = ExtResource("18_14m7r")
+
+[node name="Cancel" type="Button" parent="Popup/CardArea/HBoxContainer/PopupButtons"]
+layout_mode = 2
+theme = ExtResource("17_dgrnn")
+text = "Cancel"
+script = ExtResource("18_14m7r")
+
+[node name="Close" type="Button" parent="Popup/CardArea/HBoxContainer/PopupButtons"]
+visible = false
+layout_mode = 2
+theme = ExtResource("17_dgrnn")
+text = "Close"
+script = ExtResource("18_14m7r")
+
+[node name="Control2" type="Control" parent="Popup/CardArea/HBoxContainer/PopupButtons"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[connection signal="gui_input" from="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea/OpponentDiscardClick" to="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea/OpponentDiscardClick" method="_on_gui_input"]
+[connection signal="gui_input" from="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDiscardClick" to="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDiscardClick" method="_on_gui_input"]
+[connection signal="gui_input" from="Popup" to="Popup" method="_on_gui_input"]
+[connection signal="pressed" from="Popup/CardArea/HBoxContainer/PopupButtons/Submit" to="Popup/CardArea/HBoxContainer/PopupButtons/Submit" method="_on_pressed"]
+[connection signal="pressed" from="Popup/CardArea/HBoxContainer/PopupButtons/Cancel" to="Popup/CardArea/HBoxContainer/PopupButtons/Cancel" method="_on_pressed"]
+[connection signal="pressed" from="Popup/CardArea/HBoxContainer/PopupButtons/Close" to="Popup/CardArea/HBoxContainer/PopupButtons/Close" method="_on_pressed"]

@@ -19,11 +19,14 @@ message RegisterGameConnection {
     string gameID = 1;
 }
 
+message GetCollection {
+}
 
 message ClientMessage {
     oneof payload {
         JoinQueue                       joinQueue = 1;
         RegisterGameConnection          registerGameConnection = 2;
         LoadGame                        loadGame = 3;
+        GetCollection                   getCollection = 4;
     }
 }

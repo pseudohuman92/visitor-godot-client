@@ -1,0 +1,145 @@
+[gd_scene load_steps=14 format=3 uid="uid://dpjjtpkohrwke"]
+
+[ext_resource type="StyleBox" uid="uid://by0rvqvrgari" path="res://src/Themes/PanelBorder.tres" id="1_68peq"]
+[ext_resource type="LabelSettings" uid="uid://bx7tppt0u01gu" path="res://src/Themes/KnowledgeDisplayNumbers.tres" id="1_h0bbe"]
+[ext_resource type="Script" path="res://src/GameBoard/KnowledgeDisplayContainer.gd" id="1_hgooe"]
+[ext_resource type="Texture2D" uid="uid://bla5kmox0uutt" path="res://assets/card-components/knowledge-G.png" id="2_66ra7"]
+[ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="2_nfu6q"]
+[ext_resource type="StyleBox" uid="uid://bb1ulbrelfxxt" path="res://src/Themes/KnowledgeLabel.tres" id="2_t0n5q"]
+[ext_resource type="Texture2D" uid="uid://ctiwq73fpxfx1" path="res://assets/card-components/knowledge-R.png" id="3_10g2d"]
+[ext_resource type="Texture2D" uid="uid://ubacjv4amyn1" path="res://assets/card-components/knowledge-P.png" id="5_ctlwh"]
+[ext_resource type="Texture2D" uid="uid://cnnp27dobkbl6" path="res://assets/card-components/knowledge-Y.png" id="6_nsdvn"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ytiu5"]
+texture = ExtResource("2_66ra7")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ijqc5"]
+texture = ExtResource("5_ctlwh")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6t3ot"]
+texture = ExtResource("3_10g2d")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a0uo3"]
+texture = ExtResource("6_nsdvn")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[node name="KnowledgeDisplay" type="HBoxContainer"]
+offset_right = 52.0
+offset_bottom = 22.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="BContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("1_68peq")
+script = ExtResource("1_hgooe")
+
+[node name="_" type="AspectRatioContainer" parent="BContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BLabel" type="Label" parent="BContainer/_"]
+layout_mode = 2
+size_flags_vertical = 1
+theme = ExtResource("2_nfu6q")
+theme_override_styles/normal = ExtResource("2_t0n5q")
+text = "2"
+label_settings = ExtResource("1_h0bbe")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("1_68peq")
+script = ExtResource("1_hgooe")
+
+[node name="_" type="AspectRatioContainer" parent="GContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GLabel" type="Label" parent="GContainer/_"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxTexture_ytiu5")
+text = "2"
+label_settings = ExtResource("1_h0bbe")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("1_68peq")
+script = ExtResource("1_hgooe")
+
+[node name="_" type="AspectRatioContainer" parent="PContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PLabel" type="Label" parent="PContainer/_"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxTexture_ijqc5")
+text = "2"
+label_settings = ExtResource("1_h0bbe")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("1_68peq")
+script = ExtResource("1_hgooe")
+
+[node name="_" type="AspectRatioContainer" parent="RContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RLabel" type="Label" parent="RContainer/_"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxTexture_6t3ot")
+text = "2"
+label_settings = ExtResource("1_h0bbe")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="YContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("1_68peq")
+script = ExtResource("1_hgooe")
+
+[node name="_" type="AspectRatioContainer" parent="YContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="YLabel" type="Label" parent="YContainer/_"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxTexture_a0uo3")
+text = "2"
+label_settings = ExtResource("1_h0bbe")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="gui_input" from="BContainer" to="BContainer" method="_on_gui_input"]
+[connection signal="gui_input" from="GContainer" to="GContainer" method="_on_gui_input"]
+[connection signal="gui_input" from="PContainer" to="PContainer" method="_on_gui_input"]
+[connection signal="gui_input" from="RContainer" to="RContainer" method="_on_gui_input"]
+[connection signal="gui_input" from="YContainer" to="YContainer" method="_on_gui_input"]

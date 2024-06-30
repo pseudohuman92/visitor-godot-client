@@ -1,0 +1,29 @@
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://y7aot7vogdr6"]
+
+[ext_resource type="Texture2D" uid="uid://df5ivefvj4aj2" path="res://assets/buttons/grunge-highlight-gray.png" id="1_btp2h"]
+[ext_resource type="Texture2D" uid="uid://oqqgesnsg3n0" path="res://assets/buttons/grunge-highlight-white.png" id="2_lvlx5"]
+[ext_resource type="Texture2D" uid="uid://clxwqjxri4v7i" path="res://assets/buttons/grunge-highlight-black.png" id="3_lgemb"]
+[ext_resource type="Texture2D" uid="uid://bjeer40kdm3ir" path="res://assets/buttons/grunge-highlight-red.png" id="4_x603b"]
+[ext_resource type="FontFile" uid="uid://dhfc6u3d1k04t" path="res://assets/fonts/Depressionist_3_Revisited_2010.ttf" id="5_fxbqr"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_esea5"]
+texture = ExtResource("1_btp2h")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rwfj4"]
+texture = ExtResource("2_lvlx5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fayyw"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+texture = ExtResource("3_lgemb")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iafod"]
+texture = ExtResource("4_x603b")
+
+[resource]
+default_font = ExtResource("5_fxbqr")
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/styles/disabled = SubResource("StyleBoxTexture_esea5")
+Button/styles/hover = SubResource("StyleBoxTexture_rwfj4")
+Button/styles/normal = SubResource("StyleBoxTexture_fayyw")
+Button/styles/pressed = SubResource("StyleBoxTexture_iafod")

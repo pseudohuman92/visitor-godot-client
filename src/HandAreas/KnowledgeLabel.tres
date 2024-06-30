@@ -1,8 +1,0 @@
-[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://bb1ulbrelfxxt"]
-
-[ext_resource type="Texture2D" uid="uid://dwu5afbcd83mf" path="res://assets/card-components/knowledge-U.png" id="1_a2k11"]
-
-[resource]
-texture = ExtResource("1_a2k11")
-axis_stretch_horizontal = 2
-axis_stretch_vertical = 2

@@ -1,0 +1,92 @@
+[gd_scene load_steps=8 format=3 uid="uid://dxt4uxlm1lr2i"]
+
+[ext_resource type="Script" path="res://src/DeckBuilder/DeckBuilder.gd" id="1_dlswc"]
+[ext_resource type="Script" path="res://src/GameBoard/MainContainer.gd" id="2_eb0sf"]
+[ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="2_ymqcs"]
+[ext_resource type="Script" path="res://src/DeckBuilder/Collection.gd" id="3_7emcy"]
+[ext_resource type="Script" path="res://src/DeckBuilder/Decklist.gd" id="4_2vord"]
+[ext_resource type="Script" path="res://src/DeckBuilder/DeckName.gd" id="5_n672i"]
+[ext_resource type="Script" path="res://src/DeckBuilder/Buttons.gd" id="6_w0hd3"]
+
+[node name="DeckBuilder" type="Node2D"]
+script = ExtResource("1_dlswc")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_ymqcs")
+script = ExtResource("2_eb0sf")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 7.0
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Collection" type="GridContainer" parent="HBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 8
+script = ExtResource("3_7emcy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DeckName" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+placeholder_text = "Deck Name"
+alignment = 1
+script = ExtResource("5_n672i")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Decklist" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("4_2vord")
+
+[node name="Buttons" type="VBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Save" type="Button" parent="HBoxContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Save Deck"
+script = ExtResource("6_w0hd3")
+
+[node name="Load" type="Button" parent="HBoxContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Load Deck"
+script = ExtResource("6_w0hd3")
+
+[node name="New" type="Button" parent="HBoxContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "New Deck"
+script = ExtResource("6_w0hd3")
+
+[node name="LoadDeckDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(800, 600)
+content_scale_size = Vector2i(1000, 800)
+ok_button_text = "Open"
+dialog_hide_on_ok = true
+file_mode = 0
+access = 1
+root_subfolder = "decks"
+filters = PackedStringArray(".deck")
+
+[connection signal="text_changed" from="HBoxContainer/VBoxContainer/DeckName" to="HBoxContainer/VBoxContainer/DeckName" method="_on_text_changed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Buttons/Save" to="HBoxContainer/VBoxContainer/Buttons/Save" method="_on_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Buttons/Load" to="HBoxContainer/VBoxContainer/Buttons/Load" method="_on_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Buttons/New" to="HBoxContainer/VBoxContainer/Buttons/New" method="_on_pressed"]
+[connection signal="file_selected" from="LoadDeckDialog" to="HBoxContainer/VBoxContainer/Buttons/Load" method="_on_file_dialog_file_selected"]

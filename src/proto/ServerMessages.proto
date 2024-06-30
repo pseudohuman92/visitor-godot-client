@@ -20,10 +20,15 @@ message NewDraft {
     DraftState draft = 1;
 }
 
+message GetCollectionResponse{
+    repeated CardP cards = 1;
+}
+
 message ServerMessage {
     oneof payload {
         LoginResponse           loginResponse = 1;
         NewGame                 newGame = 2;
         NewDraft                newDraft = 3;
+        GetCollectionResponse   getCollectionResponse = 4;
     }
 }

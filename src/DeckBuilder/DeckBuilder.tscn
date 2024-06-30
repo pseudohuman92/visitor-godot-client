@@ -1,0 +1,252 @@
+[gd_scene load_steps=23 format=3 uid="uid://dxt4uxlm1lr2i"]
+
+[ext_resource type="Script" path="res://src/DeckBuilder/DeckBuilder.gd" id="1_dlswc"]
+[ext_resource type="Script" path="res://src/GameBoard/MainContainer.gd" id="2_eb0sf"]
+[ext_resource type="Texture2D" uid="uid://cyr52u5hc7dai" path="res://assets/backgrounds/wp10493985-grunge-texture-wallpapers.jpg" id="2_wy6y3"]
+[ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="2_ymqcs"]
+[ext_resource type="Script" path="res://src/DeckBuilder/Collection.gd" id="3_7emcy"]
+[ext_resource type="Script" path="res://src/DeckBuilder/Decklist.gd" id="4_2vord"]
+[ext_resource type="Script" path="res://src/DeckBuilder/CollectionButtons.gd" id="5_1uxfn"]
+[ext_resource type="Script" path="res://src/DeckBuilder/DeckName.gd" id="5_n672i"]
+[ext_resource type="Script" path="res://src/DeckBuilder/Buttons.gd" id="6_w0hd3"]
+[ext_resource type="Texture2D" uid="uid://b5tsncxfiknsk" path="res://assets/card-components/knowledge-B.png" id="9_6qh7i"]
+[ext_resource type="Texture2D" uid="uid://cch0avhur5qc4" path="res://assets/card-components/knowledge-C.png" id="9_7wmh3"]
+[ext_resource type="Texture2D" uid="uid://bwod62ptmw11f" path="res://assets/card-components/Unit.png" id="9_b257f"]
+[ext_resource type="Texture2D" uid="uid://71xmwwiqwim8" path="res://assets/card-components/Ritual.png" id="10_2i5ob"]
+[ext_resource type="Script" path="res://src/DeckBuilder/FilterButtons.gd" id="10_bpo0c"]
+[ext_resource type="Texture2D" uid="uid://bla5kmox0uutt" path="res://assets/card-components/knowledge-G.png" id="10_htogd"]
+[ext_resource type="Texture2D" uid="uid://ubacjv4amyn1" path="res://assets/card-components/knowledge-P.png" id="11_0mvn8"]
+[ext_resource type="Texture2D" uid="uid://b1y5viwqv1lea" path="res://assets/card-components/Cantrip.png" id="11_x4nnp"]
+[ext_resource type="Texture2D" uid="uid://dmiimes5dgqif" path="res://assets/card-components/Tome.png" id="12_kyu4u"]
+[ext_resource type="Texture2D" uid="uid://ctiwq73fpxfx1" path="res://assets/card-components/knowledge-R.png" id="12_wedx0"]
+[ext_resource type="Texture2D" uid="uid://cnnp27dobkbl6" path="res://assets/card-components/knowledge-Y.png" id="13_hdejf"]
+[ext_resource type="Texture2D" uid="uid://wvrt1gl6rh3g" path="res://assets/card-components/Asset.png" id="19_wggbg"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5uif8"]
+texture = ExtResource("2_wy6y3")
+
+[node name="DeckBuilder" type="Node2D"]
+script = ExtResource("1_dlswc")
+
+[node name="MainContainer" type="PanelContainer" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_5uif8")
+script = ExtResource("2_eb0sf")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_ymqcs")
+
+[node name="CollectionContainer" type="HBoxContainer" parent="MainContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 7.0
+
+[node name="<" type="Button" parent="MainContainer/HBoxContainer/CollectionContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 50
+text = "<"
+script = ExtResource("5_1uxfn")
+
+[node name="Collection" type="GridContainer" parent="MainContainer/HBoxContainer/CollectionContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 16.0
+columns = 8
+script = ExtResource("3_7emcy")
+
+[node name=">" type="Button" parent="MainContainer/HBoxContainer/CollectionContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 50
+text = ">"
+script = ExtResource("5_1uxfn")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DeckName" type="LineEdit" parent="MainContainer/HBoxContainer/VBoxContainer"]
+layout_direction = 2
+layout_mode = 2
+mouse_filter = 1
+text = "New Deck"
+placeholder_text = "Deck Name"
+alignment = 1
+max_length = 30
+caret_column = 4
+caret_mid_grapheme = true
+script = ExtResource("5_n672i")
+
+[node name="Decklist" type="VBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 6.0
+script = ExtResource("4_2vord")
+
+[node name="Buttons" type="VBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorFilter" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="C" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+texture_normal = ExtResource("9_7wmh3")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("10_bpo0c")
+
+[node name="B" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+texture_normal = ExtResource("9_6qh7i")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("10_bpo0c")
+
+[node name="G" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+texture_normal = ExtResource("10_htogd")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("10_bpo0c")
+
+[node name="P" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+texture_normal = ExtResource("11_0mvn8")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("10_bpo0c")
+
+[node name="R" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+texture_normal = ExtResource("12_wedx0")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("10_bpo0c")
+
+[node name="Y" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+texture_normal = ExtResource("13_hdejf")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("10_bpo0c")
+
+[node name="TypeFilter" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Unit" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+texture_normal = ExtResource("9_b257f")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("10_bpo0c")
+
+[node name="Ritual" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+texture_normal = ExtResource("10_2i5ob")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("10_bpo0c")
+
+[node name="Cantrip" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+texture_normal = ExtResource("11_x4nnp")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("10_bpo0c")
+
+[node name="Asset" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+texture_normal = ExtResource("19_wggbg")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("10_bpo0c")
+
+[node name="Tome" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+texture_normal = ExtResource("12_kyu4u")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("10_bpo0c")
+
+[node name="Save" type="Button" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Save Deck"
+script = ExtResource("6_w0hd3")
+
+[node name="Load" type="Button" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Load Deck"
+script = ExtResource("6_w0hd3")
+
+[node name="New" type="Button" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "New Deck"
+script = ExtResource("6_w0hd3")
+
+[node name="LoadDeckDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(800, 600)
+content_scale_size = Vector2i(1000, 800)
+ok_button_text = "Open"
+dialog_hide_on_ok = true
+file_mode = 0
+access = 1
+
+[connection signal="pressed" from="MainContainer/HBoxContainer/CollectionContainer/<" to="MainContainer/HBoxContainer/CollectionContainer/<" method="_on_pressed"]
+[connection signal="pressed" from="MainContainer/HBoxContainer/CollectionContainer/>" to="MainContainer/HBoxContainer/CollectionContainer/>" method="_on_pressed"]
+[connection signal="text_changed" from="MainContainer/HBoxContainer/VBoxContainer/DeckName" to="MainContainer/HBoxContainer/VBoxContainer/DeckName" method="_on_text_changed"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/C" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/C" method="_on_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/B" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/B" method="_on_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/G" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/G" method="_on_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/P" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/P" method="_on_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/R" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/R" method="_on_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/Y" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/Y" method="_on_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Unit" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Unit" method="_on_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Ritual" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Ritual" method="_on_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Cantrip" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Cantrip" method="_on_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Asset" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Asset" method="_on_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Tome" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Tome" method="_on_toggled"]
+[connection signal="pressed" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/Save" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/Save" method="_on_pressed"]
+[connection signal="pressed" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/Load" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/Load" method="_on_pressed"]
+[connection signal="pressed" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/New" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/New" method="_on_pressed"]
+[connection signal="file_selected" from="LoadDeckDialog" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/Load" method="_on_file_dialog_file_selected"]

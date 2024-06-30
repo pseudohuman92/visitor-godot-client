@@ -91,6 +91,11 @@ message DamageAssignment {
     int32 damage = 2;
 }
 
+message TargetSelection {
+    string id = 1;
+    repeated string targets = 2;
+}
+
 message Combat {
     int32 health = 1;
     int32 shield = 2;
@@ -99,6 +104,7 @@ message Combat {
     string blockedAttacker = 5;
     string attackTarget = 6;
     repeated string combatAbilities = 7;
+    repeated string possibleBlockTargets = 8;
 }
 
 message Targeting {
@@ -107,6 +113,12 @@ message Targeting {
     int32 minTargets = 3;
     int32 maxTargets = 4;
     string targetMessage = 5;
+}
+
+message TargetingAbility {
+    string id = 1;
+    repeated Targeting targets = 2;
+    string text = 3;
 }
 
 message CardP {
@@ -131,8 +143,8 @@ message CardP {
     string description = 19;
     bool canPlay = 20;
     bool canStudy = 21;
-    Targeting playTargets = 22;
-    repeated Targeting activateTargets = 23;
+    repeated Targeting playTargets = 22;
+    repeated TargetingAbility activateTargets = 23;
 }
 
 message Player {

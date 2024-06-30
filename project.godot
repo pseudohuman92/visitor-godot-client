@@ -12,19 +12,23 @@ config_version=5
 
 config/name="visitor-godot-client"
 config/version="0.1"
-run/main_scene="res://src/main.tscn"
+run/main_scene="res://src/GameBoard/GameBoard.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-GS="*res://src/GlobalState.gd"
+GS="*res://src/GlobalScripts/GameState.gd"
+SS="*res://src/GlobalScripts/SelectionState.gd"
+CS="*res://src/GlobalScripts/CardScript.gd"
+O="*res://src/GlobalScripts/Options.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=3
+window/size/borderless=true
 window/stretch/mode="viewport"
 
 [dotnet]
@@ -39,3 +43,55 @@ version_control/autoload_on_startup=true
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/protobuf/plugin.cfg")
+
+[gui]
+
+theme/default_font_antialiasing=2
+theme/default_font_hinting=2
+
+[importer_defaults]
+
+texture={
+"compress/channel_pack": 0,
+"compress/hdr_compression": 1,
+"compress/high_quality": false,
+"compress/lossy_quality": 0.7,
+"compress/mode": 0,
+"compress/normal_map": 0,
+"detect_3d/compress_to": 1,
+"mipmaps/generate": true,
+"mipmaps/limit": -1,
+"process/fix_alpha_border": true,
+"process/hdr_as_srgb": false,
+"process/hdr_clamp_exposure": false,
+"process/normal_map_invert_y": false,
+"process/premult_alpha": false,
+"process/size_limit": 0,
+"roughness/mode": 0,
+"roughness/src_normal": ""
+}
+font_data_dynamic={
+"Compress": null,
+"Fallbacks": null,
+"Rendering": null,
+"allow_system_fallback": true,
+"antialiasing": 2,
+"compress": true,
+"fallbacks": [],
+"force_autohinter": true,
+"generate_mipmaps": true,
+"hinting": 2,
+"language_support": {},
+"msdf_pixel_range": 8,
+"msdf_size": 48,
+"multichannel_signed_distance_field": true,
+"opentype_features": {},
+"oversampling": 0.0,
+"preload": [],
+"script_support": {},
+"subpixel_positioning": 1
+}
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=2

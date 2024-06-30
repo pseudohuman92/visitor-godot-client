@@ -1161,6 +1161,62 @@ class DamageAssignment:
 			return PB_ERR.PARSE_INCOMPLETE
 		return result
 	
+class TargetSelection:
+	func _init():
+		var service
+		
+		__id = PBField.new("id", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		service = PBServiceField.new()
+		service.field = __id
+		data[__id.tag] = service
+		
+		var __targets_default: Array[String] = []
+		__targets = PBField.new("targets", PB_DATA_TYPE.STRING, PB_RULE.REPEATED, 2, true, __targets_default)
+		service = PBServiceField.new()
+		service.field = __targets
+		data[__targets.tag] = service
+		
+	var data = {}
+	
+	var __id: PBField
+	func get_id() -> String:
+		return __id.value
+	func clear_id() -> void:
+		data[1].state = PB_SERVICE_STATE.UNFILLED
+		__id.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_id(value : String) -> void:
+		__id.value = value
+	
+	var __targets: PBField
+	func get_targets() -> Array[String]:
+		return __targets.value
+	func clear_targets() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__targets.value = []
+	func add_targets(value : String) -> void:
+		__targets.value.append(value)
+	
+	func _to_string() -> String:
+		return PBPacker.message_to_string(data)
+		
+	func to_bytes() -> PackedByteArray:
+		return PBPacker.pack_message(data)
+		
+	func from_bytes(bytes : PackedByteArray, offset : int = 0, limit : int = -1) -> int:
+		var cur_limit = bytes.size()
+		if limit != -1:
+			cur_limit = limit
+		var result = PBPacker.unpack_message(data, bytes, offset, cur_limit)
+		if result == cur_limit:
+			if PBPacker.check_required(data):
+				if limit == -1:
+					return PB_ERR.NO_ERRORS
+			else:
+				return PB_ERR.REQUIRED_FIELDS
+		elif limit == -1 && result > 0:
+			return PB_ERR.PARSE_INCOMPLETE
+		return result
+	
 class Combat:
 	func _init():
 		var service
@@ -1200,6 +1256,12 @@ class Combat:
 		service = PBServiceField.new()
 		service.field = __combatAbilities
 		data[__combatAbilities.tag] = service
+		
+		var __possibleBlockTargets_default: Array[String] = []
+		__possibleBlockTargets = PBField.new("possibleBlockTargets", PB_DATA_TYPE.STRING, PB_RULE.REPEATED, 8, true, __possibleBlockTargets_default)
+		service = PBServiceField.new()
+		service.field = __possibleBlockTargets
+		data[__possibleBlockTargets.tag] = service
 		
 	var data = {}
 	
@@ -1265,6 +1327,15 @@ class Combat:
 		__combatAbilities.value = []
 	func add_combatAbilities(value : String) -> void:
 		__combatAbilities.value.append(value)
+	
+	var __possibleBlockTargets: PBField
+	func get_possibleBlockTargets() -> Array[String]:
+		return __possibleBlockTargets.value
+	func clear_possibleBlockTargets() -> void:
+		data[8].state = PB_SERVICE_STATE.UNFILLED
+		__possibleBlockTargets.value = []
+	func add_possibleBlockTargets(value : String) -> void:
+		__possibleBlockTargets.value.append(value)
 	
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)
@@ -1363,6 +1434,79 @@ class Targeting:
 		__targetMessage.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
 	func set_targetMessage(value : String) -> void:
 		__targetMessage.value = value
+	
+	func _to_string() -> String:
+		return PBPacker.message_to_string(data)
+		
+	func to_bytes() -> PackedByteArray:
+		return PBPacker.pack_message(data)
+		
+	func from_bytes(bytes : PackedByteArray, offset : int = 0, limit : int = -1) -> int:
+		var cur_limit = bytes.size()
+		if limit != -1:
+			cur_limit = limit
+		var result = PBPacker.unpack_message(data, bytes, offset, cur_limit)
+		if result == cur_limit:
+			if PBPacker.check_required(data):
+				if limit == -1:
+					return PB_ERR.NO_ERRORS
+			else:
+				return PB_ERR.REQUIRED_FIELDS
+		elif limit == -1 && result > 0:
+			return PB_ERR.PARSE_INCOMPLETE
+		return result
+	
+class TargetingAbility:
+	func _init():
+		var service
+		
+		__id = PBField.new("id", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 1, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		service = PBServiceField.new()
+		service.field = __id
+		data[__id.tag] = service
+		
+		var __targets_default: Array[Targeting] = []
+		__targets = PBField.new("targets", PB_DATA_TYPE.MESSAGE, PB_RULE.REPEATED, 2, true, __targets_default)
+		service = PBServiceField.new()
+		service.field = __targets
+		service.func_ref = Callable(self, "add_targets")
+		data[__targets.tag] = service
+		
+		__text = PBField.new("text", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 3, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		service = PBServiceField.new()
+		service.field = __text
+		data[__text.tag] = service
+		
+	var data = {}
+	
+	var __id: PBField
+	func get_id() -> String:
+		return __id.value
+	func clear_id() -> void:
+		data[1].state = PB_SERVICE_STATE.UNFILLED
+		__id.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_id(value : String) -> void:
+		__id.value = value
+	
+	var __targets: PBField
+	func get_targets() -> Array[Targeting]:
+		return __targets.value
+	func clear_targets() -> void:
+		data[2].state = PB_SERVICE_STATE.UNFILLED
+		__targets.value = []
+	func add_targets() -> Targeting:
+		var element = Targeting.new()
+		__targets.value.append(element)
+		return element
+	
+	var __text: PBField
+	func get_text() -> String:
+		return __text.value
+	func clear_text() -> void:
+		data[3].state = PB_SERVICE_STATE.UNFILLED
+		__text.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_text(value : String) -> void:
+		__text.value = value
 	
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)
@@ -1503,13 +1647,14 @@ class CardP:
 		service.field = __canStudy
 		data[__canStudy.tag] = service
 		
-		__playTargets = PBField.new("playTargets", PB_DATA_TYPE.MESSAGE, PB_RULE.OPTIONAL, 22, true, DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE])
+		var __playTargets_default: Array[Targeting] = []
+		__playTargets = PBField.new("playTargets", PB_DATA_TYPE.MESSAGE, PB_RULE.REPEATED, 22, true, __playTargets_default)
 		service = PBServiceField.new()
 		service.field = __playTargets
-		service.func_ref = Callable(self, "new_playTargets")
+		service.func_ref = Callable(self, "add_playTargets")
 		data[__playTargets.tag] = service
 		
-		var __activateTargets_default: Array[Targeting] = []
+		var __activateTargets_default: Array[TargetingAbility] = []
 		__activateTargets = PBField.new("activateTargets", PB_DATA_TYPE.MESSAGE, PB_RULE.REPEATED, 23, true, __activateTargets_default)
 		service = PBServiceField.new()
 		service.field = __activateTargets
@@ -1713,23 +1858,24 @@ class CardP:
 		__canStudy.value = value
 	
 	var __playTargets: PBField
-	func get_playTargets() -> Targeting:
+	func get_playTargets() -> Array[Targeting]:
 		return __playTargets.value
 	func clear_playTargets() -> void:
 		data[22].state = PB_SERVICE_STATE.UNFILLED
-		__playTargets.value = DEFAULT_VALUES_3[PB_DATA_TYPE.MESSAGE]
-	func new_playTargets() -> Targeting:
-		__playTargets.value = Targeting.new()
-		return __playTargets.value
+		__playTargets.value = []
+	func add_playTargets() -> Targeting:
+		var element = Targeting.new()
+		__playTargets.value.append(element)
+		return element
 	
 	var __activateTargets: PBField
-	func get_activateTargets() -> Array[Targeting]:
+	func get_activateTargets() -> Array[TargetingAbility]:
 		return __activateTargets.value
 	func clear_activateTargets() -> void:
 		data[23].state = PB_SERVICE_STATE.UNFILLED
 		__activateTargets.value = []
-	func add_activateTargets() -> Targeting:
-		var element = Targeting.new()
+	func add_activateTargets() -> TargetingAbility:
+		var element = TargetingAbility.new()
 		__activateTargets.value.append(element)
 		return element
 	
