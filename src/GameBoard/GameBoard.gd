@@ -25,6 +25,7 @@ func initialize_game_socket():
 	gameSocket.connect("update_game_state", update_game_state)
 	GS.gameSocket = gameSocket
 	gameSocket.connect_to_server()
+	find_child("LoadingPanel").set_visible(false)
 
 func update_game_state(new_state):
 	print("Update Called!!")
@@ -33,7 +34,6 @@ func update_game_state(new_state):
 		GS.is_waiting = true
 
 	find_child("PlayerHand").populate(new_state.get_player().get_hand())
-
 
 	var assets = []
 	var units = []
@@ -48,6 +48,7 @@ func update_game_state(new_state):
 	var player_discard = new_state.get_player().get_discardPile()
 	if player_discard:
 		find_child("PlayerDiscard").populate([player_discard[player_discard.size()-1]])
+
 
 	if new_state.get_opponent():
 		var hand = []
@@ -79,6 +80,7 @@ func update_game_state(new_state):
 	connect_arrow_signals("OpponentUnitArea")
 	connect_arrow_signals("OpponentAssetArea")
 	connect_arrow_signals("Stack")
+
 
 	if O.smart_pass:
 		check_smart_pass(new_state)

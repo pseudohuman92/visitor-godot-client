@@ -109,7 +109,7 @@ func _process(delta):
 				and !attacking:
 					attacking = true
 					#set_position(get_position()-Vector2(0, 20))
-					set_rotation(PI/4)
+					set_rotation(PI/8)
 					set_scale(Vector2(0.707, 0.707))
 			elif GS.gameState.get_phase() != GS.Types.Phase.ATTACK_PLAY and \
 				GS.gameState.get_phase() != GS.Types.Phase.BLOCK and \
@@ -183,7 +183,7 @@ func _on_gui_input(event):
 				GS.bigger_popup.z_index = z_index + 1
 				GS.bigger_popup.set_scale(Vector2(2,2))
 				GS.bigger_popup.set_position(Vector2(0,0))
-				GS.bigger_popup.display=true
+				GS.bigger_popup.find_child("InternalContainer").display=true
 
 		if event.is_released():
 			if GS.bigger_popup:

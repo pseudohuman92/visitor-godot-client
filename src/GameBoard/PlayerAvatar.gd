@@ -34,7 +34,7 @@ func _process(_delta):
 			else:
 				border.set_border_color(Color.GREEN_YELLOW)
 		elif id == GS.gameState.get_activePlayer():
-			border.set_border_color(Color.NAVY_BLUE)
+			border.set_border_color(Color.LIGHT_BLUE)
 		else:
 			border.set_border_color(Color.TRANSPARENT)
 

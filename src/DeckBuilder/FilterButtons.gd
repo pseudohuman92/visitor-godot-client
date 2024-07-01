@@ -75,6 +75,7 @@ func _on_toggled(toggled_on):
 				coll.filters.append(asset_filter)
 			"Tome":
 				coll.filters.append(tome_filter)
+		find_child("Panel").set_visible(true)
 	else:
 		match name:
 			"C":
@@ -99,4 +100,5 @@ func _on_toggled(toggled_on):
 				coll.filters.erase(asset_filter)
 			"Tome":
 				coll.filters.erase(tome_filter)
+		find_child("Panel").set_visible(false)
 	coll.populate()

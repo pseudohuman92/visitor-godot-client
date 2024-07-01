@@ -6,7 +6,7 @@ const text_icons = {
 	"{P}": "res://assets/card-components/knowledge-P.png",
 	"{R}": "res://assets/card-components/knowledge-R.png",
 	"{Y}": "res://assets/card-components/knowledge-Y.png",
-	"{Use}": "res://assets/card-components/use-icon-black.png",
+#	"{Use}": "res://assets/card-components/use-icon-black.png",
 	"{damage}": "res://assets/card-components/attack-white.png",
 	"{shield}": "res://assets/card-components/shield-white.png",
 	"{0}": "res://assets/card-components/numbers/energy-0.png",
@@ -93,6 +93,12 @@ func to_knowledge_string_with_count(knowledge):
 			s += to_knowledge_string(knw.get_knowledge())
 	return s
 
+func to_knowledge_string_no_count(knowledge):
+	var s = ""
+	for knw in knowledge:
+		s += to_knowledge_string(knw.get_knowledge())
+	return s
+
 func to_array_string(arr, sep = " "):
 	var res = ""
 	for s in arr:
@@ -119,7 +125,7 @@ func compare_cost_name_cardP(a, b):
 func compare_color_cost_name_cardP(a, b):
 	var a_c = a.get_knowledgeCost()
 	var b_c = b.get_knowledgeCost()
-	match to_knowledge_string_with_count(a_c).casecmp_to(to_knowledge_string_with_count(b_c)):
+	match to_knowledge_string_no_count(a_c).casecmp_to(to_knowledge_string_no_count(b_c)):
 		-1: return true
 		0: return compare_cost_name_cardP(a, b)
 		1: return false
@@ -143,7 +149,7 @@ func load_card_image_and_type(c):
 		else:
 			image_box.set_texture(get_placeholder_image(type))
 			image_box.set_modulate(Color.GRAY)
-			c.find_child("TypeIcon").set_texture(get_type_icon(type)))
+		c.find_child("TypeIcon").set_texture(get_type_icon(type)))
 
 
 func setup_card(n, card=null):
@@ -161,7 +167,7 @@ func setup_card(n, card=null):
 			if combat.get_attack():
 				n.find_child("Attack").set_text(str(combat.get_attack()))
 			else:
-				n.find_child("Attack").set_visible(false)
+				n.find_child("Attack").set_text("0")
 			if combat.get_shield():
 				n.find_child("Shield").set_text(str(combat.get_shield()))
 			else:
@@ -169,7 +175,7 @@ func setup_card(n, card=null):
 			if combat.get_health():
 				n.find_child("Health").set_text(str(combat.get_health()))
 			else:
-				n.find_child("Health").set_visible(false)
+				n.find_child("Health").set_text("0")
 			if combat.get_deploying() and !(combat.get_combatAbilities() and combat.get_combatAbilities().has("Blitz")):
 				ability_text += "Can't Attack\n"
 			if combat.get_combatAbilities():

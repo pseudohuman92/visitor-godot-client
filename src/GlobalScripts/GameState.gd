@@ -10,7 +10,7 @@ const SquareCardScene = preload("res://src/GameBoard/SquareCard.tscn")
 const AbilityCardScene = preload("res://src/GameBoard/AbilityCard.tscn")
 const CollectionCardScene = preload("res://src/DeckBuilder/CollectionCard.tscn")
 const DecklistCardScene = preload("res://src/DeckBuilder/DecklistCard.tscn")
-const server_name = "localhost:8080"
+const server_name = "18.222.3.198:8080"
 const websocket_url = "ws://"+server_name+"/profiles/"
 const card_back_path = "res://assets/CardBack.png"
 

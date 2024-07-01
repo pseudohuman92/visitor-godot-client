@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dxt4uxlm1lr2i"]
+[gd_scene load_steps=24 format=3 uid="uid://dxt4uxlm1lr2i"]
 
 [ext_resource type="Script" path="res://src/DeckBuilder/DeckBuilder.gd" id="1_dlswc"]
 [ext_resource type="Script" path="res://src/GameBoard/MainContainer.gd" id="2_eb0sf"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://b5tsncxfiknsk" path="res://assets/card-components/knowledge-B.png" id="9_6qh7i"]
 [ext_resource type="Texture2D" uid="uid://cch0avhur5qc4" path="res://assets/card-components/knowledge-C.png" id="9_7wmh3"]
 [ext_resource type="Texture2D" uid="uid://bwod62ptmw11f" path="res://assets/card-components/Unit.png" id="9_b257f"]
+[ext_resource type="Script" path="res://src/DeckBuilder/Search.gd" id="9_bivu5"]
 [ext_resource type="Texture2D" uid="uid://71xmwwiqwim8" path="res://assets/card-components/Ritual.png" id="10_2i5ob"]
 [ext_resource type="Script" path="res://src/DeckBuilder/FilterButtons.gd" id="10_bpo0c"]
 [ext_resource type="Texture2D" uid="uid://bla5kmox0uutt" path="res://assets/card-components/knowledge-G.png" id="10_htogd"]
@@ -93,12 +94,18 @@ script = ExtResource("5_n672i")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 6.0
+size_flags_stretch_ratio = 5.0
 script = ExtResource("4_2vord")
 
 [node name="Buttons" type="VBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="Search" type="LineEdit" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+placeholder_text = "Search"
+alignment = 1
+script = ExtResource("9_bivu5")
 
 [node name="ColorFilter" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
 layout_mode = 2
@@ -113,6 +120,16 @@ ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
+[node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/C"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
 [node name="B" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -121,6 +138,16 @@ texture_normal = ExtResource("9_6qh7i")
 ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("10_bpo0c")
+
+[node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/B"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
 
 [node name="G" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
 layout_mode = 2
@@ -131,6 +158,16 @@ ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
+[node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/G"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
 [node name="P" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -139,6 +176,16 @@ texture_normal = ExtResource("11_0mvn8")
 ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("10_bpo0c")
+
+[node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/P"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
 
 [node name="R" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
 layout_mode = 2
@@ -149,6 +196,16 @@ ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
+[node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/R"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
 [node name="Y" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -157,6 +214,16 @@ texture_normal = ExtResource("13_hdejf")
 ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("10_bpo0c")
+
+[node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/Y"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
 
 [node name="TypeFilter" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
 layout_mode = 2
@@ -171,6 +238,16 @@ ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
+[node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Unit"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
 [node name="Ritual" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -179,6 +256,16 @@ texture_normal = ExtResource("10_2i5ob")
 ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("10_bpo0c")
+
+[node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Ritual"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
 
 [node name="Cantrip" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
 layout_mode = 2
@@ -189,6 +276,16 @@ ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
+[node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Cantrip"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
 [node name="Asset" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -198,6 +295,16 @@ ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
+[node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Asset"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
 [node name="Tome" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -206,6 +313,16 @@ texture_normal = ExtResource("12_kyu4u")
 ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("10_bpo0c")
+
+[node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Tome"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
 
 [node name="Save" type="Button" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
 layout_mode = 2
@@ -230,11 +347,12 @@ content_scale_size = Vector2i(1000, 800)
 ok_button_text = "Open"
 dialog_hide_on_ok = true
 file_mode = 0
-access = 1
+root_subfolder = "decks"
 
 [connection signal="pressed" from="MainContainer/HBoxContainer/CollectionContainer/<" to="MainContainer/HBoxContainer/CollectionContainer/<" method="_on_pressed"]
 [connection signal="pressed" from="MainContainer/HBoxContainer/CollectionContainer/>" to="MainContainer/HBoxContainer/CollectionContainer/>" method="_on_pressed"]
 [connection signal="text_changed" from="MainContainer/HBoxContainer/VBoxContainer/DeckName" to="MainContainer/HBoxContainer/VBoxContainer/DeckName" method="_on_text_changed"]
+[connection signal="text_changed" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/Search" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/Search" method="_on_text_changed"]
 [connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/C" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/C" method="_on_toggled"]
 [connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/B" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/B" method="_on_toggled"]
 [connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/G" to="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/G" method="_on_toggled"]

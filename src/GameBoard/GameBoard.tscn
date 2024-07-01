@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bp45jp7mbjext"]
+[gd_scene load_steps=32 format=3 uid="uid://bp45jp7mbjext"]
 
 [ext_resource type="Script" path="res://src/GameBoard/GameBoard.gd" id="1_vx3oc"]
 [ext_resource type="Texture2D" uid="uid://nskki1s0pkew" path="res://assets/backgrounds/wp10493975-grunge-texture-wallpapers.jpg" id="2_f1afs"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://src/GameBoard/Popup.gd" id="16_q5ptu"]
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="17_dgrnn"]
 [ext_resource type="Script" path="res://src/GameBoard/Buttons.gd" id="18_14m7r"]
+[ext_resource type="FontFile" uid="uid://dhfc6u3d1k04t" path="res://assets/fonts/Depressionist_3_Revisited_2010.ttf" id="19_n4jhl"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_el5bw"]
 texture = ExtResource("2_f1afs")
@@ -44,10 +45,18 @@ texture = ExtResource("7_k5ecn")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bsd8o"]
 texture = ExtResource("7_k5ecn")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r4m8d"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4evpq"]
+font = ExtResource("19_n4jhl")
+font_size = 56
+
 [node name="GameBoard" type="Node2D"]
 script = ExtResource("1_vx3oc")
 
 [node name="MainContainer" type="PanelContainer" parent="."]
+clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -215,6 +224,7 @@ size_flags_vertical = 3
 vertical_scroll_mode = 0
 
 [node name="OpponentHand" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/ScrollContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -293,6 +303,7 @@ size_flags_vertical = 3
 vertical_scroll_mode = 0
 
 [node name="PlayerHand" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/ScrollContainer4"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -304,6 +315,7 @@ layout_mode = 2
 
 [node name="Control" type="Control" parent="."]
 visible = false
+clip_contents = true
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
@@ -323,6 +335,7 @@ texture = ExtResource("2_f1afs")
 expand_mode = 3
 
 [node name="Popup" type="PanelContainer" parent="."]
+clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -409,6 +422,27 @@ script = ExtResource("18_14m7r")
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
+
+[node name="LoadingPanel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_r4m8d")
+script = ExtResource("3_5ol85")
+
+[node name="LoadingText" type="Label" parent="LoadingPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "LOADING..."
+label_settings = SubResource("LabelSettings_4evpq")
 
 [connection signal="gui_input" from="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea/OpponentDiscardClick" to="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea/OpponentDiscardClick" method="_on_gui_input"]
 [connection signal="gui_input" from="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDiscardClick" to="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDiscardClick" method="_on_gui_input"]
