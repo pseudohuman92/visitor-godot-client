@@ -113,6 +113,7 @@ message Targeting {
     int32 minTargets = 3;
     int32 maxTargets = 4;
     string targetMessage = 5;
+    SelectFromType targetingZone = 6;
 }
 
 message TargetingAbility {

@@ -15,8 +15,6 @@ func _process(_delta):
 			or (SS.max_select > -1 and SS.selected_single.size() > SS.max_select))
 		"Cancel":
 			set_visible((SS.is_selecting() and (SS.selecting_for == SS.selection_type.PLAY or SS.selecting_for == SS.selection_type.ACTIVATE)))
-		"Close":
-			set_visible(!SS.is_selecting() and GS.popup_cards)
 		"All Attack":
 			set_visible(SS.is_selecting() and \
 			GS.gameState.get_phase() == GS.Types.Phase.ATTACK)

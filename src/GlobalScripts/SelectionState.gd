@@ -24,6 +24,20 @@ func unpack_selection(selection_options):
 	selection_targets = selection_options.get_possibleTargets()
 	selection_message = selection_options.get_targetMessage()
 	selected_single = []
+	if max_select > 0 and selection_options.get_targetingZone() == GS.Types.SelectFromType.DISCARD_PILE:
+		GS.ability_selection_popup = false
+		GS.popup_message = selection_message
+		selection_message = ""
+		var player = false
+		for c in GS.gameState.get_player().get_discardPile():
+			if selection_targets.has(c.get_id()):
+				player = true
+		if player:
+			print("Selecting from player discard")
+			GS.popup_cards = GS.gameState.get_player().get_discardPile()
+		else:
+			print("Selecting from opponent discard")
+			GS.popup_cards = GS.gameState.get_opponent().get_discardPile()
 
 func clear_selection_data():
 	select_from_type = null
@@ -70,7 +84,10 @@ func process_selection(selection):
 			SS.selected.append({"selection_id" = SS.selection_id, "selected" = selection_targets.duplicate()})
 			process_selection(SS.selections.pop_front())
 	else:
-		callback.call(selecting_card.get_id())
+		if selecting_card:
+			callback.call(selecting_card.get_id())
+		else:
+			callback.call()
 
 func check_smart_select():
 	if O.smart_select \

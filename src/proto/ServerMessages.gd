@@ -1729,6 +1729,11 @@ class Targeting:
 		service.field = __targetMessage
 		data[__targetMessage.tag] = service
 		
+		__targetingZone = PBField.new("targetingZone", PB_DATA_TYPE.ENUM, PB_RULE.OPTIONAL, 6, true, DEFAULT_VALUES_3[PB_DATA_TYPE.ENUM])
+		service = PBServiceField.new()
+		service.field = __targetingZone
+		data[__targetingZone.tag] = service
+		
 	var data = {}
 	
 	var __id: PBField
@@ -1775,6 +1780,15 @@ class Targeting:
 		__targetMessage.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
 	func set_targetMessage(value : String) -> void:
 		__targetMessage.value = value
+	
+	var __targetingZone: PBField
+	func get_targetingZone():
+		return __targetingZone.value
+	func clear_targetingZone() -> void:
+		data[6].state = PB_SERVICE_STATE.UNFILLED
+		__targetingZone.value = DEFAULT_VALUES_3[PB_DATA_TYPE.ENUM]
+	func set_targetingZone(value) -> void:
+		__targetingZone.value = value
 	
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)

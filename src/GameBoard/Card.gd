@@ -182,7 +182,7 @@ func _on_gui_input(event):
 				parent.add_child(GS.bigger_popup)
 				GS.bigger_popup.z_index = z_index + 1
 				GS.bigger_popup.set_scale(Vector2(2,2))
-				GS.bigger_popup.set_position(Vector2(0,0))
+				GS.bigger_popup.set_global_position(Vector2(0,0))
 				GS.bigger_popup.find_child("InternalContainer").display=true
 
 		if event.is_released():

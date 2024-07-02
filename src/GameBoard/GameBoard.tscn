@@ -1,7 +1,6 @@
-[gd_scene load_steps=32 format=3 uid="uid://bp45jp7mbjext"]
+[gd_scene load_steps=31 format=3 uid="uid://bp45jp7mbjext"]
 
 [ext_resource type="Script" path="res://src/GameBoard/GameBoard.gd" id="1_vx3oc"]
-[ext_resource type="Texture2D" uid="uid://nskki1s0pkew" path="res://assets/backgrounds/wp10493975-grunge-texture-wallpapers.jpg" id="2_f1afs"]
 [ext_resource type="Script" path="res://src/GameBoard/MainContainer.gd" id="3_5ol85"]
 [ext_resource type="StyleBox" uid="uid://cjylp6j4h6fb3" path="res://src/Themes/PlayerDisplay.tres" id="4_oeguh"]
 [ext_resource type="Script" path="res://src/GameBoard/DiscardPile.gd" id="5_ccn7t"]
@@ -20,8 +19,8 @@
 [ext_resource type="Script" path="res://src/GameBoard/Buttons.gd" id="18_14m7r"]
 [ext_resource type="FontFile" uid="uid://dhfc6u3d1k04t" path="res://assets/fonts/Depressionist_3_Revisited_2010.ttf" id="19_n4jhl"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_el5bw"]
-texture = ExtResource("2_f1afs")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqqf3"]
+bg_color = Color(0.197937, 0.197937, 0.197937, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xdiac"]
 
@@ -67,7 +66,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxTexture_el5bw")
+theme_override_styles/panel = SubResource("StyleBoxFlat_oqqf3")
 script = ExtResource("3_5ol85")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MainContainer"]
@@ -313,27 +312,6 @@ script = ExtResource("6_b5knn")
 [node name="StackContainer" parent="MainContainer/HBoxContainer" instance=ExtResource("15_twdm7")]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="."]
-visible = false
-clip_contents = true
-layout_mode = 3
-anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-mouse_filter = 1
-script = ExtResource("3_5ol85")
-
-[node name="TableBG" type="TextureRect" parent="Control"]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_f1afs")
-expand_mode = 3
-
 [node name="Popup" type="PanelContainer" parent="."]
 clip_contents = true
 anchors_preset = 15
@@ -411,13 +389,6 @@ theme = ExtResource("17_dgrnn")
 text = "Cancel"
 script = ExtResource("18_14m7r")
 
-[node name="Close" type="Button" parent="Popup/CardArea/HBoxContainer/PopupButtons"]
-visible = false
-layout_mode = 2
-theme = ExtResource("17_dgrnn")
-text = "Close"
-script = ExtResource("18_14m7r")
-
 [node name="Control2" type="Control" parent="Popup/CardArea/HBoxContainer/PopupButtons"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -449,4 +420,3 @@ label_settings = SubResource("LabelSettings_4evpq")
 [connection signal="gui_input" from="Popup" to="Popup" method="_on_gui_input"]
 [connection signal="pressed" from="Popup/CardArea/HBoxContainer/PopupButtons/Submit" to="Popup/CardArea/HBoxContainer/PopupButtons/Submit" method="_on_pressed"]
 [connection signal="pressed" from="Popup/CardArea/HBoxContainer/PopupButtons/Cancel" to="Popup/CardArea/HBoxContainer/PopupButtons/Cancel" method="_on_pressed"]
-[connection signal="pressed" from="Popup/CardArea/HBoxContainer/PopupButtons/Close" to="Popup/CardArea/HBoxContainer/PopupButtons/Close" method="_on_pressed"]

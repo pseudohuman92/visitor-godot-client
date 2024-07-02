@@ -90,9 +90,9 @@ func select_from():
 	var cm = GS.ClientGameMessages.ClientGameMessage.new()
 	var jq = cm.new_selectFromResponse()
 	jq.set_messageType(SS.select_from_type)
-	for a in SS.selected[0]["selected"]:
+	for a in SS.selected_single:
 		jq.add_selected(a)
-	GS.clear_selection_data()
+	SS.clear_selection_data()
 	send_message(cm)
 
 func decode_proto_message(data):
@@ -112,8 +112,9 @@ func decode_proto_message(data):
 
 	elif message.has_selectFrom():
 		var lr = message.get_selectFrom()
-		GS.clear_selection_data()
-		GS.process_selection(lr.get_targets())
+		SS.clear_selection_data()
+		SS.callback = select_from
+		SS.process_selection(lr.get_targets())
 		SS.select_from_type = lr.get_messageType()
 		update_game_state.emit(lr.get_game())
 
