@@ -12,7 +12,7 @@ func populate(cards, square=false, setup=true):
 			else:
 				c = GS.CardScene.instantiate()
 			if setup:
-				c.setup(card)
+				c.setup(card, square)
 			else:
 				c.setup()
 			add_child(c)

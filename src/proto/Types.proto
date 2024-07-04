@@ -146,6 +146,8 @@ message CardP {
     bool canStudy = 21;
     repeated Targeting playTargets = 22;
     repeated TargetingAbility activateTargets = 23;
+    string Zone = 24;
+    string controller = 25;
 }
 
 message Player {

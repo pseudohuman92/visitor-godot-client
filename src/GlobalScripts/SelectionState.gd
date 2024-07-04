@@ -13,7 +13,7 @@ var selection_message = ""
 var selections = []
 var callback
 var selected_single = []
-var selected = []
+var selected = {}
 
 var selectingX = false
 
@@ -52,7 +52,7 @@ func clear_selection_data():
 	selections = []
 	callback = null
 	selected_single = []
-	selected = []
+	selected = {}
 
 func is_selecting():
 	return selection_targets or \
@@ -67,11 +67,11 @@ func process_selections(selections, card, callback, selecting_type, ability_id =
 	SS.selecting_card = card
 	SS.callback = callback
 	SS.selection_ability_id = ability_id
-	print_debug("Process selectionS " + str(selections.size()))
+	print_debug("Process selections " + str(selections.size()))
 	process_selection(SS.selections.pop_front())
 
 func submit_selection():
-	SS.selected.append({"selection_id" = SS.selection_id, "selected" = selected_single.duplicate()})
+	SS.selected[SS.selection_id] = {"selection_id" = SS.selection_id, "selected" = selected_single.duplicate()}
 	process_selection(SS.selections.pop_front())
 
 func process_selection(selection):
@@ -81,7 +81,7 @@ func process_selection(selection):
 		if max_select <= 0:
 			process_selection(SS.selections.pop_front())
 		elif min_select == selection_targets.size():
-			SS.selected.append({"selection_id" = SS.selection_id, "selected" = selection_targets.duplicate()})
+			SS.selected[SS.selection_id] = {"selection_id" = SS.selection_id, "selected" = selection_targets.duplicate()}
 			process_selection(SS.selections.pop_front())
 	else:
 		if selecting_card:

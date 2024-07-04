@@ -59,16 +59,30 @@ grow_vertical = 2
 
 [node name="DeckBuilder" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 30
 text = "Deck Builder"
 script = ExtResource("1_ctsd2")
 
-[node name="Play" type="Button" parent="VBoxContainer"]
+[node name="PlayMulti" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-text = "Play"
+theme_override_font_sizes/font_size = 30
+text = "Join Queue"
+script = ExtResource("1_ctsd2")
+
+[node name="PlayAI" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Solitaire"
+script = ExtResource("1_ctsd2")
+
+[node name="PlayTest" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Test Queue"
 script = ExtResource("1_ctsd2")
 
 [node name="FileDialog" type="FileDialog" parent="."]
-title = "Select A Deck"
+title = "Open a File"
 initial_position = 2
 size = Vector2i(600, 600)
 ok_button_text = "Open"
@@ -76,5 +90,7 @@ file_mode = 0
 root_subfolder = "decks"
 
 [connection signal="pressed" from="VBoxContainer/DeckBuilder" to="VBoxContainer/DeckBuilder" method="_on_pressed"]
-[connection signal="pressed" from="VBoxContainer/Play" to="VBoxContainer/Play" method="_on_pressed"]
-[connection signal="file_selected" from="FileDialog" to="VBoxContainer/Play" method="_on_file_dialog_file_selected"]
+[connection signal="pressed" from="VBoxContainer/PlayMulti" to="VBoxContainer/PlayMulti" method="_on_pressed"]
+[connection signal="pressed" from="VBoxContainer/PlayAI" to="VBoxContainer/PlayAI" method="_on_pressed"]
+[connection signal="pressed" from="VBoxContainer/PlayTest" to="VBoxContainer/PlayTest" method="_on_pressed"]
+[connection signal="file_selected" from="FileDialog" to="VBoxContainer/PlayMulti" method="_on_file_dialog_file_selected"]

@@ -13,7 +13,7 @@ func play_card(id):
 	var cm = GS.ClientGameMessages.ClientGameMessage.new()
 	var jq = cm.new_playCard()
 	jq.set_cardId(id)
-	for c in SS.selected:
+	for c in SS.selected.values():
 		var ts = jq.add_targets()
 		ts.set_id(c["selection_id"])
 		for t in c["selected"]:
@@ -27,7 +27,7 @@ func activate_card(id):
 	var jq = cm.new_activateCard()
 	jq.set_cardId(id)
 	jq.set_abilityId(SS.selection_ability_id)
-	for c in SS.selected:
+	for c in SS.selected.values():
 		var ts = jq.add_targets()
 		ts.set_id(c["selection_id"])
 		for t in c["selected"]:
@@ -40,8 +40,8 @@ func study_card(id):
 	var cm = GS.ClientGameMessages.ClientGameMessage.new()
 	var jq = cm.new_studyCard()
 	jq.set_cardId(id)
-	if SS.selected.size() > 0:
-		jq.set_selectedKnowledge(SS.selected[0])
+	if SS.selected_single.size() > 0:
+		jq.set_selectedKnowledge(SS.selected_single[0])
 	SS.clear_selection_data()
 	send_message(cm)
 
@@ -78,7 +78,7 @@ func select_blockers():
 	print("Sending Blockers: ")
 	var cm = GS.ClientGameMessages.ClientGameMessage.new()
 	var jq = cm.new_selectBlockers()
-	for a in SS.selected:
+	for a in SS.selected.values():
 		var att = jq.add_blockers()
 		att.set_blockerId(a[0].card.get_id())
 		att.set_blockedBy(a[1].card.get_id())
@@ -147,7 +147,7 @@ func _process(_delta):
 		print("GameSocket closed with code: %d, reason %s. Clean: %s" % [code, reason, code != -1])
 		set_process(false) # Stop processing.
 		GS.is_waiting = true
-		connect_to_server()
+		#connect_to_server()
 
 
 func _client_close_request(code, reason):

@@ -1675,6 +1675,16 @@ class CardP:
 		service.func_ref = Callable(self, "add_activateTargets")
 		data[__activateTargets.tag] = service
 		
+		__Zone = PBField.new("Zone", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 24, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		service = PBServiceField.new()
+		service.field = __Zone
+		data[__Zone.tag] = service
+		
+		__controller = PBField.new("controller", PB_DATA_TYPE.STRING, PB_RULE.OPTIONAL, 25, true, DEFAULT_VALUES_3[PB_DATA_TYPE.STRING])
+		service = PBServiceField.new()
+		service.field = __controller
+		data[__controller.tag] = service
+		
 	var data = {}
 	
 	var __id: PBField
@@ -1892,6 +1902,24 @@ class CardP:
 		var element = TargetingAbility.new()
 		__activateTargets.value.append(element)
 		return element
+	
+	var __Zone: PBField
+	func get_Zone() -> String:
+		return __Zone.value
+	func clear_Zone() -> void:
+		data[24].state = PB_SERVICE_STATE.UNFILLED
+		__Zone.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_Zone(value : String) -> void:
+		__Zone.value = value
+	
+	var __controller: PBField
+	func get_controller() -> String:
+		return __controller.value
+	func clear_controller() -> void:
+		data[25].state = PB_SERVICE_STATE.UNFILLED
+		__controller.value = DEFAULT_VALUES_3[PB_DATA_TYPE.STRING]
+	func set_controller(value : String) -> void:
+		__controller.value = value
 	
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)

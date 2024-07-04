@@ -5,20 +5,19 @@ const ClientMessages = preload("res://src/proto/ClientMessages.gd")
 const ServerGameMessages = preload("res://src/proto/ServerGameMessages.gd")
 const ClientGameMessages = preload("res://src/proto/ClientGameMessages.gd")
 const Types = preload("res://src/proto/Types.gd")
-const CardScene = preload("res://src/GameBoard/Card.tscn")
-const SquareCardScene = preload("res://src/GameBoard/SquareCard.tscn")
-const AbilityCardScene = preload("res://src/GameBoard/AbilityCard.tscn")
-const CollectionCardScene = preload("res://src/DeckBuilder/CollectionCard.tscn")
-const DecklistCardScene = preload("res://src/DeckBuilder/DecklistCard.tscn")
+const CardScene = preload("res://src/Cards/Card.tscn")
+const SquareCardScene = preload("res://src/Cards/SquareCard.tscn")
+const AbilityCardScene = preload("res://src/Cards/AbilityCard.tscn")
+const CollectionCardScene = preload("res://src/Cards/CollectionCard.tscn")
+const DecklistCardScene = preload("res://src/Cards/DecklistCard.tscn")
 const server_name = "18.222.3.198:8080"
 const websocket_url = "ws://"+server_name+"/profiles/"
 const card_back_path = "res://assets/CardBack.png"
 
-var game_decklist = ["3;test.Defendery",
-			"3;test.MultiTargetCantrip",
-			"3;test.MultiActivatedAbilitiesWithMultiTargeting"]
+var test_decklist = ["12;test.Hasty",]
 
 var collection = []
+var game_decklist = []
 var decklist = []
 var deck_name = "New Deck"
 var decklist_changed = true
@@ -31,6 +30,7 @@ var playerId : String
 var gameId : String
 var aiId : String
 
+var queue_type
 var gameType
 var gameState
 
@@ -45,6 +45,7 @@ var popup_message = ""
 var ability_selection_popup = false
 
 var arrow_targets = []
+var block_arrow_targets = {}
 
 var bigger_popup
 

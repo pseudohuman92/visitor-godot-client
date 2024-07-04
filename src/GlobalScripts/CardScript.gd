@@ -158,6 +158,7 @@ func setup_card(n, card=null):
 		CS.load_card_image_and_type(n)
 		n.find_child("CostArea").update(card.get_cost(), card.get_knowledgeCost())
 		n.find_child("Name").set_text(card.get_name())
+		n.find_child("DepletePanel").set_visible(card.get_depleted())
 		CS.change_stylebox_override("normal", n.find_child("Name"), func(b): b.set_modulate(to_knowledge_color(card.get_knowledgeCost())))
 		var ability_text = ""
 		var combat = card.get_combat()

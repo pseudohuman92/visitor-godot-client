@@ -1,11 +1,12 @@
 extends Node2D
 
 var arrows = []
+var block_arrows = []
 
 func _ready():
 	var socket = Websocket.new()
 	socket.connect("initialize_game_state", initialize_game_state)
-	socket.connect("got_login_response", func(): socket.joinQueue(GS.Types.GameType.AI_BO1_CONSTRUCTED))
+	socket.connect("got_login_response", func(): socket.joinQueue(GS.queue_type))
 	GS.socket = socket
 	socket.connect_to_server()
 
@@ -33,6 +34,11 @@ func update_game_state(new_state):
 	if new_state.get_activePlayer() != GS.playerId:
 		GS.is_waiting = true
 
+	if new_state.get_phase() == GS.Types.Phase.MAIN_AFTER:
+		remove_target_arrows(true)
+		GS.block_arrow_targets = {}
+
+	find_child("PlayerDeckSize").set_text(str(new_state.get_player().get_deckSize()))
 	find_child("PlayerHand").populate(new_state.get_player().get_hand())
 
 	var assets = []
@@ -55,6 +61,8 @@ func update_game_state(new_state):
 		for i in new_state.get_opponent().get_handSize():
 			hand.append(0)
 		find_child("OpponentHand").populate(hand, false, false)
+
+		find_child("OpponentDeckSize").set_text(str(new_state.get_opponent().get_deckSize()))
 
 		assets = []
 		units = []
@@ -81,16 +89,17 @@ func update_game_state(new_state):
 	connect_arrow_signals("OpponentAssetArea")
 	connect_arrow_signals("Stack")
 
+	if new_state.get_phase() == GS.Types.Phase.BLOCK_PLAY:
+		populate_block_arrows(new_state)
 
 	if O.smart_pass:
 		check_smart_pass(new_state)
 
 func connect_arrow_signals(node_name):
 	for c in find_child(node_name).get_children():
-		var con = c.find_child("InternalContainer")
-		if con:
-			con.connect("draw_target_arrows", draw_target_arrows)
-			con.connect("remove_target_arrows", remove_target_arrows)
+		var ci = c.find_child("InternalContainer")
+		ci.connect("draw_target_arrows", draw_target_arrows)
+		ci.connect("remove_target_arrows", remove_target_arrows)
 
 
 func check_smart_pass(new_state):
@@ -101,35 +110,69 @@ func check_smart_pass(new_state):
 		elif new_state.get_phase() == GS.Types.Phase.BLOCK and \
 		!GS.can_block():
 			GS.gameSocket.select_blockers()
-		#elif GS.has_initiative() and !GS.has_action() and !SS.is_selecting():
-		#	GS.gameSocket.pass_()
+		elif GS.has_initiative() and !GS.has_action() and !SS.is_selecting():
+			GS.gameSocket.pass_()
 		OS.delay_msec(200)
 
-func draw_target_arrows():
-	for a in GS.arrow_targets:
+func draw_target_arrows(block = false):
+	var arr
+	var color
+	var store
+
+	if block:
+		arr = GS.block_arrow_targets.values()
+		color = Color.NAVY_BLUE
+		store = block_arrows
+	else:
+		arr = GS.arrow_targets
+		color = Color.PALE_GOLDENROD
+		store = arrows
+
+	print("Drawing arrows. Block: ", str(block))
+	print(arr)
+
+	for a in arr:
 		print("Drawing arrow for ", a)
-		draw_arrow(a[0], a[1])
+		draw_arrow(a[0], a[1], color, store)
 
-func remove_target_arrows():
-	for a in arrows:
-		remove_child(a)
-	arrows = []
-	GS.arrow_targets = []
+func remove_target_arrows(block = false):
+	print("Removing arrows. Block: ", str(block))
+	if block:
+		for a in block_arrows:
+			remove_child(a)
+		block_arrows = []
+	else:
+		for a in arrows:
+			remove_child(a)
+		arrows = []
+		GS.arrow_targets = []
 
-func draw_arrow(start_id, end_id):
+func draw_arrow(start_id, end_id, color, store):
 	var scard = find_child(start_id, true, false)
 	var ecard = find_child(end_id, true, false)
 	if scard and ecard:
 		var scenter = scard.get_global_position() + scard.get_size()/2
 		var ecenter = ecard.get_global_position() + ecard.get_size()/2
 		var arrow = ColorRect.new()
-		arrow.set_color(Color.FIREBRICK)
+		arrow.set_color(color)
 		arrow.set_name(start_id+end_id)
 		arrow.set_global_position(scenter)
 		arrow.set_size(Vector2(scenter.distance_to(ecenter), 5))
 		arrow.set_rotation(scenter.angle_to_point(ecenter))
-		arrows.append(arrow)
+		store.append(arrow)
 		add_child(arrow)
+
+func populate_block_arrows(state):
+	GS.block_arrow_targets = {}
+	remove_target_arrows(true)
+	for c in state.get_player().get_play():
+		if c.get_combat() and c.get_combat().get_blockedAttacker():
+			GS.block_arrow_targets[c.get_id()] = [c.get_id(), c.get_combat().get_blockedAttacker()]
+	for c in state.get_opponent().get_play():
+		if c.get_combat() and c.get_combat().get_blockedAttacker():
+			GS.block_arrow_targets[c.get_id()] = [c.get_id(), c.get_combat().get_blockedAttacker()]
+	draw_target_arrows(true)
+
 
 func _process(_delta):
 	if GS.socket:

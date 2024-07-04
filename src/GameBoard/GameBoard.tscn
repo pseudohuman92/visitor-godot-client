@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bp45jp7mbjext"]
+[gd_scene load_steps=30 format=3 uid="uid://bp45jp7mbjext"]
 
 [ext_resource type="Script" path="res://src/GameBoard/GameBoard.gd" id="1_vx3oc"]
 [ext_resource type="Script" path="res://src/GameBoard/MainContainer.gd" id="3_5ol85"]
@@ -10,7 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://dpjjtpkohrwke" path="res://src/GameBoard/KnowledgeDisplay.tscn" id="9_i3v6k"]
 [ext_resource type="Script" path="res://src/GameBoard/KnowledgeDisplay.gd" id="10_wn45f"]
 [ext_resource type="PackedScene" uid="uid://cjpwowr0mt3cg" path="res://src/GameBoard/EnergyDisplay.tscn" id="11_lfiyj"]
-[ext_resource type="StyleBox" uid="uid://nrrp32xv522l" path="res://src/GameBoard/Card.tres" id="12_5d55m"]
+[ext_resource type="StyleBox" uid="uid://nrrp32xv522l" path="res://src/Themes/Border.tres" id="12_5d55m"]
+[ext_resource type="LabelSettings" uid="uid://bx7tppt0u01gu" path="res://src/Themes/KnowledgeDisplayNumbers.tres" id="12_tjvsi"]
 [ext_resource type="LabelSettings" uid="uid://bt7rrrgqyvj0e" path="res://src/Themes/MessageLabelSettings.tres" id="13_a3uto"]
 [ext_resource type="Script" path="res://src/GameBoard/SelectionText.gd" id="14_er1e3"]
 [ext_resource type="PackedScene" uid="uid://cyf4auv3kwlej" path="res://src/GameBoard/Stack.tscn" id="15_twdm7"]
@@ -30,10 +31,6 @@ axis_stretch_vertical = 2
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0shin"]
 texture = ExtResource("7_k5ecn")
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p18k1"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6e3ar"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3tse0"]
 
@@ -115,11 +112,18 @@ size_flags_horizontal = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_0shin")
 
+[node name="OpponentDeckSize" type="Label" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea/OpponentDeck"]
+layout_mode = 2
+text = "123"
+label_settings = ExtResource("12_tjvsi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="OpponentDisplayFront" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxEmpty_p18k1")
+theme_override_styles/panel = ExtResource("12_5d55m")
 script = ExtResource("8_82ntk")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDisplayFront"]
@@ -154,7 +158,7 @@ alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxEmpty_6e3ar")
+theme_override_styles/panel = ExtResource("12_5d55m")
 script = ExtResource("8_82ntk")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDisplayFront"]
@@ -211,6 +215,15 @@ size_flags_horizontal = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_bsd8o")
 
+[node name="PlayerDeckSize" type="Label" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDeckContainer/PlayerDeckBorder/PlayerDeck"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 10
+text = "123"
+label_settings = ExtResource("12_tjvsi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="PlayArea" type="VBoxContainer" parent="MainContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -220,6 +233,7 @@ size_flags_stretch_ratio = 6.0
 [node name="ScrollContainer" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea"]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 3.5
 vertical_scroll_mode = 0
 
 [node name="OpponentHand" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/ScrollContainer"]
@@ -227,6 +241,7 @@ clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 10
 alignment = 1
 script = ExtResource("6_b5knn")
 
@@ -235,7 +250,7 @@ show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
+size_flags_stretch_ratio = 10.0
 mouse_filter = 1
 theme_override_styles/panel = ExtResource("12_5d55m")
 script = ExtResource("8_82ntk")
@@ -246,11 +261,13 @@ layout_mode = 2
 [node name="ScrollContainer" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+vertical_scroll_mode = 0
 
 [node name="OpponentAssetArea" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 10
 script = ExtResource("6_b5knn")
 
 [node name="ScrollContainer2" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
@@ -262,12 +279,14 @@ vertical_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 10
 alignment = 1
 script = ExtResource("6_b5knn")
 
 [node name="SelectionText" type="Label" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
 z_index = 2
 layout_mode = 2
+size_flags_vertical = 1
 text = "Example Selection Text Here"
 label_settings = ExtResource("13_a3uto")
 horizontal_alignment = 1
@@ -283,22 +302,26 @@ vertical_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 10
 alignment = 1
 script = ExtResource("6_b5knn")
 
 [node name="ScrollContainer5" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+vertical_scroll_mode = 0
 
 [node name="PlayerAssetArea" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer/ScrollContainer5"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 10
 script = ExtResource("6_b5knn")
 
 [node name="ScrollContainer4" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea"]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 3.5
 vertical_scroll_mode = 0
 
 [node name="PlayerHand" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/ScrollContainer4"]
@@ -306,6 +329,7 @@ clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 10
 alignment = 1
 script = ExtResource("6_b5knn")
 

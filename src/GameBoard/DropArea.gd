@@ -12,10 +12,14 @@ func _drop_data(at_position, data):
 		if name.contains("PlayContainer") and data.card.get_canPlay():
 			SS.process_selections(data.card.get_playTargets(), data.card, GS.gameSocket.play_card, SS.selection_type.PLAY)
 		elif name.contains("PlayerDeck") and data.card.get_canStudy():
-			if data.card.get_knowledgeCost().size() < 2:
+			if data.card.get_knowledgeCost().size() == 0:
+				SS.selected_single.append(GS.Types.Knowledge.NONE)
+				GS.gameSocket.study_card(data.card.get_id())
+			elif data.card.get_knowledgeCost().size() == 1:
+				SS.selected_single.append(data.card.get_knowledgeCost()[0].get_knowledge())
 				GS.gameSocket.study_card(data.card.get_id())
 			else:
-				GS.clear_selection_data()
+				SS.clear_selection_data()
 				SS.selecting_card = data.card
 				SS.selecting_for = SS.selection_type.KNOWLEDGE
 				for k in data.card.get_knowledgeCost():
@@ -36,6 +40,18 @@ func _process(delta):
 		elif name.contains("PlayContainer"):
 			if GS.dragged_card and GS.dragged_card.card.get_canPlay():
 				border.set_border_color(Color.GREEN_YELLOW)
+			else:
+				border.set_border_color(Color.TRANSPARENT)
+
+		elif name.contains("PlayerDisplayFront"):
+			if GS.gameState.get_turnPlayer() == GS.playerId:
+				border.set_border_color(Color.GOLD)
+			else:
+				border.set_border_color(Color.TRANSPARENT)
+
+		elif name.contains("OpponentDisplayFront"):
+			if GS.gameState.get_turnPlayer() != GS.playerId:
+				border.set_border_color(Color.GOLD)
 			else:
 				border.set_border_color(Color.TRANSPARENT)
 
