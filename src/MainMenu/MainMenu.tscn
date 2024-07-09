@@ -87,7 +87,7 @@ initial_position = 2
 size = Vector2i(600, 600)
 ok_button_text = "Open"
 file_mode = 0
-root_subfolder = "decks"
+access = 1
 
 [connection signal="pressed" from="VBoxContainer/DeckBuilder" to="VBoxContainer/DeckBuilder" method="_on_pressed"]
 [connection signal="pressed" from="VBoxContainer/PlayMulti" to="VBoxContainer/PlayMulti" method="_on_pressed"]

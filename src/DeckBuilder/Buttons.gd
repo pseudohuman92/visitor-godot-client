@@ -14,7 +14,7 @@ func _on_pressed():
 
 
 func save():
-	var file = FileAccess.open("res://decks/"+GS.deck_name+".deck", FileAccess.WRITE)
+	var file = FileAccess.open("user://"+GS.deck_name+".deck", FileAccess.WRITE)
 	file.store_line(GS.deck_name)
 	var i = 0
 	while i < GS.decklist.size():

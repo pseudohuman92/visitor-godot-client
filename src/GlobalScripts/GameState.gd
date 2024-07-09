@@ -11,10 +11,26 @@ const AbilityCardScene = preload("res://src/Cards/AbilityCard.tscn")
 const CollectionCardScene = preload("res://src/Cards/CollectionCard.tscn")
 const DecklistCardScene = preload("res://src/Cards/DecklistCard.tscn")
 const server_name = "18.222.3.198:8080"
+#const server_name = "localhost:8080"
 const websocket_url = "ws://"+server_name+"/profiles/"
 const card_back_path = "res://assets/CardBack.png"
 
-var test_decklist = ["12;test.Hasty",]
+var test_decklist = ["3;base2.ASoulforASoul",
+"3;base2.Assassin",
+"3;base2.Necropainter",
+"3;base2.SiphonLife",
+"3;base2.Baiter",
+"3;base2.BloodPrice",
+"3;base2.EternalSpawn",
+"3;base2.InfuseLife",
+"3;base2.OutofCommision",
+"3;base2.Reanimator",
+"3;base2.Vampireling",
+"3;base2.ZombieAmalgam",
+"3;base2.Contagion",
+"3;base2.Ressurrector",
+"3;base2.RavenousVampire",
+]
 
 var collection = []
 var game_decklist = []
