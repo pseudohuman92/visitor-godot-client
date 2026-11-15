@@ -1,0 +1,48 @@
+CARD UI UPDATES
+
+COST IMAGES
+Numeric costs now set CostBG.texture from:
+  res://assets/numbers/Colorless/<value>.png
+Examples: 0.png, 2.png, 10.png, X.png.
+The old overlay labels are removed from full, square and collection card scenes.
+Deck-list entries now use a CostBG TextureRect as well. Empty costs hide and clear
+the image. Missing files hide the image and report the missing path in the log.
+Cost icons reserve at least 24 pixels so they remain visible without a label.
+
+TYPE ICONS
+Full, square and collection type icons now reserve 36 x 36 pixels and preserve
+the texture aspect ratio.
+
+KNOWLEDGE COSTS
+Knowledge symbols are 36 x 36 pixels, aligned at the top of their own stack below
+the numeric cost. Each additional symbol starts 18 pixels lower for 50 percent
+vertical overlap. Later symbols draw in front. The stack reserves only the total
+overlapped height and does not intercept mouse input.
+
+HOVER
+Game cards and collection cards smoothly lift 16 pixels on hover and return on
+exit. Their wrappers retain the layout slots, so neighbouring cards do not move.
+Raised visuals draw outside ScrollContainer clipping. Hover remains stable when
+the cursor is in the exposed bottom strip of the original slot. Target arrows
+and zone-movement origins account for the hover offset. HoverLift.gd exposes the
+lift distance and keeps the original top-level/z settings for restoration.
+
+DRAGGING
+A hand card becomes transparent at its original location during native dragging;
+the normal drag preview remains visible. Transparency preserves its hand slot.
+Completed drops, cancellations, scene exit and removal restore any surviving
+source view's original modulation through GS.clear_drag().
+
+VALIDATION
+142 regression checks passed under Godot 4.6.3. Additional cost-variant checks
+covered 0, 2, 10, X and empty costs across full/square/collection/deck-list cards.
+Rendered native pointer checks confirmed the 16-pixel lift, stable bottom-edge
+hover, return to rest, hidden native drag source and cancellation restoration.
+The validation copy uses temporary placeholder assets; they are not distributed.
+Restore your original assets and addons when merging this source-only archive.
+
+The rules engine has also been cloned, compiled and launched separately in the
+workspace. A real Godot WebSocket login and collection request returned 63 cards.
+It is not bundled in this client archive. A downloaded client running on another
+machine needs a rules-engine process reachable from that machine; its localhost
+address refers to the machine where that client is running.

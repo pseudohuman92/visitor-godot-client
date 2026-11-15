@@ -5,7 +5,7 @@
 [ext_resource type="StyleBox" uid="uid://nrrp32xv522l" path="res://src/Themes/Border.tres" id="2_wqjv3"]
 [ext_resource type="Texture2D" uid="uid://cyr52u5hc7dai" path="res://assets/backgrounds/wp10493985-grunge-texture-wallpapers.jpg" id="3_nvgyl"]
 [ext_resource type="Script" uid="uid://chjlgj7p0qrwk" path="res://src/GameBoard/CardCostArea.gd" id="4_020j0"]
-[ext_resource type="Texture2D" uid="uid://p7ilkena5y4i" path="res://assets/card-components/numbers/Colorless/X.png" id="5_io6g3"]
+[ext_resource type="Texture2D" path="res://assets/numbers/Colorless/X.png" id="5_io6g3"]
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="6_llt0u"]
 [ext_resource type="Texture2D" uid="uid://dcfh3awf60bjk" path="res://assets/card-components/Factions/Blue.png" id="7_qh2tn"]
 [ext_resource type="LabelSettings" uid="uid://di7m64aqradk6" path="res://src/Themes/CardKnoweldgeSettings.tres" id="8_cgpyb"]
@@ -1315,24 +1315,13 @@ size_flags_stretch_ratio = 1.2
 script = ExtResource("4_020j0")
 
 [node name="CostBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea"]
+custom_minimum_size = Vector2(24, 24)
 show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("5_io6g3")
 expand_mode = 5
 
-[node name="Cost" type="Label" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea/CostBG"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 1
-theme = ExtResource("6_llt0u")
-label_settings = SubResource("LabelSettings_5isjn")
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="BBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea"]
 visible = false
@@ -1456,10 +1445,13 @@ size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_3nbvu")
 
 [node name="TypeIcon" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("14_afvmc")
-expand_mode = 5
+expand_mode = 1
+stretch_mode = 5
+
 
 [node name="StatsPanel" type="PanelContainer" parent="InternalContainer/CardImage/Contents"]
 layout_mode = 2

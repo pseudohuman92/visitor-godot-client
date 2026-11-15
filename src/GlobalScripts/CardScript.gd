@@ -253,3 +253,22 @@ func show_error(message):
 	dialog.confirmed.connect(dialog.queue_free)
 	dialog.canceled.connect(dialog.queue_free)
 	dialog.popup_centered()
+
+func set_cost_texture(background: TextureRect, cost):
+	# Number artwork already includes the printed value; never overlay a label.
+	var old_label = background.find_child("Cost")
+	if old_label:
+		old_label.hide()
+	var value = str(cost).strip_edges() if cost != null else ""
+	if value.is_empty():
+		background.texture = null
+		background.hide()
+		return
+	var path = "res://assets/numbers/Colorless/" + value + ".png"
+	if not ResourceLoader.exists(path, "Texture2D"):
+		background.texture = null
+		background.hide()
+		push_warning("Missing card cost texture: " + path)
+		return
+	background.texture = load(path)
+	background.show()

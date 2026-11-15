@@ -4,7 +4,7 @@
 [ext_resource type="StyleBox" uid="uid://nrrp32xv522l" path="res://src/Themes/Border.tres" id="2_7bm1e"]
 [ext_resource type="Texture2D" uid="uid://l7sn1a7c0xg6" path="res://assets/backgrounds/wp4789004-grunge-map-wallpapers.jpg" id="3_c1msf"]
 [ext_resource type="Script" uid="uid://chjlgj7p0qrwk" path="res://src/GameBoard/CardCostArea.gd" id="4_sgj6l"]
-[ext_resource type="Texture2D" uid="uid://p7ilkena5y4i" path="res://assets/card-components/numbers/Colorless/X.png" id="5_wrbgq"]
+[ext_resource type="Texture2D" path="res://assets/numbers/Colorless/X.png" id="5_wrbgq"]
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="6_w0tcg"]
 [ext_resource type="Texture2D" uid="uid://dcfh3awf60bjk" path="res://assets/card-components/Factions/Blue.png" id="7_pqra2"]
 [ext_resource type="LabelSettings" uid="uid://di7m64aqradk6" path="res://src/Themes/CardKnoweldgeSettings.tres" id="8_r6eao"]
@@ -1330,15 +1330,12 @@ size_flags_stretch_ratio = 1.2
 script = ExtResource("4_sgj6l")
 
 [node name="CostBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea" unique_id=1502251665]
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("5_wrbgq")
 expand_mode = 5
 
-[node name="Cost" type="Label" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea/CostBG" unique_id=499235836]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
 
 [node name="BBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea" unique_id=871847511]
 visible = false
@@ -1456,10 +1453,13 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxEmpty_rnscp")
 
 [node name="TypeIcon" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer/PanelContainer" unique_id=453202546]
+custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("14_n1n3l")
-expand_mode = 5
+expand_mode = 1
+stretch_mode = 5
+
 
 [node name="AbilityPanel" type="PanelContainer" parent="InternalContainer/CardImage/Contents" unique_id=1769974267]
 layout_mode = 2

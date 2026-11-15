@@ -33,7 +33,7 @@ FIXED
 - Show connection failures through existing UI.
 
 VALIDATION
-Godot 4.6.3: 117 regression checks passed, with no script/runtime errors.
+Godot 4.6.3: 142 regression checks passed, with no script/runtime errors.
 Includes real binary WebSocket send/receive through an ephemeral local peer;
 no production/backend service is contacted by the regression suite.
 Main menu, game board, and deck builder headless smoke checks also passed.
@@ -64,3 +64,7 @@ See CARD-MOVEMENT.txt for animated zone changes and the 27 new checks.
 
 ARROW STYLE
 See ARROW-STYLE.txt for curved, glowing targeting/blocking arrows and 5 new checks.
+
+CARD UI
+See CARD-UI-UPDATES.txt for cost textures, larger icons, half-overlapped knowledge,
+hover lift, native drag-source hiding, and 25 additional regression checks.

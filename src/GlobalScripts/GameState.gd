@@ -141,6 +141,8 @@ func has_initiative():
 	gameState.get_phase() == Types.Phase.BLOCK_PLAY)
 
 func clear_drag():
+	if is_instance_valid(dragged_card) and dragged_card.has_method("restore_drag_visual"):
+		dragged_card.restore_drag_visual()
 	is_dragging = false
 	dragged_card = null
 

@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dbmsmpx772wjv" path="res://src/Cards/Card.gd" id="2_sfrtf"]
 [ext_resource type="Texture2D" uid="uid://l7sn1a7c0xg6" path="res://assets/backgrounds/wp4789004-grunge-map-wallpapers.jpg" id="3_4didv"]
 [ext_resource type="Script" uid="uid://chjlgj7p0qrwk" path="res://src/GameBoard/CardCostArea.gd" id="4_4yl3l"]
-[ext_resource type="Texture2D" uid="uid://qkfsj6ikimvj" path="res://assets/card-components/numbers/Colorless/0.png" id="6_0c6qo"]
+[ext_resource type="Texture2D" path="res://assets/numbers/Colorless/0.png" id="6_0c6qo"]
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="6_fuui8"]
 [ext_resource type="Texture2D" uid="uid://dcfh3awf60bjk" path="res://assets/card-components/Factions/Blue.png" id="7_jv7mb"]
 [ext_resource type="LabelSettings" uid="uid://di7m64aqradk6" path="res://src/Themes/CardKnoweldgeSettings.tres" id="8_7cq2g"]
@@ -1336,24 +1336,13 @@ size_flags_stretch_ratio = 1.2
 script = ExtResource("4_4yl3l")
 
 [node name="CostBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea" unique_id=513410003]
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("6_0c6qo")
 expand_mode = 5
 stretch_mode = 5
 
-[node name="Cost" type="Label" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea/CostBG" unique_id=398801533]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 1
-theme = ExtResource("6_fuui8")
-label_settings = SubResource("LabelSettings_qyl33")
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="BBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea" unique_id=471310586]
 visible = false
@@ -1472,10 +1461,13 @@ size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_wk3wl")
 
 [node name="TypeIcon" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer/PanelContainer" unique_id=255247194]
+custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("15_yaxrj")
-expand_mode = 5
+expand_mode = 1
+stretch_mode = 5
+
 
 [node name="AbilityPanel" type="PanelContainer" parent="InternalContainer/CardImage/Contents" unique_id=852062910]
 layout_mode = 2

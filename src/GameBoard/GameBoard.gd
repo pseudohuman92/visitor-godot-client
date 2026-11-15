@@ -75,7 +75,11 @@ func _capture_card_origins():
 
 func _screen_card_rect(view):
 	var transform = view.get_global_transform_with_canvas()
-	return Rect2(transform.origin, view.size * transform.get_scale().abs())
+	var offset = Vector2.ZERO
+	var internal = view.find_child("InternalContainer")
+	if internal != null and internal.has_method("get_hover_offset"):
+		offset = internal.get_hover_offset()
+	return Rect2(transform * offset, view.size * transform.get_scale().abs())
 
 func _animate_zone_changes(origins):
 	var destinations = {}
@@ -105,7 +109,7 @@ func _card_center(id, view):
 	if is_instance_valid(_card_movement) and _card_movement.motions.has(id):
 		var rect = _card_movement.current_rect(id, view)
 		return get_global_transform_with_canvas().affine_inverse() * rect.get_center()
-	return to_local(view.get_global_transform() * (view.size / 2.0))
+	return get_global_transform_with_canvas().affine_inverse() * _screen_card_rect(view).get_center()
 
 func _sync_player(player, prefix):
 	_set_text_if_changed(prefix + "DeckSize", str(player.get_deckSize()) if player else "0")

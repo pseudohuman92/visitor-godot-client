@@ -5,10 +5,7 @@ var card
 func setup(card, count):
 	if card:
 		self.card = card
-		if card.get_cost():
-			find_child("Cost").set_text(card.get_cost())
-		else:
-			find_child("Cost").set_visible(false)
+		CS.set_cost_texture(find_child("CostBG"), card.get_cost())
 		find_child("Name").set_text(card.get_name())
 		CS.change_stylebox_override("normal", find_child("Name"), func(b): b.set_modulate(CS.to_knowledge_color(card.get_knowledgeCost())))
 		find_child("Count").set_text(str(count)+"x")

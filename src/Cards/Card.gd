@@ -7,6 +7,31 @@ var blocking = false
 var blocked = false
 var display = false
 var hover = false
+var _hover_lift
+var _deferred_hover_exit = false
+var _drag_source: WeakRef
+var _drag_source_modulate := Color.WHITE
+
+func _ready():
+	_hover_lift = preload("res://src/Cards/HoverLift.gd").new(self)
+
+func get_hover_offset():
+	return _hover_lift.offset() if _hover_lift != null else Vector2.ZERO
+
+func _hide_drag_source():
+	if find_parent("PlayerHand") == null:
+		return
+	var view = get_parent()
+	_drag_source = weakref(view)
+	_drag_source_modulate = view.modulate
+	view.modulate = Color(view.modulate, 0.0)
+
+func restore_drag_visual():
+	if _drag_source != null:
+		var view = _drag_source.get_ref()
+		if is_instance_valid(view):
+			view.modulate = _drag_source_modulate
+	_drag_source = null
 
 signal draw_target_arrows(block: bool)
 signal remove_target_arrows(block: bool)
@@ -63,6 +88,8 @@ func _get_drag_data(_at_position):
 	not (card.get_canPlay() or card.get_canStudy()):
 		return null
 	hover = false
+	if _hover_lift != null:
+		_hover_lift.reset()
 	remove_target_arrows.emit(false)
 	GS.is_dragging = true
 	GS.dragged_card = self
@@ -74,6 +101,7 @@ func _get_drag_data(_at_position):
 	var prev = Control.new()
 	prev.add_child(copy)
 	set_drag_preview(prev)
+	_hide_drag_source()
 	return self
 
 func _notification(what):
@@ -83,6 +111,7 @@ func _notification(what):
 		remove_target_arrows.emit(false)
 
 func _on_mouse_entered():
+	_deferred_hover_exit = false
 	if !GS.is_dragging:
 		if card and card.get_targets():
 			for c in card.get_targets():
@@ -93,12 +122,21 @@ func _on_mouse_entered():
 
 
 func _on_mouse_exited():
+	if not GS.is_dragging and get_parent().get_global_rect().has_point(get_global_mouse_position()):
+		# Keep hover stable when lifting reveals the bottom strip of its slot.
+		_deferred_hover_exit = true
+		return
+	_deferred_hover_exit = false
 	if !GS.is_dragging:
 		if (card and card.get_targets()):
 			remove_target_arrows.emit(false)
 		hover = false
 
 func _process(delta):
+	if _deferred_hover_exit and not get_parent().get_global_rect().has_point(get_global_mouse_position()) and not get_global_rect().has_point(get_global_mouse_position()):
+		_on_mouse_exited()
+	if _hover_lift != null:
+		_hover_lift.update(delta, hover and not display and not GS.is_dragging)
 	if !display and !hover:
 		set_border_color(get_border_color())
 

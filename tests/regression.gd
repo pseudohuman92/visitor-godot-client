@@ -20,6 +20,7 @@ class CaptureSocket:
 
 @onready var root = get_tree().root
 var checks = 0
+var _ui_checks_completed = false
 var failures = []
 
 func _ready():
@@ -327,6 +328,8 @@ func run():
 	await get_tree().process_frame
 	await check_incremental_updates()
 	await check_zone_movement()
+	await check_card_ui_controls()
+	expect(_ui_checks_completed, "Card UI regression sequence completed")
 	print("Regression checks: ", checks, "; failures: ", failures.size())
 	get_tree().quit(0 if failures.is_empty() else 1)
 
@@ -644,3 +647,100 @@ func check_zone_movement():
 	await get_tree().process_frame
 	await get_tree().process_frame
 	expect(not is_instance_valid(animation) and not is_instance_valid(exit_ghost), "Scene exit releases the animation layer and moving cards")
+
+func check_card_ui_controls():
+	O.smart_pass = false
+	GS.playerId = "player"
+	GS.is_waiting = false
+	var state = populate_state(GS.ServerMessages.GameStateP.new())
+	var data = sample_card(GS.ServerMessages)
+	data.set_id("hover-drag")
+	data.set_canPlay(true)
+	var blue = data.add_knowledgeCost()
+	blue.set_knowledge(GS.Types.Knowledge.BLUE)
+	blue.set_count(3)
+	var red = data.add_knowledgeCost()
+	red.set_knowledge(GS.Types.Knowledge.RED)
+	red.set_count(1)
+	state.get_player().get_hand().append(data)
+	var neighbour_data = sample_card(GS.ServerMessages)
+	neighbour_data.set_id("neighbour")
+	state.get_player().get_hand().append(neighbour_data)
+	var board = load("res://src/GameBoard/GameBoard.tscn").instantiate()
+	board.set_script(TestBoard)
+	root.add_child(board)
+	board.initialize_game_state(state)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var hand = board.find_child("PlayerHand")
+	var view = hand.get_child(0)
+	var internal = view.find_child("InternalContainer")
+	var neighbour = hand.get_child(1)
+	var slot_position = view.global_position
+	var neighbour_position = neighbour.global_position
+	var rest_position = internal.global_position
+	var cost = view.find_child("CostBG")
+	expect(cost.texture.resource_path == "res://assets/numbers/Colorless/2.png", "Numeric cost uses the matching texture")
+	expect(view.find_child("Cost") == null, "Full card has no overlay cost label")
+	expect(view.find_child("TypeIcon").size.x >= 36 and view.find_child("TypeIcon").size.y >= 36, "Type icon is at least 36 pixels square")
+	var cost_area = view.find_child("CostArea")
+	expect(cost_area.children.size() == 4, "Knowledge counts expand into individual icons")
+	for i in range(4):
+		var icon = cost_area.children[i]
+		expect(icon.size == Vector2(36, 36) and icon.position == Vector2(0, i * 18), "Knowledge icons are larger with exact half overlap")
+	expect(cost_area.get_node("KnowledgeStack").custom_minimum_size == Vector2(36, 90), "Knowledge stack reserves its overlapped height")
+	expect(cost_area.alignment == BoxContainer.ALIGNMENT_BEGIN, "Knowledge stack is aligned at the top")
+
+	internal.mouse_exited.disconnect(internal._on_mouse_exited)
+	internal._on_mouse_entered()
+	await get_tree().create_timer(0.4).timeout
+	expect(is_equal_approx(internal._hover_lift.amount, 16.0), "Hovered card settles at a 16-pixel lift")
+	expect(internal.global_position.is_equal_approx(rest_position - Vector2(0, 16)), "Hover moves the visual card upwards")
+	expect(view.global_position == slot_position and neighbour.global_position == neighbour_position, "Hover preserves hand slots and neighbours")
+	expect(internal.is_set_as_top_level(), "Raised card can draw outside scroll clipping")
+	data.get_combat().set_health(8)
+	board.update_game_state(state)
+	expect(hand.get_child(0) == view and internal.hover, "Incremental updates preserve the hovered card")
+	internal.hover = false
+	await get_tree().create_timer(0.4).timeout
+	await get_tree().process_frame
+	expect(not internal.is_set_as_top_level() and internal.global_position.is_equal_approx(rest_position), "Hover exit restores the normal card layout")
+	internal.mouse_exited.connect(internal._on_mouse_exited)
+
+	# Exercise native drag-end notification, without calling _get_drag_data outside GUI input.
+	var preview = Control.new()
+	preview.size = Vector2(24, 24)
+	GS.is_dragging = true
+	GS.dragged_card = internal
+	internal._hide_drag_source()
+	internal.force_drag(internal, preview)
+	expect(view.modulate.a == 0 and view.visible, "Active hand drag hides drawing while retaining its slot")
+	expect(hand.get_child_count() == 2 and neighbour.global_position == neighbour_position, "Dragging leaves the original hand layout intact")
+	get_viewport().gui_cancel_drag()
+	await get_tree().process_frame
+	expect(not GS.is_dragging and GS.dragged_card == null and view.modulate.a == 1, "Native drag cancellation restores the original card")
+	GS.is_dragging = true
+	GS.dragged_card = internal
+	internal._hide_drag_source()
+	GS.clear_drag()
+	expect(view.modulate.a == 1 and not GS.is_dragging, "Completed-drop cleanup restores the source card")
+
+	for value in ["0", "X", ""]:
+		data.set_cost(value)
+		board.update_game_state(state)
+		if value.is_empty():
+			expect(not cost.visible and cost.texture == null, "Empty cost clears the previous number image")
+		else:
+			expect(cost.visible and cost.texture.resource_path == "res://assets/numbers/Colorless/" + value + ".png", "Zero and symbolic costs use their matching images")
+
+	var collection = GS.CollectionCardScene.instantiate()
+	collection.setup(data)
+	add_child(collection)
+	collection.size = Vector2(180, 250)
+	await get_tree().process_frame
+	expect(collection.find_child("TypeIcon").size.x >= 36, "Collection cards use the larger type icon")
+	collection.queue_free()
+	board.queue_free()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	_ui_checks_completed = true
