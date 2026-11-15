@@ -6,7 +6,7 @@ func populate(cards):
 	while i < cards.size():
 		var card = cards[i]
 		var count = 0
-		while i < cards.size() and card.get_name() == cards[i].get_name():
+		while i < cards.size() and card.get_name() == cards[i].get_name() and card.get_set() == cards[i].get_set():
 			i += 1
 			count += 1
 		var c = GS.DecklistCardScene.instantiate()
@@ -14,7 +14,9 @@ func populate(cards):
 		add_child(c)
 
 func clear():
-	get_children().map(func(c):remove_child(c))
+	for child in get_children():
+		remove_child(child)
+		child.queue_free()
 
 func _process(delta):
 	if GS.decklist_changed:

@@ -10,10 +10,10 @@ const SquareCardScene = preload("res://src/Cards/SquareCard.tscn")
 const AbilityCardScene = preload("res://src/Cards/AbilityCard.tscn")
 const CollectionCardScene = preload("res://src/Cards/CollectionCard.tscn")
 const DecklistCardScene = preload("res://src/Cards/DecklistCard.tscn")
-const server_name = "18.222.3.198:8080"
-#const server_name = "localhost:8080"
+#const server_name = "18.222.3.198:8080"
+const server_name = "localhost:8080"
 const websocket_url = "ws://"+server_name+"/profiles/"
-const card_back_path = "res://assets/CardBack.png"
+const card_back_path = "res://assets/card-backs/Visitor_All_Factions_Card_Back(2).png"
 
 var test_decklist = ["3;base2.ASoulforASoul",
 "3;base2.Assassin",
@@ -55,6 +55,8 @@ var is_dragging = false
 var dragged_card
 
 var is_waiting = true
+var connection_error = ""
+var pending_decision = ""
 
 var popup_cards = []
 var popup_message = ""
@@ -79,6 +81,10 @@ func can_block():
 
 
 func clear_popup():
+	if ability_selection_popup:
+		for entry in popup_cards:
+			if entry is Node and is_instance_valid(entry) and entry.get_parent() == null:
+				entry.queue_free()
 	popup_cards = []
 	popup_message = ""
 	ability_selection_popup = false
@@ -134,6 +140,31 @@ func has_initiative():
 	gameState.get_phase() == Types.Phase.ATTACK_PLAY or \
 	gameState.get_phase() == Types.Phase.BLOCK_PLAY)
 
+func clear_drag():
+	is_dragging = false
+	dragged_card = null
 
+func close_bigger_popup():
+	if is_instance_valid(bigger_popup):
+		if bigger_popup.get_parent():
+			bigger_popup.get_parent().remove_child(bigger_popup)
+		bigger_popup.queue_free()
+	bigger_popup = null
 
-
+func close_connections():
+	for peer in [socket, gameSocket]:
+		if is_instance_valid(peer):
+			peer.close()
+			peer.queue_free()
+	socket = null
+	gameSocket = null
+	is_waiting = true
+	clear_drag()
+	close_bigger_popup()
+	clear_popup()
+	SS.clear_selection_data()
+	gameState = null
+	arrow_targets.clear()
+	block_arrow_targets.clear()
+	pending_decision = ""
+	connection_error = ""

@@ -1,0 +1,25 @@
+TARGETING ARROW STYLE
+
+The targeting and blocking indicators now use:
+- Smooth cubic Bezier curves with a tapered, gradient stroke.
+- A subtle wide glow, dark contrast outline, and fine highlight.
+- Warm gold (#e5c180) for targets; soft blue (#80bddb) for blocks.
+- A shaped, anti-aliased arrowhead aligned to the end tangent.
+- Small travelling glints, an origin socket, and a restrained target reticle.
+- Attachments just outside card/avatar edges to reduce overlap with card text.
+
+Card movement and incremental updates are preserved. Existing arrow nodes are
+reused; geometry is recalculated only when endpoints change. Animated accents
+are a separate drawing layer above the stroke. These are Node2D-based visuals
+and cannot intercept pointer input. Overlapping/very short arrows are suppressed.
+
+src/GameBoard/TargetArrow.gd owns appearance and animation.
+src/GameBoard/GameBoard.gd owns target IDs, colours and edge attachments.
+The existing Line and Head child names are retained. Line.points now contains a
+sampled curve, so use points[-1] for the endpoint rather than points[1].
+
+VALIDATION
+117 regression checks passed in Godot 4.6.3 (112 existing + 5 style checks).
+A rendered preview was inspected for both colours, curves, arrowheads and glow.
+Validation assets and preview scripts are not included in the source archive.
+The original assets/backend are still required for a full live match.

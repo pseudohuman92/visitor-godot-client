@@ -1,6 +1,5 @@
 extends Button
 
-
 func _on_pressed():
 	match name:
 		"Save":
@@ -12,43 +11,50 @@ func _on_pressed():
 			GS.deck_name = "New Deck"
 			GS.decklist_changed = true
 
-
 func save():
-	var file = FileAccess.open("user://"+GS.deck_name+".deck", FileAccess.WRITE)
-	file.store_line(GS.deck_name)
-	var i = 0
-	while i < GS.decklist.size():
-		var card = GS.decklist[i]
-		var count = 0
-		while i < GS.decklist.size() and card.get_name() == GS.decklist[i].get_name():
-			i += 1
-			count += 1
-		file.store_line(str(count)+";"+card.get_set()+"."+CS.sanitize_card_name(card.get_name()))
+	var deck_name = GS.deck_name.strip_edges().replace("\n", " ").replace("\r", " ")
+	if deck_name.is_empty():
+		CS.show_error("Enter a deck name before saving.")
+		return
+	var path = "user://" + deck_name.validate_filename() + ".deck"
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		CS.show_error("Could not save deck: " + error_string(FileAccess.get_open_error()))
+		return
+	file.store_line(deck_name)
+	var counts = {}
+	for card in GS.decklist:
+		var key = card.get_set() + "." + CS.sanitize_card_name(card.get_name())
+		counts[key] = counts.get(key, 0) + 1
+	for key in counts:
+		file.store_line(str(counts[key]) + ";" + key)
 	file.flush()
+	var error = file.get_error()
 	file.close()
+	if error != OK:
+		CS.show_error("Could not finish saving deck: " + error_string(error))
 
 func load_():
-	find_parent("DeckBuilder").find_child("LoadDeckDialog").set_visible(true)
-
+	find_parent("DeckBuilder").find_child("LoadDeckDialog").show()
 
 func _on_file_dialog_file_selected(path):
-	print(path)
-	GS.decklist = []
-	var file = FileAccess.open(path, FileAccess.READ)
-	GS.deck_name = file.get_line()
-	find_parent("DeckBuilder").find_child("DeckName").update()
-	while !file.eof_reached():
-		var line = file.get_line()
-		print(line)
-		var count = line.substr(0, line.find(";")).to_int()
-		var set_ = line.substr(line.find(";")+1, line.find(".")-(line.find(";")+1))
-		var cardname = line.substr(line.find(".")+1)
-		print(count)
-		print(set_)
-		print(cardname)
+	var result = CS.read_deck_file(path)
+	if result.has("error"):
+		CS.show_error(result.error)
+		return
+	var cards = []
+	for entry in result.entries:
+		var match_card = null
 		for card in GS.collection:
-			if set_ == card.get_set() and cardname == CS.sanitize_card_name(card.get_name()):
-				for i in count:
-					GS.decklist.append(card)
-	file.close()
+			if card.get_set() == entry.set and CS.sanitize_card_name(card.get_name()) == entry.card:
+				match_card = card
+				break
+		if match_card == null:
+			CS.show_error("Card not found in your collection: " + entry.set + "." + entry.card)
+			return
+		for i in entry.count:
+			cards.append(match_card)
+	cards.sort_custom(CS.compare_cost_name_cardP)
+	GS.decklist = cards
+	GS.deck_name = result.name
 	GS.decklist_changed = true

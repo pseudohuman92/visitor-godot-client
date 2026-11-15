@@ -1,0 +1,43 @@
+CARD ZONE MOVEMENT
+
+Cards with a stable ID and a previously visible source now animate between
+hand, stack, unit/asset areas and the top of each discard pile.
+
+- Default duration: 0.28 seconds, cubic easing out.
+- Configure Card Move Duration on the GameBoard root in the Inspector.
+  Set it to 0 for instant movement.
+- Initial deals, unchanged snapshots, in-place stat changes and same-zone
+  reordering do not start zone-movement animations.
+- A CanvasLayer displays a temporary non-interactive copy above clipped rows.
+  The real destination keeps its Container layout slot, with its drawing and
+  input temporarily suppressed, until movement completes.
+- Position and size interpolate from the old visible card rectangle to the
+  current destination rectangle. Reading the destination each frame accounts
+  for layout sorting, scrolling and resize during the tween.
+- The moving copy refreshes changed card data without restarting its flight.
+- If a card moves again before arriving, the next tween starts from its current
+  visible position. Obsolete copies and tweens are released.
+- Removing a card or leaving the scene cancels its motion and restores any
+  surviving destination's original opacity and input settings.
+- Target arrows follow moving card centres.
+
+FILES
+src/GameBoard/CardMovement.gd: animation layer, tweens and cleanup.
+src/GameBoard/GameBoard.gd: capture origins before incremental reconciliation,
+  detect zone changes by ID, queue movement, and track moving arrow endpoints.
+tests/regression.gd: 27 new movement regression checks.
+
+BOUNDARIES
+The server sends snapshots rather than explicit card-movement events. This
+implementation does not guess the source of newly revealed IDs, deck draws,
+or anonymous opponent-hand cards. Cards without a previously visible identity
+appear normally; backend-supplied movement events would enable those animations.
+Only the visible top of each discard pile currently has a card view.
+
+VALIDATION
+112 regression checks passed in Godot 4.6.3 (85 existing + 27 movement checks).
+Covers completion, input/opacity restoration, consecutive moves, equal snapshots,
+mid-flight data refresh, removed destinations, zero duration and scene exit.
+A rendered in-flight frame was also inspected using the validation copy's
+placeholder art/fonts. Neither placeholders nor preview scripts are shipped.
+Original assets and the backend are still needed for a full live match test.

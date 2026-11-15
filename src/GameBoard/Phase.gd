@@ -1,5 +1,7 @@
 extends Label
 
-func _process(delta):
+func _process(_delta):
 	if GS.gameState:
-		set_text(GS.get_phase_name())
+		var phase = GS.get_phase_name()
+		if text != phase:
+			text = phase

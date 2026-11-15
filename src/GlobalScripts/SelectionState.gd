@@ -53,15 +53,17 @@ func clear_selection_data():
 	callback = null
 	selected_single = []
 	selected = {}
+	selectingX = false
 
 func is_selecting():
-	return selection_targets or \
+	return not selection_targets.is_empty() or not selection_id.is_empty() or \
 	(GS.gameState and GS.gameState.get_activePlayer() == GS.playerId and \
 	(GS.gameState.get_phase() == GS.Types.Phase.ATTACK or \
 		GS.gameState.get_phase() == GS.Types.Phase.BLOCK))
 
 
 func process_selections(selections, card, callback, selecting_type, ability_id = ""):
+	clear_selection_data()
 	SS.selections = selections.duplicate()
 	SS.selecting_for = selecting_type
 	SS.selecting_card = card
@@ -78,12 +80,15 @@ func process_selection(selection):
 	print_debug("Process selection")
 	if selection:
 		unpack_selection(selection)
-		if max_select <= 0:
+		if max_select == 0:
 			process_selection(SS.selections.pop_front())
 		elif min_select == selection_targets.size():
+			selected_single = selection_targets.duplicate()
 			SS.selected[SS.selection_id] = {"selection_id" = SS.selection_id, "selected" = selection_targets.duplicate()}
 			process_selection(SS.selections.pop_front())
 	else:
+		if not callback is Callable or not callback.is_valid():
+			return
 		if selecting_card:
 			callback.call(selecting_card.get_id())
 		else:
@@ -91,6 +96,7 @@ func process_selection(selection):
 
 func check_smart_select():
 	if O.smart_select \
+	and GS.gameState and SS.max_select >= 0 \
 	and GS.gameState.get_phase() != GS.Types.Phase.ATTACK \
 	and SS.selected_single.size() == SS.max_select:
 		SS.submit_selection()

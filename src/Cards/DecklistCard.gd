@@ -31,8 +31,8 @@ func _on_gui_input(event):
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 			if card:
 				var parent = find_parent("DeckBuilder")
-				if GS.bigger_popup:
-					parent.remove_child(GS.bigger_popup)
+				if is_instance_valid(GS.bigger_popup):
+					GS.close_bigger_popup()
 				GS.bigger_popup = GS.CollectionCardScene.instantiate()
 				GS.bigger_popup.setup(card)
 				parent.add_child(GS.bigger_popup)
@@ -41,8 +41,6 @@ func _on_gui_input(event):
 				GS.bigger_popup.set_position(Vector2(0,0))
 
 		if event.is_released():
-			if GS.bigger_popup:
+			if is_instance_valid(GS.bigger_popup):
 				var parent = find_parent("DeckBuilder")
-				parent.remove_child(GS.bigger_popup)
-
-
+				GS.close_bigger_popup()

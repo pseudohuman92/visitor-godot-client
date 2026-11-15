@@ -1,18 +1,10 @@
 extends HBoxContainer
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if GS.gameState:
-		var energy
-		var maxEnergy
-		var health
-		if name.contains("Player"):
-			find_child("EnergyLabel").set_text( \
-				str (GS.gameState.get_player().get_energy()) + "/" + \
-				str(GS.gameState.get_player().get_maxEnergy()))
-			find_child("HealthLabel").set_text(str(GS.gameState.get_player().get_health()))
-		if name.contains("Opponent"):
-			find_child("EnergyLabel").set_text( \
-				str (GS.gameState.get_opponent().get_energy()) + "/" + \
-				str(GS.gameState.get_opponent().get_maxEnergy()))
-			find_child("HealthLabel").set_text(str(GS.gameState.get_opponent().get_health()))
+# Called only when the displayed player's energy/max-energy/health changes.
+func update_player(player):
+	var energy = "%d/%d" % [player.get_energy(), player.get_maxEnergy()] if player else "0/0"
+	var health = str(player.get_health()) if player else "0"
+	if find_child("EnergyLabel").text != energy:
+		find_child("EnergyLabel").text = energy
+	if find_child("HealthLabel").text != health:
+		find_child("HealthLabel").text = health

@@ -1,0 +1,66 @@
+VISITOR GODOT CLIENT — SOURCE FIXES
+
+INSTALL
+Back up your project, then merge this archive's project.godot and src/ into
+that project. Keep your original assets/, addons/, and backend. This is a
+source-only archive because those dependencies were not in the upload.
+Your protocol schemas, generated serializers, scenes and themes are unchanged.
+Editor .tmp backups are omitted. The original upload is preserved separately.
+
+FIXED
+- Accept the actual generated game-state class instead of a failing cross-file cast.
+- Render the complete initial snapshot and connect card arrow signals immediately.
+- Correct the generated gameEnd accessor and remove the invalid match newDraft call.
+- Recognize every remaining match payload without calling nonexistent methods.
+- Use Godot 4 WebSocketPeer close/send APIs; guard connection/send failures.
+- Explicitly close and release socket objects on scene exit.
+- Pass activated abilities into the correct Setup.setup argument.
+- Give target-arrow signals their actual Boolean argument.
+- Clear global dragging state after cancelled and invalid drags.
+- Validate drag payloads and accepted destinations.
+- Free replaced cards, symbols, popups and arrows instead of leaking detached nodes.
+- Refresh popup contents and clear empty discard displays.
+- Update arrow positions after cards/layout move; non-interactive arrowheads.
+- Keep model stack order intact when displaying it in reverse.
+- Fix pagination at exact page boundaries and for empty collections.
+- Sort numeric costs numerically and special costs consistently.
+- Count deck entries by set and name, not name alone.
+- Validate deck files before replacing state; handle inaccessible files and unknown cards.
+- Save grouped deck entries and use safe filenames.
+- Replace blocking smart-pass sleep with delayed, revision-checked decisions.
+- Preserve the request type and selected IDs when auto-answering selectFrom.
+- Support unbounded target requirements and prevent waiting-state Submit clicks.
+- Show connection failures through existing UI.
+
+VALIDATION
+Godot 4.6.3: 117 regression checks passed, with no script/runtime errors.
+Includes real binary WebSocket send/receive through an ephemeral local peer;
+no production/backend service is contacted by the regression suite.
+Main menu, game board, and deck builder headless smoke checks also passed.
+Tests used a separate validation copy with generated image/font placeholders
+for omitted assets and unavailable editor plugins disabled. None of these
+placeholders, plugin setting changes, or import caches are shipped here.
+The project's declared Godot 4.7 configuration is preserved.
+
+Run the regression suite after restoring the original assets:
+  godot --headless --path . res://tests/regression.tscn
+
+LIMITATIONS
+A complete live match was not tested: the backend and original assets were
+not uploaded. The original protobuf editor addon is needed for regeneration.
+
+The original client has no complete decision screens for orderCards,
+selectXValue, assignDamage, selectKnowledge, or pickCard. These are now
+recognized, expose a decision_requested(kind, request) signal, preserve
+available state, and explicitly pause with an explanatory message rather
+than crash or auto-pass. Their decision screens and drafting remain unfinished;
+this patch does not invent game rules or choose an answer on the player's behalf.
+
+INCREMENTAL UPDATE
+See INCREMENTAL-UPDATES.txt for keyed card reconciliation and the 31 new checks.
+
+CARD MOVEMENT
+See CARD-MOVEMENT.txt for animated zone changes and the 27 new checks.
+
+ARROW STYLE
+See ARROW-STYLE.txt for curved, glowing targeting/blocking arrows and 5 new checks.

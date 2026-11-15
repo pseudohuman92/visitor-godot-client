@@ -8,8 +8,8 @@ var blocked = false
 var display = false
 var hover = false
 
-signal draw_target_arrows()
-signal remove_target_arrows()
+signal draw_target_arrows(block: bool)
+signal remove_target_arrows(block: bool)
 
 func setup(card=null, square=false):
 	CS.setup_card(self, card)
@@ -50,7 +50,10 @@ func get_border_color():
 	return Color.WHITE_SMOKE
 
 func set_border_color(color):
-		var border = get_theme_stylebox("panel").duplicate()
+		var current = get_theme_stylebox("panel")
+		if current is StyleBoxFlat and current.border_color == color:
+			return
+		var border = current.duplicate()
 		border.set_border_color(color)
 		add_theme_stylebox_override("panel", border)
 
@@ -59,23 +62,32 @@ func _get_drag_data(_at_position):
 	SS.is_selecting() or \
 	not (card.get_canPlay() or card.get_canStudy()):
 		return null
+	hover = false
+	remove_target_arrows.emit(false)
 	GS.is_dragging = true
 	GS.dragged_card = self
 	set_scale(Vector2(1,1))
 	var copy = GS.CardScene.instantiate()
 	if card:
 		copy.setup(card)
+		copy.find_child("InternalContainer").display = true
 	var prev = Control.new()
 	prev.add_child(copy)
 	set_drag_preview(prev)
 	return self
+
+func _notification(what):
+	if what == NOTIFICATION_DRAG_END and GS.dragged_card == self:
+		GS.clear_drag()
+		hover = false
+		remove_target_arrows.emit(false)
 
 func _on_mouse_entered():
 	if !GS.is_dragging:
 		if card and card.get_targets():
 			for c in card.get_targets():
 				GS.arrow_targets.append([card.get_id(), c])
-			draw_target_arrows.emit()
+			draw_target_arrows.emit(false)
 		hover = true
 		set_border_color(Color.DARK_GOLDENROD)
 
@@ -83,7 +95,7 @@ func _on_mouse_entered():
 func _on_mouse_exited():
 	if !GS.is_dragging:
 		if (card and card.get_targets()):
-			remove_target_arrows.emit()
+			remove_target_arrows.emit(false)
 		hover = false
 
 func _process(delta):
@@ -141,18 +153,18 @@ func _on_gui_input(event):
 					if activated_abilities.size() == 1:
 						SS.process_selections(activated_abilities[0].get_targets(), card, GS.gameSocket.activate_card, SS.selection_type.ACTIVATE, activated_abilities[0].get_id())
 					else:
-						GS.popup_message = "Select and ability to activate."
+						GS.popup_message = "Select an ability to activate."
 						GS.ability_selection_popup = true
 						for ability in activated_abilities:
 							var c = GS.AbilityCardScene.instantiate()
-							c.setup(card, ability)
+							c.setup(card, false, ability)
 							GS.popup_cards.append(c)
 
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 			if card:
 				var parent = find_parent("GameBoard")
-				if GS.bigger_popup:
-					parent.remove_child(GS.bigger_popup)
+				if is_instance_valid(GS.bigger_popup):
+					GS.close_bigger_popup()
 				GS.bigger_popup = GS.CardScene.instantiate()
 				GS.bigger_popup.setup(card)
 				GS.bigger_popup.z_index = z_index + 1
@@ -162,6 +174,6 @@ func _on_gui_input(event):
 				parent.add_child(GS.bigger_popup)
 
 		if event.is_released():
-			if GS.bigger_popup:
+			if is_instance_valid(GS.bigger_popup):
 				var parent = find_parent("GameBoard")
-				parent.remove_child(GS.bigger_popup)
+				GS.close_bigger_popup()

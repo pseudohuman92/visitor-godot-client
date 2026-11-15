@@ -1,0 +1,51 @@
+INCREMENTAL GAME-STATE UPDATES
+
+update_game_state() now installs the latest snapshot and reconciles only changed
+visual state. The wire protocol remains a full game-state snapshot.
+
+- Card-zone fingerprints use serialized protobuf values, not object identity.
+  Equal snapshots from different generated protocol classes do not redraw cards.
+  Cached values also detect mutations to the same protobuf instance, even when
+  the decoder has already assigned GS.gameState before calling the board.
+- CardContainer.sync_cards() matches visible cards by ID within each zone.
+  Existing views are reused; changed cards run setup on that same view; newly
+  added cards are instantiated; missing cards are detached and freed. Reordering
+  uses move_child() instead of rebuilding the row.
+- Cards changing zones receive the appropriate destination scene (e.g. square
+  battlefield versus full hand card). Unaffected cards keep their identity.
+- Hidden opponent cards use positional keys so count changes affect only the
+  excess/new card backs.
+- Equal cards receive the latest backing data reference without presentation work.
+- Signal connections are installed only for new views and checked for duplicates.
+- Deck sizes, health/energy, and knowledge pools update independently. Normal
+  energy and knowledge displays no longer rebuild every frame. Study choices
+  still react to local selection changes between server snapshots.
+- Hover and blocking arrows are reconciled by source/target pair and retain node
+  identity when unchanged. Geometry is written only when endpoints move.
+- Local blocking flags and removed selection nodes are reconciled explicitly,
+  avoiding stale state previously hidden by full scene reconstruction.
+- Repeated card setup restores hidden shields/contents and artwork modulation.
+- populate() remains available for callers requesting full replacement, such as
+  popup contents. Board updates use sync_cards().
+
+FILES
+src/GameBoard/GameBoard.gd: state comparison, zone reconciliation, cached displays,
+  selection cleanup, persistent arrows, and idempotent signal connections.
+src/GameBoard/CardContainer.gd: keyed card reconciliation and node cleanup.
+src/GameBoard/EnergyDisplay.gd: push-based player-stat updates.
+src/GameBoard/KnowledgeDisplay.gd: push-based pools and cached study selections.
+src/GameBoard/Phase.gd: update its label only when text changes.
+src/Cards/Card.gd: avoid allocating unchanged border styles every frame.
+src/GlobalScripts/CardScript.gd: make card refresh safe for reused views.
+tests/regression.gd: 31 additional incremental-update checks.
+
+VALIDATION
+85 regression checks passed at the incremental-update stage under Godot 4.6.3, with source-only dependencies
+supplied by temporary placeholder assets in a separate validation copy. Includes
+all 54 previous checks and the real local binary WebSocket exchange. No backend
+match was run. Placeholders and test-only project settings are not included.
+
+Run with your original assets restored:
+  godot --headless --path . res://tests/regression.tscn
+
+Current total: 112 checks after the movement feature; see CARD-MOVEMENT.txt.

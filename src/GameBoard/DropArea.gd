@@ -1,14 +1,18 @@
 extends Control
 
-func _can_drop_data(at_position, data):
-	return true
+func _can_drop_data(_at_position, data):
+	if not data is Card or not is_instance_valid(data) or not data.card or GS.is_waiting:
+		return false
+	return (name.contains("PlayContainer") and data.card.get_canPlay()) or \
+		(name.contains("PlayerDeck") and data.card.get_canStudy())
 
 func _drop_data(at_position, data):
+	if not _can_drop_data(at_position, data):
+		return
 	if data.card:
 		print("Dropped to " + get_name() + ": ", data.card.get_id())
 		#data.set_visible(true)
-		GS.is_dragging = false
-		GS.dragged_card = null
+		GS.clear_drag()
 		if name.contains("PlayContainer") and data.card.get_canPlay():
 			SS.process_selections(data.card.get_playTargets(), data.card, GS.gameSocket.play_card, SS.selection_type.PLAY)
 		elif name.contains("PlayerDeck") and data.card.get_canStudy():

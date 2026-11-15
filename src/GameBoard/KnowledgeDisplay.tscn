@@ -1,14 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://dpjjtpkohrwke"]
+[gd_scene format=3 uid="uid://dpjjtpkohrwke"]
 
 [ext_resource type="StyleBox" uid="uid://by0rvqvrgari" path="res://src/Themes/PanelBorder.tres" id="1_68peq"]
 [ext_resource type="LabelSettings" uid="uid://bx7tppt0u01gu" path="res://src/Themes/KnowledgeDisplayNumbers.tres" id="1_h0bbe"]
-[ext_resource type="Script" path="res://src/GameBoard/KnowledgeDisplayContainer.gd" id="1_hgooe"]
-[ext_resource type="Texture2D" uid="uid://bla5kmox0uutt" path="res://assets/card-components/knowledge-G.png" id="2_66ra7"]
+[ext_resource type="Script" uid="uid://bfv3yol2ov3nh" path="res://src/GameBoard/KnowledgeDisplayContainer.gd" id="1_hgooe"]
+[ext_resource type="Texture2D" uid="uid://dcfh3awf60bjk" path="res://assets/card-components/Factions/Blue.png" id="2_66ra7"]
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="2_nfu6q"]
 [ext_resource type="StyleBox" uid="uid://bb1ulbrelfxxt" path="res://src/Themes/KnowledgeLabel.tres" id="2_t0n5q"]
-[ext_resource type="Texture2D" uid="uid://ctiwq73fpxfx1" path="res://assets/card-components/knowledge-R.png" id="3_10g2d"]
-[ext_resource type="Texture2D" uid="uid://ubacjv4amyn1" path="res://assets/card-components/knowledge-P.png" id="5_ctlwh"]
-[ext_resource type="Texture2D" uid="uid://cnnp27dobkbl6" path="res://assets/card-components/knowledge-Y.png" id="6_nsdvn"]
+[ext_resource type="Texture2D" uid="uid://d2wiwbbsrdylr" path="res://assets/card-components/Factions/Red.png" id="3_10g2d"]
+[ext_resource type="Texture2D" uid="uid://0okhd46g74cw" path="res://assets/card-components/Factions/Purple.png" id="5_ctlwh"]
+[ext_resource type="Texture2D" uid="uid://dk4mcbav8185j" path="res://assets/card-components/Factions/Yellow.png" id="6_nsdvn"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ytiu5"]
 texture = ExtResource("2_66ra7")

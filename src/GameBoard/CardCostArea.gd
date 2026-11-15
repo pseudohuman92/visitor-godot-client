@@ -3,7 +3,12 @@ extends VBoxContainer
 var children = []
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func update(cost, knowledge):
-		children.map(func (c):remove_child(c))
+		for child in children:
+			if is_instance_valid(child):
+				remove_child(child)
+				child.queue_free()
+		children.clear()
+		find_child("CostBG").set_visible(not str(cost).is_empty())
 		#get_children().map(func (c):c.set_visible(false))
 		if cost:
 			find_child("CostBG").set_visible(true)

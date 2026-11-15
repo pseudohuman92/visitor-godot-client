@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://dic2fshrenmrv"]
+[gd_scene format=3 uid="uid://dic2fshrenmrv"]
 
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="1_4xrcx"]
-[ext_resource type="Script" path="res://src/MainMenu/MenuButton.gd" id="1_ctsd2"]
-[ext_resource type="Script" path="res://src/GameBoard/MainContainer.gd" id="2_xnhqe"]
+[ext_resource type="Script" uid="uid://ch5woy3an4pea" path="res://src/MainMenu/MenuButton.gd" id="1_ctsd2"]
+[ext_resource type="Script" uid="uid://cd5ac2npxbq7u" path="res://src/GameBoard/MainContainer.gd" id="2_xnhqe"]
 [ext_resource type="Texture2D" uid="uid://nskki1s0pkew" path="res://assets/backgrounds/wp10493975-grunge-texture-wallpapers.jpg" id="3_rk3ij"]
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=1811934586]
 clip_contents = true
 layout_mode = 3
 anchors_preset = 15
@@ -19,7 +19,7 @@ mouse_filter = 1
 theme = ExtResource("1_4xrcx")
 script = ExtResource("2_xnhqe")
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." unique_id=994203838]
 show_behind_parent = true
 clip_contents = true
 layout_mode = 1
@@ -31,7 +31,7 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("2_xnhqe")
 
-[node name="TableBG" type="TextureRect" parent="Control"]
+[node name="TableBG" type="TextureRect" parent="Control" unique_id=2115316262]
 show_behind_parent = true
 clip_contents = true
 layout_mode = 1
@@ -43,7 +43,7 @@ grow_vertical = 2
 texture = ExtResource("3_rk3ij")
 expand_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1577083467]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -57,31 +57,31 @@ offset_bottom = 49.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="DeckBuilder" type="Button" parent="VBoxContainer"]
+[node name="DeckBuilder" type="Button" parent="VBoxContainer" unique_id=1398576471]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Deck Builder"
 script = ExtResource("1_ctsd2")
 
-[node name="PlayMulti" type="Button" parent="VBoxContainer"]
+[node name="PlayMulti" type="Button" parent="VBoxContainer" unique_id=924503278]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Join Queue"
 script = ExtResource("1_ctsd2")
 
-[node name="PlayAI" type="Button" parent="VBoxContainer"]
+[node name="PlayAI" type="Button" parent="VBoxContainer" unique_id=1605140457]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Solitaire"
 script = ExtResource("1_ctsd2")
 
-[node name="PlayTest" type="Button" parent="VBoxContainer"]
+[node name="PlayTest" type="Button" parent="VBoxContainer" unique_id=1146804164]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Test Queue"
 script = ExtResource("1_ctsd2")
 
-[node name="FileDialog" type="FileDialog" parent="."]
+[node name="FileDialog" type="FileDialog" parent="." unique_id=683069732]
 title = "Open a File"
 initial_position = 2
 size = Vector2i(600, 600)

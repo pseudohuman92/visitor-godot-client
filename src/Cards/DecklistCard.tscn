@@ -1,9 +1,9 @@
-[gd_scene load_steps=43 format=3 uid="uid://c5w0mqtdw4wvh"]
+[gd_scene format=3 uid="uid://c5w0mqtdw4wvh"]
 
-[ext_resource type="Script" path="res://src/Cards/DecklistCard.gd" id="1_eguco"]
+[ext_resource type="Script" uid="uid://da1pumt73wva7" path="res://src/Cards/DecklistCard.gd" id="1_eguco"]
 [ext_resource type="StyleBox" uid="uid://nrrp32xv522l" path="res://src/Themes/Border.tres" id="2_yfim8"]
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="3_wxp6q"]
-[ext_resource type="Texture2D" uid="uid://c2r5l4ypyweyw" path="res://assets/card-components/energy-black.png" id="5_3kh0f"]
+[ext_resource type="Texture2D" uid="uid://bpda81cblqkcb" path="res://assets/card-components/numbers/Colorless/1.png" id="5_3kh0f"]
 [ext_resource type="Texture2D" uid="uid://oqqgesnsg3n0" path="res://assets/buttons/grunge-highlight-white.png" id="13_r006i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qjmgv"]

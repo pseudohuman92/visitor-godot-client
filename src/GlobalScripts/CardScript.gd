@@ -1,25 +1,25 @@
 extends Node
 
 const text_icons = {
-	"{B}": "res://assets/card-components/knowledge-B.png",
-	"{G}": "res://assets/card-components/knowledge-G.png",
-	"{P}": "res://assets/card-components/knowledge-P.png",
-	"{R}": "res://assets/card-components/knowledge-R.png",
-	"{Y}": "res://assets/card-components/knowledge-Y.png",
+	"{B}": "res://assets/card-components/Factions/Blue.png",
+	"{G}": "res://assets/card-components/Factions/Green.png",
+	"{P}": "res://assets/card-components/Factions/Purple.png",
+	"{R}": "res://assets/card-components/Factions/Red.png",
+	"{Y}": "res://assets/card-components/Factions/Yellow.png",
 #	"{Use}": "res://assets/card-components/use-icon-black.png",
 	"{damage}": "res://assets/card-components/attack-white.png",
 	"{shield}": "res://assets/card-components/shield-white.png",
-	"{0}": "res://assets/card-components/numbers/energy-0.png",
-	"{1}": "res://assets/card-components/numbers/energy-1.png",
-	"{2}": "res://assets/card-components/numbers/energy-2.png",
-	"{3}": "res://assets/card-components/numbers/energy-3.png",
-	"{4}": "res://assets/card-components/numbers/energy-4.png",
-	"{5}": "res://assets/card-components/numbers/energy-5.png",
-	"{6}": "res://assets/card-components/numbers/energy-6.png",
-	"{7}": "res://assets/card-components/numbers/energy-7.png",
-	"{8}": "res://assets/card-components/numbers/energy-8.png",
-	"{9}": "res://assets/card-components/numbers/energy-9.png",
-	"{X}": "res://assets/card-components/numbers/energy-X.png",
+	"{0}": "res://assets/card-components/numbers/Colorless/0.png",
+	"{1}": "res://assets/card-components/numbers/Colorless/1.png",
+	"{2}": "res://assets/card-components/numbers/Colorless/2.png",
+	"{3}": "res://assets/card-components/numbers/Colorless/3.png",
+	"{4}": "res://assets/card-components/numbers/Colorless/4.png",
+	"{5}": "res://assets/card-components/numbers/Colorless/5.png",
+	"{6}": "res://assets/card-components/numbers/Colorless/6.png",
+	"{7}": "res://assets/card-components/numbers/Colorless/7.png",
+	"{8}": "res://assets/card-components/numbers/Colorless/8.png",
+	"{9}": "res://assets/card-components/numbers/Colorless/9.png",
+	"{X}": "res://assets/card-components/numbers/Colorless/X.png",
 }
 
 const combat_ability_hints = {
@@ -38,7 +38,7 @@ func get_card_image(set_name, card_name):
 	return load("res://assets/card-images/"+set_name+"/"+card_name+".png")
 
 func get_type_icon(type):
-	return load ("res://assets/card-components/"+type+".png")
+	return load ("res://assets/card-components/Types/"+type+".png")
 
 func get_placeholder_image(type):
 	return load("res://assets/card-images/placeholders/"+type+".png")
@@ -109,18 +109,23 @@ func position_in_bounds(size, pos):
 		return Vector2(min(max(0, pos.x), 1820-size.x), min(max(0, pos.y), 930-size.y))
 
 func compare_cost_name_cardP(a, b):
-	var a_c = a.get_cost()
-	var a_n = a.get_name()
-	var b_c = b.get_cost()
-	var b_n = b.get_name()
-	match a_c.casecmp_to(b_c):
-		-1: return true
-		0:
-			match a_n.casecmp_to(b_n):
-				-1: return true
-				0: return false
-				1: return false
-		1: return false
+	var a_cost = str(a.get_cost()).strip_edges()
+	var b_cost = str(b.get_cost()).strip_edges()
+	var a_numeric = a_cost.is_valid_int() or a_cost.is_empty()
+	var b_numeric = b_cost.is_valid_int() or b_cost.is_empty()
+	if a_numeric != b_numeric:
+		return a_numeric
+	if a_numeric:
+		if a_cost.to_int() != b_cost.to_int():
+			return a_cost.to_int() < b_cost.to_int()
+	else:
+		var comparison = a_cost.naturalnocasecmp_to(b_cost)
+		if comparison != 0:
+			return comparison < 0
+	var name_order = a.get_name().naturalnocasecmp_to(b.get_name())
+	if name_order != 0:
+		return name_order < 0
+	return a.get_set().naturalnocasecmp_to(b.get_set()) < 0
 
 func compare_color_cost_name_cardP(a, b):
 	var a_c = a.get_knowledgeCost()
@@ -145,6 +150,7 @@ func load_card_image_and_type(c):
 		else:
 			type = c.card.get_types()[0]
 		if image:
+			image_box.set_modulate(Color.WHITE)
 			image_box.set_texture(image)
 		else:
 			image_box.set_texture(get_placeholder_image(type))
@@ -155,6 +161,7 @@ func load_card_image_and_type(c):
 func setup_card(n, card=null):
 	if card:
 		n.card = card
+		n.find_child("Contents").show()
 		CS.load_card_image_and_type(n)
 		n.find_child("CostArea").update(card.get_cost(), card.get_knowledgeCost())
 		n.find_child("Name").set_text(card.get_name())
@@ -169,6 +176,7 @@ func setup_card(n, card=null):
 				n.find_child("Attack").set_text(str(combat.get_attack()))
 			else:
 				n.find_child("Attack").set_text("0")
+			n.find_child("Shield").set_visible(combat.get_shield() != 0)
 			if combat.get_shield():
 				n.find_child("Shield").set_text(str(combat.get_shield()))
 			else:
@@ -199,4 +207,49 @@ func setup_card(n, card=null):
 func sanitize_card_name(name):
 	return name.replace(" ","").replace(".","").replace("-","")
 
+func read_deck_file(path):
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return {"error": "Could not open deck: " + error_string(FileAccess.get_open_error())}
+	var deck_name = file.get_line().strip_edges()
+	if deck_name.is_empty():
+		file.close()
+		return {"error": "The deck must have a name on the first line."}
+	var entries = []
+	var lines = []
+	var counts = {}
+	var line_number = 1
+	while not file.eof_reached():
+		var line = file.get_line().strip_edges()
+		line_number += 1
+		if line.is_empty():
+			continue
+		var separator = line.find(";")
+		var dot = line.find(".", separator + 1)
+		var count_text = line.substr(0, separator)
+		if separator <= 0 or dot <= separator + 1 or dot >= line.length() - 1 or not count_text.is_valid_int():
+			file.close()
+			return {"error": "Invalid deck entry on line %d." % line_number}
+		var count = count_text.to_int()
+		var set_name = line.substr(separator + 1, dot - separator - 1)
+		var card_name = line.substr(dot + 1)
+		var key = set_name + "." + card_name
+		counts[key] = counts.get(key, 0) + count
+		if count < 1 or counts[key] > 3:
+			file.close()
+			return {"error": "Deck entries must contain one to three copies per card (line %d)." % line_number}
+		entries.append({"count": count, "set": set_name, "card": card_name})
+		lines.append(str(count) + ";" + key)
+	file.close()
+	return {"name": deck_name, "entries": entries, "lines": lines}
 
+func show_error(message):
+	if not is_inside_tree() or get_tree().current_scene == null:
+		return
+	var dialog = AcceptDialog.new()
+	dialog.title = "Unable to complete action"
+	dialog.dialog_text = message
+	get_tree().current_scene.add_child(dialog)
+	dialog.confirmed.connect(dialog.queue_free)
+	dialog.canceled.connect(dialog.queue_free)
+	dialog.popup_centered()

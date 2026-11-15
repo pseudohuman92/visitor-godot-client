@@ -4,10 +4,12 @@ class_name Websocket
 
 var _client = WebSocketPeer.new()
 var _write_mode = WebSocketPeer.WRITE_MODE_BINARY
+var _polling = false
 
 signal initialize_game_state(new_state)
 signal got_login_response()
 signal got_collection(collection)
+signal connection_failed(reason)
 
 func get_collection():
 	print("Getting Collection")
@@ -48,6 +50,7 @@ func decode_proto_message(data):
 		GS.gameId = lr.get_game().get_id();
 		GS.playerId = lr.get_game().get_player().get_id();
 		GS.aiId = lr.get_aiId()
+		GS.gameType = lr.get_gameType()
 		initialize_game_state.emit(lr.get_game())
 
 	elif message.has_getCollectionResponse():
@@ -65,52 +68,51 @@ func decode_proto_message(data):
 
 
 func connect_to_server():
-	print("Connecting")
-	randomize()
-	GS.userId = str(randi() % 100000 +1)
-	_client.connect_to_url(GS.websocket_url+GS.userId)
+	GS.connection_error = ""
+	GS.is_waiting = true
+	if GS.userId.is_empty():
+		GS.userId = str(randi_range(1, 100000))
+	var error = _client.connect_to_url(GS.websocket_url + GS.userId)
+	_polling = error == OK
+	if error != OK:
+		_fail("Could not connect to the profile service: %s" % error_string(error))
+	return error
 
 func _process(_delta):
+	if not _polling:
+		return
 	_client.poll()
 	var state = _client.get_ready_state()
 	if state == WebSocketPeer.STATE_OPEN:
 		_client_received()
-	elif state == WebSocketPeer.STATE_CLOSING:
-		# Keep polling to achieve proper close.
-		pass
 	elif state == WebSocketPeer.STATE_CLOSED:
-		var code = _client.get_close_code()
-		var reason = _client.get_close_reason()
-		print("WebSocket closed with code: %d, reason %s. Clean: %s" % [code, reason, code != -1])
-		set_process(false) # Stop processing.
-		GS.socket = null
+		_polling = false
+		_fail("Profile connection closed (%d): %s" % [_client.get_close_code(), _client.get_close_reason()])
 
-
-func _client_close_request(code, reason):
-	print("Close code: %d, reason: %s" % [code, reason])
-
-
-func _peer_connected(id):
-	print("%s: Client just connected" % id)
-
+func close():
+	_polling = false
+	_client.close(1001, "Leaving profile")
 
 func _exit_tree():
-	_client.disconnect_from_host(1001, "Bye bye!")
+	close()
 
-
-func _client_connected(protocol):
-	print("Client just connected with protocol: %s" % protocol)
-	_client.get_peer(1).set_write_mode(_write_mode)
-
-
-func _client_disconnected(clean=true):
-	print("Client just disconnected. Was clean: %s" % clean)
-
-func _client_received(_p_id = 1):
+func _client_received():
 	while _client.get_available_packet_count():
 		decode_proto_message(_client.get_packet())
 
+func _fail(reason):
+	GS.is_waiting = true
+	GS.connection_error = reason
+	connection_failed.emit(reason)
 
 func send_message(data):
+	if _client.get_ready_state() != WebSocketPeer.STATE_OPEN:
+		_fail("The profile connection is not open.")
+		return ERR_UNAVAILABLE
+	var error = _client.send(data.to_bytes(), _write_mode)
+	if error != OK:
+		_fail("Could not send profile request: %s" % error_string(error))
+		return error
 	GS.is_waiting = true
-	_client.send(data.to_bytes(), _write_mode)
+	GS.connection_error = ""
+	return OK

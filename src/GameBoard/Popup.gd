@@ -1,31 +1,37 @@
 extends PanelContainer
 
 var popup_setup = false
-# Called when the node enters the scene tree for the first time.
+var displayed_cards = []
+var displayed_message = ""
+
 func _ready():
 	set_size(get_viewport_rect().size)
-	set_visible(false)
+	hide()
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if !GS.popup_cards and popup_setup:
-		find_child("Cards").clear()
-		set_visible(false)
-		GS.clear_popup()
+func _process(_delta):
+	if GS.popup_cards.is_empty():
+		if popup_setup:
+			find_child("Cards").clear()
 		popup_setup = false
-	elif GS.popup_cards and !popup_setup:
-		find_child("PopupText").set_text(GS.popup_message)
-		var child = find_child("Cards")
+		displayed_cards.clear()
+		displayed_message = ""
+		hide()
+	elif not popup_setup or displayed_cards != GS.popup_cards:
+		var cards = find_child("Cards")
+		cards.clear()
+		find_child("PopupText").text = GS.popup_message
 		if GS.ability_selection_popup:
-			GS.popup_cards.map(func(c): child.add_child(c))
+			for entry in GS.popup_cards:
+				cards.add_child(entry)
 		else:
-			find_child("Cards").populate(GS.popup_cards)
+			cards.populate(GS.popup_cards)
+		displayed_cards = GS.popup_cards.duplicate()
+		displayed_message = GS.popup_message
 		popup_setup = true
-		set_visible(true)
-
+		show()
+	if popup_setup:
+		find_child("PopupText").text = GS.popup_message
 
 func _on_gui_input(event):
-	if event is InputEventMouseButton:
-		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and !SS.is_selecting():
-			GS.clear_popup()
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not SS.is_selecting():
+		GS.clear_popup()
