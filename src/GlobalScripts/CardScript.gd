@@ -35,7 +35,8 @@ const combat_ability_hints = {
 }
 
 func get_card_image(set_name, card_name):
-	return load("res://assets/card-images/"+set_name+"/"+card_name+".png")
+	var path = "res://assets/card-images/" + set_name + "/" + card_name + ".png"
+	return load(path) if ResourceLoader.exists(path, "Texture2D") else null
 
 func get_type_icon(type):
 	return load ("res://assets/card-components/Types/"+type+".png")
@@ -264,7 +265,7 @@ func set_cost_texture(background: TextureRect, cost):
 		background.texture = null
 		background.hide()
 		return
-	var path = "res://assets/numbers/Colorless/" + value + ".png"
+	var path = "res://assets/card-components/numbers/Colorless/" + value + ".png"
 	if not ResourceLoader.exists(path, "Texture2D"):
 		background.texture = null
 		background.hide()

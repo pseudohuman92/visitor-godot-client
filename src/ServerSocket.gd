@@ -72,7 +72,7 @@ func connect_to_server():
 	GS.is_waiting = true
 	if GS.userId.is_empty():
 		GS.userId = str(randi_range(1, 100000))
-	var error = _client.connect_to_url(GS.websocket_url + GS.userId)
+	var error = _client.connect_to_url(GS.get_profile_URL())
 	_polling = error == OK
 	if error != OK:
 		_fail("Could not connect to the profile service: %s" % error_string(error))

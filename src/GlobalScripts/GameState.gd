@@ -98,14 +98,26 @@ func has_action():
 			return true
 	return false
 
+func get_server_base():
+	if OS.has_feature("web") and Engine.has_singleton("JavaScriptBridge"):
+		var bridge = Engine.get_singleton("JavaScriptBridge")
+		var configured = bridge.eval("window.VISITOR_SERVER_URL || ''", true)
+		if configured is String and (configured.begins_with("ws://") or configured.begins_with("wss://")):
+			return configured.trim_suffix("/")
+	return "ws://" + server_name
+
+func get_profile_URL():
+	return get_server_base() + "/profiles/" + userId.uri_encode()
+
 func get_game_URL():
+	var base = get_server_base()
 	match gameType:
 		Types.GameType.AI_BO1_CONSTRUCTED:
-			return "ws://"+server_name+"/ai/"+playerId+"/"+gameId+"/"+aiId
+			return base+"/ai/"+playerId+"/"+gameId+"/"+aiId
 		Types.GameType.BO1_CONSTRUCTED:
-			return "ws://"+server_name+"/games/"+playerId+"/"+gameId
+			return base+"/games/"+playerId+"/"+gameId
 		Types.GameType.P2_DRAFT:
-			return "ws://"+server_name+"/drafts/"+playerId+"/"+gameId
+			return base+"/drafts/"+playerId+"/"+gameId
 
 func get_phase_name():
 	if !gameState or gameState.get_phase() == Types.Phase.NOPHASE:

@@ -12,6 +12,7 @@ func update(cost, knowledge):
 			child.queue_free()
 	children.clear()
 	alignment = BoxContainer.ALIGNMENT_BEGIN
+	add_theme_constant_override("separation", 0)
 	CS.set_cost_texture(find_child("CostBG"), cost)
 	if not is_instance_valid(_knowledge_stack):
 		_knowledge_stack = Control.new()
@@ -31,7 +32,7 @@ func update(cost, knowledge):
 			symbol.custom_minimum_size = Vector2.ONE * KNOWLEDGE_ICON_SIZE
 			symbol.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			symbol.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			symbol.position = Vector2(0, index * KNOWLEDGE_STEP)
+			symbol.position = Vector2(-5, index * KNOWLEDGE_STEP)
 			symbol.size = Vector2.ONE * KNOWLEDGE_ICON_SIZE
 			symbol.z_index = index + 1
 			_ignore_input(symbol)

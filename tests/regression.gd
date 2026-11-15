@@ -680,14 +680,14 @@ func check_card_ui_controls():
 	var neighbour_position = neighbour.global_position
 	var rest_position = internal.global_position
 	var cost = view.find_child("CostBG")
-	expect(cost.texture.resource_path == "res://assets/numbers/Colorless/2.png", "Numeric cost uses the matching texture")
+	expect(cost.texture.resource_path == "res://assets/card-components/numbers/Colorless/2.png", "Numeric cost uses the matching texture")
 	expect(view.find_child("Cost") == null, "Full card has no overlay cost label")
 	expect(view.find_child("TypeIcon").size.x >= 36 and view.find_child("TypeIcon").size.y >= 36, "Type icon is at least 36 pixels square")
 	var cost_area = view.find_child("CostArea")
 	expect(cost_area.children.size() == 4, "Knowledge counts expand into individual icons")
 	for i in range(4):
 		var icon = cost_area.children[i]
-		expect(icon.size == Vector2(36, 36) and icon.position == Vector2(0, i * 18), "Knowledge icons are larger with exact half overlap")
+		expect(icon.size == Vector2(36, 36) and icon.position == Vector2(-5, i * 18), "Knowledge icons are larger with exact half overlap")
 	expect(cost_area.get_node("KnowledgeStack").custom_minimum_size == Vector2(36, 90), "Knowledge stack reserves its overlapped height")
 	expect(cost_area.alignment == BoxContainer.ALIGNMENT_BEGIN, "Knowledge stack is aligned at the top")
 
@@ -731,7 +731,7 @@ func check_card_ui_controls():
 		if value.is_empty():
 			expect(not cost.visible and cost.texture == null, "Empty cost clears the previous number image")
 		else:
-			expect(cost.visible and cost.texture.resource_path == "res://assets/numbers/Colorless/" + value + ".png", "Zero and symbolic costs use their matching images")
+			expect(cost.visible and cost.texture.resource_path == "res://assets/card-components/numbers/Colorless/" + value + ".png", "Zero and symbolic costs use their matching images")
 
 	var collection = GS.CollectionCardScene.instantiate()
 	collection.setup(data)

@@ -1,0 +1,801 @@
+From 59897e78cacb4b8965bbeadd6dffd9a02cc27f40 Mon Sep 17 00:00:00 2001
+From: Atalay Ileri <coml1072@ox.ac.uk>
+Date: Sun, 15 Nov 2026 09:59:50 +0000
+Subject: [PATCH] Refine card cost layout and add configurable web and Linux
+ exports
+
+---
+ CARD-UI-UPDATES.txt             |  15 ++-
+ export_presets.cfg              |  22 ++-
+ project.godot                   |   2 +
+ src/Cards/Card.tscn             |  36 +++--
+ src/Cards/CollectionCard.tscn   |  37 ++++--
+ src/Cards/HoverLift.gd.uid      |   1 +
+ src/Cards/SquareCard.tscn       |  39 ++++--
+ src/GameBoard/CardCostArea.gd   |   3 +-
+ src/GlobalScripts/CardScript.gd |   5 +-
+ src/GlobalScripts/GameState.gd  |  18 ++-
+ src/MainMenu/MenuButton.gd      |  13 +-
+ src/ServerSocket.gd             |   2 +-
+ tests/regression.gd             |   6 +-
+ tools/export_web.py             |  21 +++
+ web/client-shell.html           | 229 ++++++++++++++++++++++++++++++++
+ 15 files changed, 409 insertions(+), 40 deletions(-)
+ create mode 100644 src/Cards/HoverLift.gd.uid
+ create mode 100644 tools/export_web.py
+ create mode 100644 web/client-shell.html
+
+diff --git a/CARD-UI-UPDATES.txt b/CARD-UI-UPDATES.txt
+index ae82d57..f1eb153 100644
+--- a/CARD-UI-UPDATES.txt
++++ b/CARD-UI-UPDATES.txt
+@@ -2,7 +2,7 @@ CARD UI UPDATES
+ 
+ COST IMAGES
+ Numeric costs now set CostBG.texture from:
+-  res://assets/numbers/Colorless/<value>.png
++  res://assets/card-components/numbers/Colorless/<value>.png
+ Examples: 0.png, 2.png, 10.png, X.png.
+ The old overlay labels are removed from full, square and collection card scenes.
+ Deck-list entries now use a CostBG TextureRect as well. Empty costs hide and clear
+@@ -46,3 +46,16 @@ workspace. A real Godot WebSocket login and collection request returned 63 cards
+ It is not bundled in this client archive. A downloaded client running on another
+ machine needs a rules-engine process reachable from that machine; its localhost
+ address refers to the machine where that client is running.
++
++CARD HEADER ALIGNMENT
++Full, square and collection cards share the adjusted cost, name and type layout.
++Knowledge costs sit closer beneath the numeric cost and retain half overlap.
++CostBG uses a fixed 36-pixel size to prevent container sizing feedback during play.
++
++EXPORTS
++Linux Desktop is an additional preset; the existing macOS preset is preserved.
++Web uses the compatibility renderer, a single thread, and bundled sample decks.
++Export a web build with a configurable rules-engine endpoint:
++  python3 tools/export_web.py --server-url wss://YOUR_ENGINE_HOST --output ../visitor-client-web
++Upload that output folder to an HTTPS static host. The engine must accept WSS
++connections at /profiles, /games, /ai and /drafts beneath the configured base URL.
+diff --git a/export_presets.cfg b/export_presets.cfg
+index b1790a9..85800c5 100644
+--- a/export_presets.cfg
++++ b/export_presets.cfg
+@@ -6,7 +6,7 @@ runnable=true
+ dedicated_server=false
+ custom_features=""
+ export_filter="all_resources"
+-include_filter=""
++include_filter="*.deck"
+ exclude_filter=""
+ export_path="../visitor-client-export/index.html"
+ encryption_include_filters=""
+@@ -16,13 +16,15 @@ encrypt_directory=false
+ 
+ [preset.0.options]
+ 
++variant/thread_support=false
++
+ custom_template/debug=""
+ custom_template/release=""
+ variant/extensions_support=false
+ vram_texture_compression/for_desktop=true
+ vram_texture_compression/for_mobile=false
+ html/export_icon=true
+-html/custom_html_shell=""
++html/custom_html_shell="res://web/client-shell.html"
+ html/head_include=""
+ html/canvas_resize_policy=2
+ html/focus_canvas_on_start=true
+@@ -203,3 +205,19 @@ open \"{temp_dir}/{exe_name}.app\" --args {cmd_args}"
+ ssh_remote_deploy/cleanup_script="#!/usr/bin/env bash
+ kill $(pgrep -x -f \"{temp_dir}/{exe_name}.app/Contents/MacOS/{exe_name} {cmd_args}\")
+ rm -rf \"{temp_dir}\""
++
++[preset.3]
++
++name="Linux Desktop"
++platform="Linux"
++runnable=true
++export_filter="all_resources"
++include_filter="*.deck"
++exclude_filter="addons/godot-git-plugin/*,tests/*,tools/*,web/*"
++export_path="../visitor-client-desktop/visitor-client.x86_64"
++
++[preset.3.options]
++
++binary_format/architecture="x86_64"
++texture_format/s3tc_bptc=true
++texture_format/etc2_astc=false
+diff --git a/project.godot b/project.godot
+index 644f82b..b722961 100644
+--- a/project.godot
++++ b/project.godot
+@@ -98,5 +98,7 @@ font_data_dynamic={
+ 
+ [rendering]
+ 
++renderer/rendering_method.web="gl_compatibility"
++
+ textures/canvas_textures/default_texture_filter=2
+ textures/vram_compression/import_etc2_astc=true
+diff --git a/src/Cards/Card.tscn b/src/Cards/Card.tscn
+index 98d788f..4222a2b 100644
+--- a/src/Cards/Card.tscn
++++ b/src/Cards/Card.tscn
+@@ -5,7 +5,7 @@
+ [ext_resource type="Script" uid="uid://dbmsmpx772wjv" path="res://src/Cards/Card.gd" id="2_sfrtf"]
+ [ext_resource type="Texture2D" uid="uid://l7sn1a7c0xg6" path="res://assets/backgrounds/wp4789004-grunge-map-wallpapers.jpg" id="3_4didv"]
+ [ext_resource type="Script" uid="uid://chjlgj7p0qrwk" path="res://src/GameBoard/CardCostArea.gd" id="4_4yl3l"]
+-[ext_resource type="Texture2D" path="res://assets/numbers/Colorless/0.png" id="6_0c6qo"]
++[ext_resource type="Texture2D" path="res://assets/card-components/numbers/Colorless/0.png" id="6_0c6qo"]
+ [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="6_fuui8"]
+ [ext_resource type="Texture2D" uid="uid://dcfh3awf60bjk" path="res://assets/card-components/Factions/Blue.png" id="7_jv7mb"]
+ [ext_resource type="LabelSettings" uid="uid://di7m64aqradk6" path="res://src/Themes/CardKnoweldgeSettings.tres" id="8_7cq2g"]
+@@ -1335,12 +1335,21 @@ size_flags_horizontal = 3
+ size_flags_stretch_ratio = 1.2
+ script = ExtResource("4_4yl3l")
+ 
+-[node name="CostBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea" unique_id=513410003]
+-custom_minimum_size = Vector2(24, 24)
++[node name="CostSlot" type="MarginContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea"]
+ layout_mode = 2
+ size_flags_horizontal = 3
++mouse_filter = 2
++theme_override_constants/margin_left = -5
++theme_override_constants/margin_top = -5
++theme_override_constants/margin_right = 5
++theme_override_constants/margin_bottom = -10
++
++[node name="CostBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea/CostSlot" unique_id=513410003]
++custom_minimum_size = Vector2(36, 36)
++layout_mode = 2
++size_flags_horizontal = 0
+ texture = ExtResource("6_0c6qo")
+-expand_mode = 5
++expand_mode = 1
+ stretch_mode = 5
+ 
+ 
+@@ -1434,24 +1443,35 @@ label_settings = ExtResource("8_7cq2g")
+ horizontal_alignment = 1
+ vertical_alignment = 1
+ 
+-[node name="VBoxContainer2" type="VBoxContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer" unique_id=2038950855]
++[node name="VBoxContainer2" type="MarginContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer" unique_id=2038950855]
+ layout_mode = 2
+ size_flags_horizontal = 3
+ size_flags_stretch_ratio = 8.0
++theme_override_constants/margin_top = -5
++theme_override_constants/margin_bottom = 5
+ 
+ [node name="HBoxContainer" type="HBoxContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2" unique_id=609537877]
+ layout_mode = 2
+ 
+-[node name="Name" type="Label" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1145397904]
++[node name="NameSlot" type="MarginContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer"]
+ layout_mode = 2
+ size_flags_horizontal = 3
+ size_flags_stretch_ratio = 7.0
++mouse_filter = 2
++theme_override_constants/margin_top = 5
++theme_override_constants/margin_bottom = -5
++
++[node name="Name" type="Label" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer/NameSlot" unique_id=1145397904]
++layout_mode = 2
++size_flags_vertical = 0
++size_flags_horizontal = 3
++size_flags_stretch_ratio = 7.0
+ theme = ExtResource("6_fuui8")
+ theme_override_styles/normal = SubResource("StyleBoxTexture_nugl3")
+ text = "CardName"
+ label_settings = SubResource("LabelSettings_6m5r1")
+ horizontal_alignment = 1
+-vertical_alignment = 1
++vertical_alignment = 0
+ clip_text = true
+ text_overrun_behavior = 2
+ 
+@@ -1463,7 +1483,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_wk3wl")
+ [node name="TypeIcon" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer/PanelContainer" unique_id=255247194]
+ custom_minimum_size = Vector2(36, 36)
+ layout_mode = 2
+-size_flags_vertical = 4
++size_flags_vertical = 0
+ texture = ExtResource("15_yaxrj")
+ expand_mode = 1
+ stretch_mode = 5
+diff --git a/src/Cards/CollectionCard.tscn b/src/Cards/CollectionCard.tscn
+index 7421bdf..8b95bd1 100644
+--- a/src/Cards/CollectionCard.tscn
++++ b/src/Cards/CollectionCard.tscn
+@@ -4,7 +4,7 @@
+ [ext_resource type="StyleBox" uid="uid://nrrp32xv522l" path="res://src/Themes/Border.tres" id="2_7bm1e"]
+ [ext_resource type="Texture2D" uid="uid://l7sn1a7c0xg6" path="res://assets/backgrounds/wp4789004-grunge-map-wallpapers.jpg" id="3_c1msf"]
+ [ext_resource type="Script" uid="uid://chjlgj7p0qrwk" path="res://src/GameBoard/CardCostArea.gd" id="4_sgj6l"]
+-[ext_resource type="Texture2D" path="res://assets/numbers/Colorless/X.png" id="5_wrbgq"]
++[ext_resource type="Texture2D" path="res://assets/card-components/numbers/Colorless/X.png" id="5_wrbgq"]
+ [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="6_w0tcg"]
+ [ext_resource type="Texture2D" uid="uid://dcfh3awf60bjk" path="res://assets/card-components/Factions/Blue.png" id="7_pqra2"]
+ [ext_resource type="LabelSettings" uid="uid://di7m64aqradk6" path="res://src/Themes/CardKnoweldgeSettings.tres" id="8_r6eao"]
+@@ -1329,12 +1329,22 @@ size_flags_horizontal = 3
+ size_flags_stretch_ratio = 1.2
+ script = ExtResource("4_sgj6l")
+ 
+-[node name="CostBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea" unique_id=1502251665]
+-custom_minimum_size = Vector2(24, 24)
++[node name="CostSlot" type="MarginContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea"]
+ layout_mode = 2
+ size_flags_horizontal = 3
++mouse_filter = 2
++theme_override_constants/margin_left = -5
++theme_override_constants/margin_top = -5
++theme_override_constants/margin_right = 5
++theme_override_constants/margin_bottom = -10
++
++[node name="CostBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea/CostSlot" unique_id=1502251665]
++custom_minimum_size = Vector2(36, 36)
++layout_mode = 2
++size_flags_horizontal = 0
+ texture = ExtResource("5_wrbgq")
+-expand_mode = 5
++expand_mode = 1
++stretch_mode = 5
+ 
+ 
+ [node name="BBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea" unique_id=871847511]
+@@ -1427,24 +1437,35 @@ label_settings = ExtResource("8_r6eao")
+ horizontal_alignment = 1
+ vertical_alignment = 1
+ 
+-[node name="VBoxContainer2" type="VBoxContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer" unique_id=479603582]
++[node name="VBoxContainer2" type="MarginContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer" unique_id=479603582]
+ layout_mode = 2
+ size_flags_horizontal = 3
+ size_flags_stretch_ratio = 8.0
++theme_override_constants/margin_top = -5
++theme_override_constants/margin_bottom = 5
+ 
+ [node name="HBoxContainer" type="HBoxContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2" unique_id=1525266628]
+ layout_mode = 2
+ 
+-[node name="Name" type="Label" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1470358587]
++[node name="NameSlot" type="MarginContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer"]
+ layout_mode = 2
+ size_flags_horizontal = 3
+ size_flags_stretch_ratio = 7.0
++mouse_filter = 2
++theme_override_constants/margin_top = 5
++theme_override_constants/margin_bottom = -5
++
++[node name="Name" type="Label" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer/NameSlot" unique_id=1470358587]
++layout_mode = 2
++size_flags_vertical = 0
++size_flags_horizontal = 3
++size_flags_stretch_ratio = 7.0
+ theme = ExtResource("6_w0tcg")
+ theme_override_styles/normal = SubResource("StyleBoxTexture_nugl3")
+ text = "CardName"
+ label_settings = SubResource("LabelSettings_6m5r1")
+ horizontal_alignment = 1
+-vertical_alignment = 1
++vertical_alignment = 0
+ 
+ [node name="PanelContainer" type="PanelContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=2130360233]
+ layout_mode = 2
+@@ -1455,7 +1476,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_rnscp")
+ [node name="TypeIcon" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer/PanelContainer" unique_id=453202546]
+ custom_minimum_size = Vector2(36, 36)
+ layout_mode = 2
+-size_flags_vertical = 4
++size_flags_vertical = 0
+ texture = ExtResource("14_n1n3l")
+ expand_mode = 1
+ stretch_mode = 5
+diff --git a/src/Cards/HoverLift.gd.uid b/src/Cards/HoverLift.gd.uid
+new file mode 100644
+index 0000000..0a677e9
+--- /dev/null
++++ b/src/Cards/HoverLift.gd.uid
+@@ -0,0 +1 @@
++uid://6bpa1g07rlhc
+diff --git a/src/Cards/SquareCard.tscn b/src/Cards/SquareCard.tscn
+index 32f4d1b..a47ae2e 100644
+--- a/src/Cards/SquareCard.tscn
++++ b/src/Cards/SquareCard.tscn
+@@ -5,7 +5,7 @@
+ [ext_resource type="StyleBox" uid="uid://nrrp32xv522l" path="res://src/Themes/Border.tres" id="2_wqjv3"]
+ [ext_resource type="Texture2D" uid="uid://cyr52u5hc7dai" path="res://assets/backgrounds/wp10493985-grunge-texture-wallpapers.jpg" id="3_nvgyl"]
+ [ext_resource type="Script" uid="uid://chjlgj7p0qrwk" path="res://src/GameBoard/CardCostArea.gd" id="4_020j0"]
+-[ext_resource type="Texture2D" path="res://assets/numbers/Colorless/X.png" id="5_io6g3"]
++[ext_resource type="Texture2D" path="res://assets/card-components/numbers/Colorless/X.png" id="5_io6g3"]
+ [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="6_llt0u"]
+ [ext_resource type="Texture2D" uid="uid://dcfh3awf60bjk" path="res://assets/card-components/Factions/Blue.png" id="7_qh2tn"]
+ [ext_resource type="LabelSettings" uid="uid://di7m64aqradk6" path="res://src/Themes/CardKnoweldgeSettings.tres" id="8_cgpyb"]
+@@ -1314,13 +1314,23 @@ size_flags_horizontal = 3
+ size_flags_stretch_ratio = 1.2
+ script = ExtResource("4_020j0")
+ 
+-[node name="CostBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea"]
+-custom_minimum_size = Vector2(24, 24)
+-show_behind_parent = true
++[node name="CostSlot" type="MarginContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea"]
+ layout_mode = 2
+ size_flags_horizontal = 3
++mouse_filter = 2
++theme_override_constants/margin_left = -5
++theme_override_constants/margin_top = -5
++theme_override_constants/margin_right = 5
++theme_override_constants/margin_bottom = -10
++
++[node name="CostBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea/CostSlot"]
++custom_minimum_size = Vector2(36, 36)
++show_behind_parent = true
++layout_mode = 2
++size_flags_horizontal = 0
+ texture = ExtResource("5_io6g3")
+-expand_mode = 5
++expand_mode = 1
++stretch_mode = 5
+ 
+ 
+ [node name="BBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea"]
+@@ -1418,16 +1428,27 @@ label_settings = ExtResource("8_cgpyb")
+ horizontal_alignment = 1
+ vertical_alignment = 1
+ 
+-[node name="VBoxContainer2" type="VBoxContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer"]
++[node name="VBoxContainer2" type="MarginContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer"]
+ layout_mode = 2
+ size_flags_horizontal = 3
+ size_flags_stretch_ratio = 8.0
++theme_override_constants/margin_top = -5
++theme_override_constants/margin_bottom = 5
+ 
+ [node name="HBoxContainer" type="HBoxContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2"]
+ layout_mode = 2
+ 
+-[node name="Name" type="Label" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer"]
++[node name="NameSlot" type="MarginContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer"]
++layout_mode = 2
++size_flags_horizontal = 3
++size_flags_stretch_ratio = 7.0
++mouse_filter = 2
++theme_override_constants/margin_top = 5
++theme_override_constants/margin_bottom = -5
++
++[node name="Name" type="Label" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer/NameSlot"]
+ layout_mode = 2
++size_flags_vertical = 0
+ size_flags_horizontal = 3
+ size_flags_stretch_ratio = 7.0
+ theme = ExtResource("6_llt0u")
+@@ -1435,7 +1456,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_ir4dl")
+ text = "CardName"
+ label_settings = SubResource("LabelSettings_k2rkx")
+ horizontal_alignment = 1
+-vertical_alignment = 1
++vertical_alignment = 0
+ clip_text = true
+ text_overrun_behavior = 2
+ 
+@@ -1447,7 +1468,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_3nbvu")
+ [node name="TypeIcon" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer/PanelContainer"]
+ custom_minimum_size = Vector2(36, 36)
+ layout_mode = 2
+-size_flags_vertical = 4
++size_flags_vertical = 0
+ texture = ExtResource("14_afvmc")
+ expand_mode = 1
+ stretch_mode = 5
+diff --git a/src/GameBoard/CardCostArea.gd b/src/GameBoard/CardCostArea.gd
+index f5313bc..dc4b2e7 100644
+--- a/src/GameBoard/CardCostArea.gd
++++ b/src/GameBoard/CardCostArea.gd
+@@ -12,6 +12,7 @@ func update(cost, knowledge):
+ 			child.queue_free()
+ 	children.clear()
+ 	alignment = BoxContainer.ALIGNMENT_BEGIN
++	add_theme_constant_override("separation", 0)
+ 	CS.set_cost_texture(find_child("CostBG"), cost)
+ 	if not is_instance_valid(_knowledge_stack):
+ 		_knowledge_stack = Control.new()
+@@ -31,7 +32,7 @@ func update(cost, knowledge):
+ 			symbol.custom_minimum_size = Vector2.ONE * KNOWLEDGE_ICON_SIZE
+ 			symbol.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+ 			symbol.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+-			symbol.position = Vector2(0, index * KNOWLEDGE_STEP)
++			symbol.position = Vector2(-5, index * KNOWLEDGE_STEP)
+ 			symbol.size = Vector2.ONE * KNOWLEDGE_ICON_SIZE
+ 			symbol.z_index = index + 1
+ 			_ignore_input(symbol)
+diff --git a/src/GlobalScripts/CardScript.gd b/src/GlobalScripts/CardScript.gd
+index 0801f25..14d30f9 100644
+--- a/src/GlobalScripts/CardScript.gd
++++ b/src/GlobalScripts/CardScript.gd
+@@ -35,7 +35,8 @@ const combat_ability_hints = {
+ }
+ 
+ func get_card_image(set_name, card_name):
+-	return load("res://assets/card-images/"+set_name+"/"+card_name+".png")
++	var path = "res://assets/card-images/" + set_name + "/" + card_name + ".png"
++	return load(path) if ResourceLoader.exists(path, "Texture2D") else null
+ 
+ func get_type_icon(type):
+ 	return load ("res://assets/card-components/Types/"+type+".png")
+@@ -264,7 +265,7 @@ func set_cost_texture(background: TextureRect, cost):
+ 		background.texture = null
+ 		background.hide()
+ 		return
+-	var path = "res://assets/numbers/Colorless/" + value + ".png"
++	var path = "res://assets/card-components/numbers/Colorless/" + value + ".png"
+ 	if not ResourceLoader.exists(path, "Texture2D"):
+ 		background.texture = null
+ 		background.hide()
+diff --git a/src/GlobalScripts/GameState.gd b/src/GlobalScripts/GameState.gd
+index 2d2d630..cd35b8c 100644
+--- a/src/GlobalScripts/GameState.gd
++++ b/src/GlobalScripts/GameState.gd
+@@ -98,14 +98,26 @@ func has_action():
+ 			return true
+ 	return false
+ 
++func get_server_base():
++	if OS.has_feature("web") and Engine.has_singleton("JavaScriptBridge"):
++		var bridge = Engine.get_singleton("JavaScriptBridge")
++		var configured = bridge.eval("window.VISITOR_SERVER_URL || ''", true)
++		if configured is String and (configured.begins_with("ws://") or configured.begins_with("wss://")):
++			return configured.trim_suffix("/")
++	return "ws://" + server_name
++
++func get_profile_URL():
++	return get_server_base() + "/profiles/" + userId.uri_encode()
++
+ func get_game_URL():
++	var base = get_server_base()
+ 	match gameType:
+ 		Types.GameType.AI_BO1_CONSTRUCTED:
+-			return "ws://"+server_name+"/ai/"+playerId+"/"+gameId+"/"+aiId
++			return base+"/ai/"+playerId+"/"+gameId+"/"+aiId
+ 		Types.GameType.BO1_CONSTRUCTED:
+-			return "ws://"+server_name+"/games/"+playerId+"/"+gameId
++			return base+"/games/"+playerId+"/"+gameId
+ 		Types.GameType.P2_DRAFT:
+-			return "ws://"+server_name+"/drafts/"+playerId+"/"+gameId
++			return base+"/drafts/"+playerId+"/"+gameId
+ 
+ func get_phase_name():
+ 	if !gameState or gameState.get_phase() == Types.Phase.NOPHASE:
+diff --git a/src/MainMenu/MenuButton.gd b/src/MainMenu/MenuButton.gd
+index ddbc330..ddb7316 100644
+--- a/src/MainMenu/MenuButton.gd
++++ b/src/MainMenu/MenuButton.gd
+@@ -15,11 +15,20 @@ func _on_pressed():
+ 			get_tree().change_scene_to_file("res://src/DeckBuilder/DeckBuilder.tscn")
+ 		"PlayMulti":
+ 			GS.queue_type = GS.Types.GameType.BO1_CONSTRUCTED
+-			find_parent("MainMenu").find_child("FileDialog").set_visible(true)
++			_show_deck_dialog()
+ 		"PlayAI":
+ 			GS.queue_type = GS.Types.GameType.AI_BO1_CONSTRUCTED
+-			find_parent("MainMenu").find_child("FileDialog").set_visible(true)
++			_show_deck_dialog()
+ 		"PlayTest":
+ 			GS.game_decklist = GS.test_decklist.duplicate()
+ 			GS.queue_type = GS.Types.GameType.BO1_CONSTRUCTED
+ 			get_tree().change_scene_to_file("res://src/GameBoard/GameBoard.tscn")
++
++func _show_deck_dialog():
++	var dialog = find_parent("MainMenu").find_child("FileDialog")
++	if OS.has_feature("web"):
++		# Browser file dialogs cannot browse the user's native filesystem. The
++		# exported sample decks remain available through Godot's resource dialog.
++		dialog.access = FileDialog.ACCESS_RESOURCES
++		dialog.current_dir = "res://decks"
++	dialog.show()
+diff --git a/src/ServerSocket.gd b/src/ServerSocket.gd
+index ab644cf..8461204 100644
+--- a/src/ServerSocket.gd
++++ b/src/ServerSocket.gd
+@@ -72,7 +72,7 @@ func connect_to_server():
+ 	GS.is_waiting = true
+ 	if GS.userId.is_empty():
+ 		GS.userId = str(randi_range(1, 100000))
+-	var error = _client.connect_to_url(GS.websocket_url + GS.userId)
++	var error = _client.connect_to_url(GS.get_profile_URL())
+ 	_polling = error == OK
+ 	if error != OK:
+ 		_fail("Could not connect to the profile service: %s" % error_string(error))
+diff --git a/tests/regression.gd b/tests/regression.gd
+index 26e20d7..92c40e0 100644
+--- a/tests/regression.gd
++++ b/tests/regression.gd
+@@ -680,14 +680,14 @@ func check_card_ui_controls():
+ 	var neighbour_position = neighbour.global_position
+ 	var rest_position = internal.global_position
+ 	var cost = view.find_child("CostBG")
+-	expect(cost.texture.resource_path == "res://assets/numbers/Colorless/2.png", "Numeric cost uses the matching texture")
++	expect(cost.texture.resource_path == "res://assets/card-components/numbers/Colorless/2.png", "Numeric cost uses the matching texture")
+ 	expect(view.find_child("Cost") == null, "Full card has no overlay cost label")
+ 	expect(view.find_child("TypeIcon").size.x >= 36 and view.find_child("TypeIcon").size.y >= 36, "Type icon is at least 36 pixels square")
+ 	var cost_area = view.find_child("CostArea")
+ 	expect(cost_area.children.size() == 4, "Knowledge counts expand into individual icons")
+ 	for i in range(4):
+ 		var icon = cost_area.children[i]
+-		expect(icon.size == Vector2(36, 36) and icon.position == Vector2(0, i * 18), "Knowledge icons are larger with exact half overlap")
++		expect(icon.size == Vector2(36, 36) and icon.position == Vector2(-5, i * 18), "Knowledge icons are larger with exact half overlap")
+ 	expect(cost_area.get_node("KnowledgeStack").custom_minimum_size == Vector2(36, 90), "Knowledge stack reserves its overlapped height")
+ 	expect(cost_area.alignment == BoxContainer.ALIGNMENT_BEGIN, "Knowledge stack is aligned at the top")
+ 
+@@ -731,7 +731,7 @@ func check_card_ui_controls():
+ 		if value.is_empty():
+ 			expect(not cost.visible and cost.texture == null, "Empty cost clears the previous number image")
+ 		else:
+-			expect(cost.visible and cost.texture.resource_path == "res://assets/numbers/Colorless/" + value + ".png", "Zero and symbolic costs use their matching images")
++			expect(cost.visible and cost.texture.resource_path == "res://assets/card-components/numbers/Colorless/" + value + ".png", "Zero and symbolic costs use their matching images")
+ 
+ 	var collection = GS.CollectionCardScene.instantiate()
+ 	collection.setup(data)
+diff --git a/tools/export_web.py b/tools/export_web.py
+new file mode 100644
+index 0000000..608a9bc
+--- /dev/null
++++ b/tools/export_web.py
+@@ -0,0 +1,21 @@
++#!/usr/bin/env python3
++"""Export the real Godot client for an HTTPS static host and a WSS rules engine."""
++import argparse,json,os,subprocess
++from pathlib import Path
++from urllib.parse import urlsplit,urlunsplit
++
++parser=argparse.ArgumentParser()
++parser.add_argument('--output',type=Path,default=Path('../visitor-client-web'))
++parser.add_argument('--server-url',required=True,help='WSS rules-engine base URL, including an optional proxy path')
++parser.add_argument('--godot',default=os.environ.get('GODOT_BIN','godot'))
++args=parser.parse_args()
++url=urlsplit(args.server_url)
++protocol={'https':'wss','http':'ws'}.get(url.scheme,url.scheme)
++if protocol not in ('ws','wss') or not url.netloc or url.query or url.fragment:
++ parser.error('Use an HTTP(S) or WS(S) base URL without a query or fragment.')
++server=urlunsplit((protocol,url.netloc,url.path.rstrip('/'),'',''))
++root=Path(__file__).resolve().parents[1]
++output=args.output.resolve();output.mkdir(parents=True,exist_ok=True)
++subprocess.run([args.godot,'--headless','--path',str(root),'--export-release','Web',str(output/'index.html')],check=True)
++(output/'visitor-config.js').write_text('window.VISITOR_SERVER_URL = '+json.dumps(server)+';\n')
++print('Web client exported to',output)
+diff --git a/web/client-shell.html b/web/client-shell.html
+new file mode 100644
+index 0000000..229c035
+--- /dev/null
++++ b/web/client-shell.html
+@@ -0,0 +1,229 @@
++<!DOCTYPE html>
++<html lang="en">
++	<head>
++		<meta charset="utf-8">
++		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
++		<title>$GODOT_PROJECT_NAME</title>
++		<style>
++html, body, #canvas {
++	margin: 0;
++	padding: 0;
++	border: 0;
++}
++
++body {
++	color: white;
++	background-color: black;
++	overflow: hidden;
++	touch-action: none;
++}
++
++#canvas {
++	display: block;
++}
++
++#canvas:focus {
++	outline: none;
++}
++
++#status, #status-splash, #status-progress {
++	position: absolute;
++	left: 0;
++	right: 0;
++}
++
++#status, #status-splash {
++	top: 0;
++	bottom: 0;
++}
++
++#status {
++	background-color: $GODOT_SPLASH_COLOR;
++	display: flex;
++	flex-direction: column;
++	justify-content: center;
++	align-items: center;
++	visibility: hidden;
++}
++
++#status-splash {
++	max-height: 100%;
++	max-width: 100%;
++	margin: auto;
++}
++
++#status-splash.show-image--false {
++	display: none;
++}
++
++#status-splash.fullsize--true {
++	height: 100%;
++	width: 100%;
++	object-fit: contain;
++}
++
++#status-splash.use-filter--false {
++	image-rendering: pixelated;
++}
++
++#status-progress, #status-notice {
++	display: none;
++}
++
++#status-progress {
++	bottom: 10%;
++	width: 50%;
++	margin: 0 auto;
++}
++
++#status-notice {
++	background-color: #5b3943;
++	border-radius: 0.5rem;
++	border: 1px solid #9b3943;
++	color: #e0e0e0;
++	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
++	line-height: 1.3;
++	margin: 0 2rem;
++	overflow: hidden;
++	padding: 1rem;
++	text-align: center;
++	z-index: 1;
++}
++		</style>
++		$GODOT_HEAD_INCLUDE
++	</head>
++	<body>
++		<canvas id="canvas">
++			Your browser does not support the canvas tag.
++		</canvas>
++
++		<noscript>
++			Your browser does not support JavaScript.
++		</noscript>
++
++		<div id="status">
++			<img id="status-splash" class="$GODOT_SPLASH_CLASSES" src="$GODOT_SPLASH" alt="">
++			<progress id="status-progress"></progress>
++			<div id="status-notice"></div>
++		</div>
++
++		<script src="visitor-config.js"></script>
++		<script>
++(function () {
++	const supplied = new URLSearchParams(location.search).get('server') || window.VISITOR_SERVER_URL;
++	let server = supplied || ((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.hostname + ':8080');
++	server = server.replace(/^https:/, 'wss:').replace(/^http:/, 'ws:').replace(/\/$/, '');
++	const parsed = new URL(server);
++	if (!['ws:', 'wss:'].includes(parsed.protocol)) throw new Error('The rules-engine address must use ws:// or wss://');
++	if (location.protocol === 'https:' && parsed.protocol !== 'wss:') throw new Error('An HTTPS client requires a secure WSS rules-engine connection.');
++	window.VISITOR_SERVER_URL = server;
++}());
++		</script>
++		<script src="$GODOT_URL"></script>
++		<script>
++const GODOT_CONFIG = $GODOT_CONFIG;
++const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
++const engine = new Engine(GODOT_CONFIG);
++
++(function () {
++	const statusOverlay = document.getElementById('status');
++	const statusProgress = document.getElementById('status-progress');
++	const statusNotice = document.getElementById('status-notice');
++
++	let initializing = true;
++	let statusMode = '';
++
++	function setStatusMode(mode) {
++		if (statusMode === mode || !initializing) {
++			return;
++		}
++		if (mode === 'hidden') {
++			statusOverlay.remove();
++			initializing = false;
++			return;
++		}
++		statusOverlay.style.visibility = 'visible';
++		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
++		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
++		statusMode = mode;
++	}
++
++	function setStatusNotice(text) {
++		while (statusNotice.lastChild) {
++			statusNotice.removeChild(statusNotice.lastChild);
++		}
++		const lines = text.split('\n');
++		lines.forEach((line) => {
++			statusNotice.appendChild(document.createTextNode(line));
++			statusNotice.appendChild(document.createElement('br'));
++		});
++	}
++
++	function displayFailureNotice(err) {
++		console.error(err);
++		if (err instanceof Error) {
++			setStatusNotice(err.message);
++		} else if (typeof err === 'string') {
++			setStatusNotice(err);
++		} else {
++			setStatusNotice('An unknown error occurred.');
++		}
++		setStatusMode('notice');
++		initializing = false;
++	}
++
++	const missing = Engine.getMissingFeatures({
++		threads: GODOT_THREADS_ENABLED,
++	});
++
++	if (missing.length !== 0) {
++		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
++			let serviceWorkerRegistrationPromise;
++			try {
++				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
++			} catch (err) {
++				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
++			}
++			// There's a chance that installing the service worker would fix the issue
++			Promise.race([
++				serviceWorkerRegistrationPromise.then((registration) => {
++					if (registration != null) {
++						return Promise.reject(new Error('Service worker already exists.'));
++					}
++					return registration;
++				}).then(() => engine.installServiceWorker()),
++				// For some reason, `getRegistration()` can stall
++				new Promise((resolve) => {
++					setTimeout(() => resolve(), 2000);
++				}),
++			]).then(() => {
++				// Reload if there was no error.
++				window.location.reload();
++			}).catch((err) => {
++				console.error('Error while registering service worker:', err);
++			});
++		} else {
++			// Display the message as usual
++			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
++			displayFailureNotice(missingMsg + missing.join('\n'));
++		}
++	} else {
++		setStatusMode('progress');
++		engine.startGame({
++			'onProgress': function (current, total) {
++				if (current > 0 && total > 0) {
++					statusProgress.value = current;
++					statusProgress.max = total;
++				} else {
++					statusProgress.removeAttribute('value');
++					statusProgress.removeAttribute('max');
++				}
++			},
++		}).then(() => {
++			setStatusMode('hidden');
++		}, displayFailureNotice);
++	}
++}());
++		</script>
++	</body>
++</html>
+-- 
+2.52.0
+

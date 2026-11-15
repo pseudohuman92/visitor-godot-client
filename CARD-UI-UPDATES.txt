@@ -2,7 +2,7 @@ CARD UI UPDATES
 
 COST IMAGES
 Numeric costs now set CostBG.texture from:
-  res://assets/numbers/Colorless/<value>.png
+  res://assets/card-components/numbers/Colorless/<value>.png
 Examples: 0.png, 2.png, 10.png, X.png.
 The old overlay labels are removed from full, square and collection card scenes.
 Deck-list entries now use a CostBG TextureRect as well. Empty costs hide and clear
@@ -46,3 +46,16 @@ workspace. A real Godot WebSocket login and collection request returned 63 cards
 It is not bundled in this client archive. A downloaded client running on another
 machine needs a rules-engine process reachable from that machine; its localhost
 address refers to the machine where that client is running.
+
+CARD HEADER ALIGNMENT
+Full, square and collection cards share the adjusted cost, name and type layout.
+Knowledge costs sit closer beneath the numeric cost and retain half overlap.
+CostBG uses a fixed 36-pixel size to prevent container sizing feedback during play.
+
+EXPORTS
+Linux Desktop is an additional preset; the existing macOS preset is preserved.
+Web uses the compatibility renderer, a single thread, and bundled sample decks.
+Export a web build with a configurable rules-engine endpoint:
+  python3 tools/export_web.py --server-url wss://YOUR_ENGINE_HOST --output ../visitor-client-web
+Upload that output folder to an HTTPS static host. The engine must accept WSS
+connections at /profiles, /games, /ai and /drafts beneath the configured base URL.

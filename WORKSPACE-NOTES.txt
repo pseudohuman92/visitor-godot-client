@@ -1,0 +1,21 @@
+Visitor Godot client source update
+
+Commit: 59897e78cacb4b8965bbeadd6dffd9a02cc27f40
+Base repository commit: e789418cdb85be27e66b655b2d1a02d1c746c83a
+Repository: https://github.com/pseudohuman92/visitor-godot-client.git
+
+This source-only archive excludes assets and addons. Clone the repository,
+then merge the visitor-godot-client folder in this archive into your clone,
+replacing the included files. Keep the clone's existing assets and addons.
+Open project.godot with Godot 4.6.3 or a compatible later Godot 4 version.
+
+Includes the latest card header and knowledge-cost placement, stable cost
+icon sizing, corrected asset paths, optional artwork fallback, configurable
+web export tooling and Linux export preset. Bundled sample decks are included.
+
+WORKSPACE-LOCAL-CHANGES.patch contains the complete commit for Git users;
+apply it to the base commit instead of also copying the source files.
+The commit is saved locally; pushing to GitHub was denied with HTTP 403.
+
+Verification: 142 regression checks passed. Live AI match and pointer hover
+were verified against the running rules engine.

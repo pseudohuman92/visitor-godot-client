@@ -15,11 +15,20 @@ func _on_pressed():
 			get_tree().change_scene_to_file("res://src/DeckBuilder/DeckBuilder.tscn")
 		"PlayMulti":
 			GS.queue_type = GS.Types.GameType.BO1_CONSTRUCTED
-			find_parent("MainMenu").find_child("FileDialog").set_visible(true)
+			_show_deck_dialog()
 		"PlayAI":
 			GS.queue_type = GS.Types.GameType.AI_BO1_CONSTRUCTED
-			find_parent("MainMenu").find_child("FileDialog").set_visible(true)
+			_show_deck_dialog()
 		"PlayTest":
 			GS.game_decklist = GS.test_decklist.duplicate()
 			GS.queue_type = GS.Types.GameType.BO1_CONSTRUCTED
 			get_tree().change_scene_to_file("res://src/GameBoard/GameBoard.tscn")
+
+func _show_deck_dialog():
+	var dialog = find_parent("MainMenu").find_child("FileDialog")
+	if OS.has_feature("web"):
+		# Browser file dialogs cannot browse the user's native filesystem. The
+		# exported sample decks remain available through Godot's resource dialog.
+		dialog.access = FileDialog.ACCESS_RESOURCES
+		dialog.current_dir = "res://decks"
+	dialog.show()
