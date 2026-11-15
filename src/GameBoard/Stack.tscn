@@ -21,6 +21,7 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 15.0
 horizontal_scroll_mode = 0
+vertical_scroll_mode = 4
 
 [node name="Stack" type="VBoxContainer" parent="ScrollContainer"]
 clip_contents = true

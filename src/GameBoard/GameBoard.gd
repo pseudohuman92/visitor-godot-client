@@ -11,6 +11,7 @@ const CARD_ZONES = ["PlayerHand", "PlayerUnitArea", "PlayerAssetArea", "PlayerDi
 
 func _ready():
 	GS.close_connections()
+	SFX.reset_match()
 	var socket = Websocket.new()
 	socket.connect("initialize_game_state", initialize_game_state)
 	socket.connect("got_login_response", func(): socket.joinQueue(GS.queue_type))
@@ -35,6 +36,7 @@ func initialize_game_socket():
 	find_child("LoadingPanel").set_visible(false)
 
 func update_game_state(new_state):
+	SFX.observe(new_state)
 	# Capture before reconciliation detaches obsolete source views. Initial deal
 	# has no previous visible positions and intentionally does not animate.
 	var origins = _capture_card_origins() if not _zone_bytes.is_empty() else {}

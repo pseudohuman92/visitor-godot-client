@@ -128,6 +128,7 @@ func decode_proto_message(data):
 		var lr = message.get_gameEnd()
 		GS.is_waiting = true
 		update_game_state.emit(lr.get_game())
+		SFX.finish_match(lr.get_game().get_id(), lr.get_win())
 		game_ended.emit(lr.get_win())
 
 	# These schema features have no complete decision UI in this client yet.

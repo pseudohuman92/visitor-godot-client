@@ -9,6 +9,7 @@ func _on_file_dialog_file_selected(path):
 	get_tree().change_scene_to_file("res://src/GameBoard/GameBoard.tscn")
 
 func _on_pressed():
+	SFX.play(&"ui_confirm")
 	print("Click")
 	match name:
 		"DeckBuilder":

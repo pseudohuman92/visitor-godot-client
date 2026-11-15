@@ -22,6 +22,7 @@ func _process(_delta):
 func _on_pressed():
 	if disabled:
 		return
+	SFX.play(&"ui_confirm")
 	match name:
 		"Keep":
 			GS.gameSocket.keep()

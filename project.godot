@@ -26,6 +26,7 @@ GS="*res://src/GlobalScripts/GameState.gd"
 SS="*res://src/GlobalScripts/SelectionState.gd"
 CS="*res://src/GlobalScripts/CardScript.gd"
 O="*res://src/GlobalScripts/Options.gd"
+SFX="*res://src/GlobalScripts/SoundEffects.gd"
 
 [display]
 
