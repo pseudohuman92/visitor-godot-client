@@ -10,6 +10,9 @@ var _card_movement
 const CARD_ZONES = ["PlayerHand", "PlayerUnitArea", "PlayerAssetArea", "PlayerDiscard", "OpponentUnitArea", "OpponentAssetArea", "OpponentDiscard", "Stack"]
 
 func _ready():
+	if OS.get_cmdline_user_args().has("--ai-vs-ai-demo"):
+		GS.queue_type = GS.Types.GameType.AI_VS_AI
+		GS.game_decklist = GS.ai_vs_ai_demo_decklist.duplicate()
 	GS.close_connections()
 	SFX.reset_match()
 	var socket = Websocket.new()
@@ -31,9 +34,21 @@ func initialize_game_state(new_state):
 func initialize_game_socket():
 	var gameSocket = GameSocket.new()
 	gameSocket.connect("update_game_state", update_game_state)
+	gameSocket.connect("game_ended", show_game_result)
 	GS.gameSocket = gameSocket
 	gameSocket.connect_to_server()
 	find_child("LoadingPanel").set_visible(false)
+	find_child("AiVsAiResult").set_visible(false)
+
+func show_game_result(won):
+	if not GS.is_spectating_ai_match:
+		return
+	var state = GS.gameState
+	if state == null:
+		return
+	var winner = state.get_player().get_username() if won else state.get_opponent().get_username()
+	find_child("AiVsAiResultText").text = "AI VS AI MATCH COMPLETE\n%s WINS\nPress Escape to return to the menu." % winner.to_upper()
+	find_child("AiVsAiResult").set_visible(true)
 
 func update_game_state(new_state):
 	SFX.observe(new_state)

@@ -20,6 +20,9 @@ func _on_pressed():
 		"PlayAI":
 			GS.queue_type = GS.Types.GameType.AI_BO1_CONSTRUCTED
 			_show_deck_dialog()
+		"PlayAIVsAI":
+			GS.queue_type = GS.Types.GameType.AI_VS_AI
+			_show_deck_dialog()
 		"PlayTest":
 			GS.game_decklist = GS.test_decklist.duplicate()
 			GS.queue_type = GS.Types.GameType.BO1_CONSTRUCTED

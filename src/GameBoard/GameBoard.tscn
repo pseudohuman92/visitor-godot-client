@@ -53,14 +53,33 @@ bg_color = Color(0, 0, 0, 1)
 font = ExtResource("19_n4jhl")
 font_size = 28
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ai_result"]
+bg_color = Color(0.043137, 0.05098, 0.054902, 0.96)
+border_color = Color(0.62, 0.16, 0.17, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 28.0
+content_margin_top = 20.0
+content_margin_right = 28.0
+content_margin_bottom = 20.0
+
 [node name="GameBoard" type="Node2D"]
 script = ExtResource("1_vx3oc")
 
 [node name="BoardBackground" type="TextureRect" parent="."]
-z_index = -1
+show_behind_parent = true
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -459,6 +478,35 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "LOADING..."
 label_settings = SubResource("LabelSettings_4evpq")
+
+[node name="AiVsAiResultLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="AiVsAiResult" type="PanelContainer" parent="AiVsAiResultLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -112.0
+offset_right = 420.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ai_result")
+
+[node name="AiVsAiResultText" type="Label" parent="AiVsAiResultLayer/AiVsAiResult"]
+custom_minimum_size = Vector2(780, 170)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("19_n4jhl")
+theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color = Color(0.9, 0.88, 0.84, 1)
+text = "AI VS AI MATCH COMPLETE"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="gui_input" from="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea/OpponentDiscardClick" to="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea/OpponentDiscardClick" method="_on_gui_input"]
 [connection signal="gui_input" from="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDiscardClick" to="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDiscardClick" method="_on_gui_input"]

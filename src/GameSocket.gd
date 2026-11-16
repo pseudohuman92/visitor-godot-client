@@ -5,6 +5,7 @@ class_name GameSocket
 var _client = WebSocketPeer.new()
 var _write_mode = WebSocketPeer.WRITE_MODE_BINARY
 var _polling = false
+var _game_ended = false
 
 signal update_game_state(new_state)
 signal game_ended(win)
@@ -108,7 +109,7 @@ func decode_proto_message(data):
 		print("GAME ERROR: ", message.to_string())
 		return
 
-	GS.is_waiting = false
+	GS.is_waiting = GS.is_spectating_ai_match
 	GS.pending_decision = ""
 	GS.connection_error = ""
 	if message.has_updateGameStateP():
@@ -126,6 +127,7 @@ func decode_proto_message(data):
 
 	elif message.has_gameEnd():
 		var lr = message.get_gameEnd()
+		_game_ended = true
 		GS.is_waiting = true
 		update_game_state.emit(lr.get_game())
 		SFX.finish_match(lr.get_game().get_id(), lr.get_win())
@@ -175,8 +177,13 @@ func _process(_delta):
 	if state == WebSocketPeer.STATE_OPEN:
 		_client_received()
 	elif state == WebSocketPeer.STATE_CLOSED:
+		# The server closes the match socket right after sending GameEnd. Godot
+		# can report CLOSED in the same poll that queues that final binary frame.
+		# Drain queued packets first so the winner result is not lost.
+		_client_received()
 		_polling = false
-		_fail("Match connection closed (%d): %s" % [_client.get_close_code(), _client.get_close_reason()])
+		if not _game_ended:
+			_fail("Match connection closed (%d): %s" % [_client.get_close_code(), _client.get_close_reason()])
 
 func close():
 	_polling = false
@@ -195,6 +202,8 @@ func _fail(reason):
 	connection_failed.emit(reason)
 
 func send_message(data):
+	if GS.is_spectating_ai_match:
+		return ERR_UNAUTHORIZED
 	if _client.get_ready_state() != WebSocketPeer.STATE_OPEN:
 		_fail("The match connection is not open.")
 		return ERR_UNAVAILABLE

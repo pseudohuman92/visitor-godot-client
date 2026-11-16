@@ -32,6 +32,14 @@ var test_decklist = ["3;base2.ASoulforASoul",
 "3;base2.RavenousVampire",
 ]
 
+var ai_vs_ai_demo_decklist = [
+	"3;base2.BlitzRobbers",
+	"3;base2.ExplosiveShot",
+	"3;base2.PuncturingRounds",
+	"3;base2.HitTeam",
+	"3;base2.TacticalBriefing",
+]
+
 var collection = []
 var game_decklist = []
 var decklist = []
@@ -55,6 +63,7 @@ var is_dragging = false
 var dragged_card
 
 var is_waiting = true
+var is_spectating_ai_match = false
 var connection_error = ""
 var pending_decision = ""
 
@@ -114,6 +123,8 @@ func get_game_URL():
 	match gameType:
 		Types.GameType.AI_BO1_CONSTRUCTED:
 			return base+"/ai/"+playerId+"/"+gameId+"/"+aiId
+		Types.GameType.AI_VS_AI:
+			return base+"/ai-vs-ai/"+playerId+"/"+gameId+"/"+aiId
 		Types.GameType.BO1_CONSTRUCTED:
 			return base+"/games/"+playerId+"/"+gameId
 		Types.GameType.P2_DRAFT:
@@ -145,10 +156,11 @@ func get_phase_name():
 	return "UNKNOWN"
 
 func has_initiative():
-	return !is_waiting and gameState and \
+	return !is_spectating_ai_match and !is_waiting and gameState and \
 	gameState.get_activePlayer() == playerId and \
 	(gameState.get_phase() == Types.Phase.MAIN_BEFORE or \
 	gameState.get_phase() == Types.Phase.MAIN_AFTER or \
+	gameState.get_phase() == Types.Phase.BLOCK or \
 	gameState.get_phase() == Types.Phase.ATTACK_PLAY or \
 	gameState.get_phase() == Types.Phase.BLOCK_PLAY)
 
@@ -173,6 +185,7 @@ func close_connections():
 	socket = null
 	gameSocket = null
 	is_waiting = true
+	is_spectating_ai_match = false
 	clear_drag()
 	close_bigger_popup()
 	clear_popup()

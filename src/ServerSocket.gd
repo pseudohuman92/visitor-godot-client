@@ -51,6 +51,7 @@ func decode_proto_message(data):
 		GS.playerId = lr.get_game().get_player().get_id();
 		GS.aiId = lr.get_aiId()
 		GS.gameType = lr.get_gameType()
+		GS.is_spectating_ai_match = GS.gameType == GS.Types.GameType.AI_VS_AI
 		initialize_game_state.emit(lr.get_game())
 
 	elif message.has_getCollectionResponse():
