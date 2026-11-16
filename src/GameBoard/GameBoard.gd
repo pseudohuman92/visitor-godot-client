@@ -161,9 +161,10 @@ func _layout_board_hud():
 	_place_board_hud_control(_player_deck_area,
 		Vector2(deck_x, player_deck_y), deck_size, deck_scale)
 	var hand_width = viewport_size.x * 0.76
+	var hand_height = viewport_size.y * O.card_height * 0.5
 	_place_board_hud_control(_player_hand,
-		Vector2((viewport_size.x - hand_width) * 0.5, viewport_size.y - 180),
-		Vector2(hand_width, 180))
+		Vector2((viewport_size.x - hand_width) * 0.5, viewport_size.y - hand_height),
+		Vector2(hand_width, hand_height))
 
 func _place_board_hud_control(control: Control, position: Vector2, size: Vector2,
 			control_scale: float = 1.0):

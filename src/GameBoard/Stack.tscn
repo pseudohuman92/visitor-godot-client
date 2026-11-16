@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://cyf4auv3kwlej"]
 
-[ext_resource type="Script" path="res://src/GameBoard/CardContainer.gd" id="1_isthh"]
+[ext_resource type="Script" path="res://src/GameBoard/StackPile.gd" id="1_isthh"]
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="2_b1f2l"]
 [ext_resource type="LabelSettings" uid="uid://fslojvlky0sj" path="res://src/Themes/EnergyDisplayNumbers.tres" id="4_76dgi"]
 [ext_resource type="Script" path="res://src/GameBoard/Phase.gd" id="5_0smbc"]
@@ -35,13 +35,14 @@ size_flags_stretch_ratio = 15.0
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 4
 
-[node name="Stack" type="VBoxContainer" parent="ScrollContainer"]
+[node name="Stack" type="Container" parent="ScrollContainer"]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 15.0
 script = ExtResource("1_isthh")
+overlap_ratio = 0.8
 
 [node name="Phase" type="Label" parent="."]
 layout_mode = 2

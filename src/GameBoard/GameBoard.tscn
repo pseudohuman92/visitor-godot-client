@@ -24,6 +24,7 @@
 [ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_pressed.tres" id="22_secondary_pressed"]
 [ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_disabled.tres" id="23_secondary_disabled"]
 [ext_resource type="Texture2D" uid="uid://bij2elpga8pt3" path="res://assets/backgrounds/omen_board_background.png" id="24_board_background"]
+[ext_resource type="Script" path="res://src/GameBoard/HandFan.gd" id="25_hand_fan"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqqf3"]
 bg_color = Color(0.043137, 0.05098, 0.054902, 0)
@@ -272,14 +273,14 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 3.5
 vertical_scroll_mode = 0
 
-[node name="OpponentHand" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/ScrollContainer"]
+[node name="OpponentHand" type="Container" parent="MainContainer/HBoxContainer/PlayArea/ScrollContainer"]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 10
-alignment = 1
-script = ExtResource("6_b5knn")
+script = ExtResource("25_hand_fan")
+fan_direction = -1.0
+card_rotation_offset_degrees = 180.0
 
 [node name="PlayContainer" type="PanelContainer" parent="MainContainer/HBoxContainer/PlayArea"]
 show_behind_parent = true
@@ -367,14 +368,13 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 3.5
 vertical_scroll_mode = 0
 
-[node name="PlayerHand" type="HBoxContainer" parent="MainContainer/HBoxContainer/PlayArea/ScrollContainer4"]
+[node name="PlayerHand" type="Container" parent="MainContainer/HBoxContainer/PlayArea/ScrollContainer4"]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 10
-alignment = 1
-script = ExtResource("6_b5knn")
+script = ExtResource("25_hand_fan")
+fan_direction = 1.0
 
 [node name="StackContainer" parent="MainContainer/HBoxContainer" instance=ExtResource("15_twdm7")]
 layout_mode = 2

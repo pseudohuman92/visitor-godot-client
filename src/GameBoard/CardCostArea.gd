@@ -1,7 +1,8 @@
 extends VBoxContainer
 
 const KNOWLEDGE_ICON_SIZE := 36.0
-const KNOWLEDGE_STEP := KNOWLEDGE_ICON_SIZE * 0.5
+const KNOWLEDGE_OVERLAP_RATIO := 0.5
+const KNOWLEDGE_STEP := KNOWLEDGE_ICON_SIZE * (1.0 - KNOWLEDGE_OVERLAP_RATIO)
 var children = []
 var _knowledge_stack: Control
 
