@@ -132,7 +132,6 @@ func _on_mouse_entered():
 				GS.arrow_targets.append([card.get_id(), c])
 			draw_target_arrows.emit(false)
 		hover = true
-		set_border_color(Color.DARK_GOLDENROD)
 
 
 func _on_mouse_exited():
@@ -151,7 +150,7 @@ func _process(delta):
 		_on_mouse_exited()
 	if _hover_lift != null:
 		_hover_lift.update(delta, hover and not display and not GS.is_dragging and not _disable_hover_lift)
-	if !display and !hover:
+	if !display:
 		set_border_color(get_border_color())
 
 

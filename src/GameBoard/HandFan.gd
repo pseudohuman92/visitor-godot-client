@@ -59,5 +59,5 @@ func _layout_fan():
 		var fan_position = (index - (count - 1) * 0.5) / spread
 		var edge = absf(fan_position)
 		card.position = Vector2(start_x + index * spacing, arc_height * edge * edge * fan_direction)
-		card.rotation = deg_to_rad(maximum_angle_degrees * fan_position + card_rotation_offset_degrees)
+		card.rotation = deg_to_rad(maximum_angle_degrees * fan_position * fan_direction + card_rotation_offset_degrees)
 		card.z_index = index

@@ -31,16 +31,9 @@ func _pointer_in_card():
 	var point = get_global_mouse_position()
 	return get_global_rect().has_point(point) or find_child("InternalContainer").get_global_rect().has_point(point)
 
-func _set_border(color):
-	var visual = find_child("InternalContainer")
-	var border = visual.get_theme_stylebox("panel").duplicate()
-	border.border_color = color
-	visual.add_theme_stylebox_override("panel", border)
-
 func _on_mouse_entered():
 	_deferred_hover_exit = false
 	_hover = true
-	_set_border(Color.GOLDENROD)
 
 func _on_mouse_exited():
 	if _pointer_in_card():
@@ -51,7 +44,6 @@ func _on_mouse_exited():
 func _end_hover():
 	_deferred_hover_exit = false
 	_hover = false
-	_set_border(Color.WHITE_SMOKE)
 
 func _on_gui_input(event):
 	if not event is InputEventMouseButton:

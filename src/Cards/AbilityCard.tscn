@@ -68,5 +68,3 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [connection signal="gui_input" from="InternalContainer" to="InternalContainer" method="_on_gui_input"]
-[connection signal="mouse_entered" from="InternalContainer" to="InternalContainer" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="InternalContainer" to="InternalContainer" method="_on_mouse_exited"]

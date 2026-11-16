@@ -10,16 +10,6 @@ func setup(card, count):
 		CS.set_stylebox_knowledge_color("normal", find_child("Name"), CS.to_knowledge_color(card.get_knowledgeCost()))
 		find_child("Count").set_text(str(count)+"x")
 
-func _on_mouse_entered():
-		var border = find_child("InternalContainer").get_theme_stylebox("panel").duplicate()
-		border.set_border_color(Color.GOLDENROD)
-		find_child("InternalContainer").add_theme_stylebox_override("panel", border)
-
-func _on_mouse_exited():
-		var border = find_child("InternalContainer").get_theme_stylebox("panel").duplicate()
-		border.set_border_color(Color.WHITE_SMOKE)
-		find_child("InternalContainer").add_theme_stylebox_override("panel", border)
-
 func _on_gui_input(event):
 	if event is InputEventMouseButton:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):

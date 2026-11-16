@@ -794,7 +794,7 @@ func _refresh_board_card_names() -> void:
 func _register_board_targets() -> void:
 	_target_controls.clear()
 	var mappings := {
-		"opponent_hand": "OpponentHand",
+		"opponent_hand": "OpponentHandMask",
 		"opponent_deck": "OpponentDeck",
 		"opponent_discard": "OpponentDiscardClick",
 		"opponent_zone": "OpponentUnitArea",

@@ -269,10 +269,13 @@ func _layout_board_hud():
 	_place_board_hud_control(_player_front,
 		Vector2(front_x, player_info_y), Vector2(front_width, front_height), front_scale)
 	var opponent_hand_width = viewport_size.x * 0.76
+	var opponent_card_height = viewport_size.y * O.card_height
+	var opponent_visible_height = opponent_card_height * 0.5
 	_place_board_hud_control(_opponent_hand_mask,
 		Vector2((viewport_size.x - opponent_hand_width) * 0.5, 0),
-		Vector2(opponent_hand_width, 110))
-	_place_board_hud_control(_opponent_hand, Vector2.ZERO, Vector2(opponent_hand_width, 220))
+		Vector2(opponent_hand_width, opponent_visible_height))
+	_place_board_hud_control(_opponent_hand, Vector2(0, -opponent_visible_height),
+		Vector2(opponent_hand_width, opponent_card_height))
 	_place_board_hud_control(_opponent_deck_area,
 		Vector2(deck_x, opponent_deck_y), deck_size, deck_scale)
 	_place_board_hud_control(_player_deck_area,

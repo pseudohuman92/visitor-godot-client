@@ -26,14 +26,3 @@ func _on_gui_input(event):
 			GS.popup_cards = []
 			GS.popup_message = ""
 			SS.process_selections(targeting_ability.get_targets(), card, GS.gameSocket.activate_card, SS.selection_type.ACTIVATE, targeting_ability.get_id())
-
-func _on_mouse_entered():
-	var border = get_theme_stylebox("panel").duplicate()
-	border.set_border_color(Color.DARK_GOLDENROD)
-	add_theme_stylebox_override("panel", border)
-
-
-func _on_mouse_exited():
-	var border = get_theme_stylebox("panel").duplicate()
-	border.set_border_color(Color.WHITE_SMOKE)
-	add_theme_stylebox_override("panel", border)
