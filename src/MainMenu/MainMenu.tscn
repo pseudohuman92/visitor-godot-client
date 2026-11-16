@@ -168,5 +168,3 @@ access = 1
 [connection signal="pressed" from="VBoxContainer/PlayAIVsAI" to="VBoxContainer/PlayAIVsAI" method="_on_pressed"]
 [connection signal="pressed" from="VBoxContainer/PlayTest" to="VBoxContainer/PlayTest" method="_on_pressed"]
 [connection signal="file_selected" from="FileDialog" to="VBoxContainer/PlayMulti" method="_on_file_dialog_file_selected"]
-[connection signal="file_selected" from="FileDialog" to="VBoxContainer/PlayAI" method="_on_file_dialog_file_selected"]
-[connection signal="file_selected" from="FileDialog" to="VBoxContainer/PlayAIVsAI" method="_on_file_dialog_file_selected"]

@@ -7,9 +7,16 @@ var _deferred_hover_exit = false
 
 func _ready():
 	var visual = find_child("InternalContainer")
+	_set_mouse_filter_pass_through(visual)
 	_hover_lift = preload("res://src/Cards/HoverLift.gd").new(visual)
 	visual.mouse_entered.connect(_on_mouse_entered)
 	visual.mouse_exited.connect(_on_mouse_exited)
+
+func _set_mouse_filter_pass_through(node):
+	if node is Control:
+		node.mouse_filter = Control.MOUSE_FILTER_PASS
+	for child in node.get_children():
+		_set_mouse_filter_pass_through(child)
 
 func _process(delta):
 	if _deferred_hover_exit and not _pointer_in_card():
@@ -47,25 +54,22 @@ func _end_hover():
 	_set_border(Color.WHITE_SMOKE)
 
 func _on_gui_input(event):
-	if event is InputEventMouseButton:
-		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			if GS.decklist.count(card) < 3:
-				GS.decklist.append(card)
-				GS.decklist.sort_custom(CS.compare_cost_name_cardP)
-				GS.decklist_changed = true
-		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-			if card:
-				var parent = find_parent("DeckBuilder")
-				if is_instance_valid(GS.bigger_popup):
-					GS.close_bigger_popup()
-				GS.bigger_popup = GS.CollectionCardScene.instantiate()
-				GS.bigger_popup.setup(card)
-				parent.add_child(GS.bigger_popup)
-				GS.bigger_popup.z_index = z_index + 1
-				GS.bigger_popup.set_scale(Vector2(2,2))
-				GS.bigger_popup.set_position(Vector2(0,0))
-
-		if event.is_released():
-			if is_instance_valid(GS.bigger_popup):
-				var parent = find_parent("DeckBuilder")
-				GS.close_bigger_popup()
+	if not event is InputEventMouseButton:
+		return
+	if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if GS.decklist.count(card) < 3:
+			GS.decklist.append(card)
+			GS.decklist.sort_custom(CS.compare_cost_name_cardP)
+			GS.decklist_changed = true
+	elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and card:
+		var parent = find_parent("DeckBuilder")
+		if is_instance_valid(GS.bigger_popup):
+			GS.close_bigger_popup()
+		GS.bigger_popup = GS.CollectionCardScene.instantiate()
+		GS.bigger_popup.setup(card)
+		parent.add_child(GS.bigger_popup)
+		GS.bigger_popup.z_index = z_index + 1
+		GS.bigger_popup.set_scale(Vector2(2,2))
+		GS.bigger_popup.set_position(Vector2(0,0))
+	elif event.is_released() and is_instance_valid(GS.bigger_popup):
+		GS.close_bigger_popup()

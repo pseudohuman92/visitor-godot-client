@@ -1,6 +1,9 @@
 extends Button
 
 func _on_file_dialog_file_selected(path):
+	# The menu connects this dialog once; the clicked button already set queue_type.
+	if not is_inside_tree():
+		return
 	var result = CS.read_deck_file(path)
 	if result.has("error"):
 		CS.show_error(result.error)
