@@ -203,7 +203,7 @@ func show_game_result(won):
 	if state == null:
 		return
 	var winner = state.get_player().get_username() if won else state.get_opponent().get_username()
-	_find_board_node("AiVsAiResultText").text = "AI VS AI MATCH COMPLETE\n%s WINS\nPress Escape to return to the menu." % winner.to_upper()
+	_find_board_node("AiVsAiResultText").text = "AI VS AI MATCH COMPLETE\n%s WINS\nPress Escape for options." % winner.to_upper()
 	_find_board_node("AiVsAiResult").set_visible(true)
 
 func update_game_state(new_state):

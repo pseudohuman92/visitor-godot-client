@@ -14,8 +14,9 @@ var _drag_source: WeakRef
 var _drag_source_modulate := Color.WHITE
 
 func _ready():
-	_disable_hover_lift = find_parent("PlayerDiscard") != null or find_parent("OpponentDiscard") != null
-	if _disable_hover_lift:
+	var in_discard_pile = find_parent("PlayerDiscard") != null or find_parent("OpponentDiscard") != null
+	_disable_hover_lift = in_discard_pile or find_parent("OpponentHand") != null
+	if in_discard_pile:
 		var card_root = get_parent()
 		if card_root is Control:
 			card_root.mouse_filter = Control.MOUSE_FILTER_PASS

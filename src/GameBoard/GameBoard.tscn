@@ -25,6 +25,7 @@
 [ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_disabled.tres" id="23_secondary_disabled"]
 [ext_resource type="Texture2D" uid="uid://bij2elpga8pt3" path="res://assets/backgrounds/omen_board_background.png" id="24_board_background"]
 [ext_resource type="Script" path="res://src/GameBoard/HandFan.gd" id="25_hand_fan"]
+[ext_resource type="Script" path="res://src/GameBoard/OptionsMenu.gd" id="26_options_menu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqqf3"]
 bg_color = Color(0.043137, 0.05098, 0.054902, 0)
@@ -69,6 +70,22 @@ content_margin_left = 28.0
 content_margin_top = 20.0
 content_margin_right = 28.0
 content_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_options_panel"]
+bg_color = Color(0.055, 0.062, 0.067, 0.98)
+border_color = Color(0.62, 0.16, 0.17, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 34.0
+content_margin_top = 30.0
+content_margin_right = 34.0
+content_margin_bottom = 30.0
 
 [node name="GameBoard" type="Node2D"]
 script = ExtResource("1_vx3oc")
@@ -379,30 +396,31 @@ fan_direction = 1.0
 [node name="StackContainer" parent="MainContainer/HBoxContainer" instance=ExtResource("15_twdm7")]
 layout_mode = 2
 
-[node name="Popup" type="PanelContainer" parent="."]
+[node name="PopupLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="Popup" type="PanelContainer" parent="PopupLayer"]
 clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 1920.0
-offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("16_q5ptu")
 
-[node name="CardArea" type="VBoxContainer" parent="Popup"]
+[node name="CardArea" type="VBoxContainer" parent="PopupLayer/Popup"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 9.0
 
-[node name="Control" type="Control" parent="Popup/CardArea"]
+[node name="Control" type="Control" parent="PopupLayer/Popup/CardArea"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 
-[node name="PopupText" type="Label" parent="Popup/CardArea"]
+[node name="PopupText" type="Label" parent="PopupLayer/Popup/CardArea"]
 layout_mode = 2
 theme = ExtResource("17_dgrnn")
 text = "Popup Test"
@@ -410,12 +428,12 @@ label_settings = ExtResource("13_a3uto")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Popup/CardArea"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PopupLayer/Popup/CardArea"]
 layout_mode = 2
 size_flags_vertical = 3
 vertical_scroll_mode = 0
 
-[node name="Cards" type="HBoxContainer" parent="Popup/CardArea/ScrollContainer"]
+[node name="Cards" type="HBoxContainer" parent="PopupLayer/Popup/CardArea/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -423,34 +441,34 @@ theme = ExtResource("17_dgrnn")
 alignment = 1
 script = ExtResource("6_b5knn")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Popup/CardArea"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PopupLayer/Popup/CardArea"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Control2" type="Control" parent="Popup/CardArea/HBoxContainer"]
+[node name="Control2" type="Control" parent="PopupLayer/Popup/CardArea/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 8.0
 mouse_filter = 1
 
-[node name="PopupButtons" type="VBoxContainer" parent="Popup/CardArea/HBoxContainer"]
+[node name="PopupButtons" type="VBoxContainer" parent="PopupLayer/Popup/CardArea/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Control" type="Control" parent="Popup/CardArea/HBoxContainer/PopupButtons"]
+[node name="Control" type="Control" parent="PopupLayer/Popup/CardArea/HBoxContainer/PopupButtons"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 10.0
 mouse_filter = 1
 
-[node name="Submit" type="Button" parent="Popup/CardArea/HBoxContainer/PopupButtons"]
+[node name="Submit" type="Button" parent="PopupLayer/Popup/CardArea/HBoxContainer/PopupButtons"]
 layout_mode = 2
 theme = ExtResource("17_dgrnn")
 text = "Submit"
 script = ExtResource("18_14m7r")
 
-[node name="Cancel" type="Button" parent="Popup/CardArea/HBoxContainer/PopupButtons"]
+[node name="Cancel" type="Button" parent="PopupLayer/Popup/CardArea/HBoxContainer/PopupButtons"]
 layout_mode = 2
 theme = ExtResource("17_dgrnn")
 theme_override_styles/normal = ExtResource("20_secondary")
@@ -460,7 +478,7 @@ theme_override_styles/disabled = ExtResource("23_secondary_disabled")
 text = "Cancel"
 script = ExtResource("18_14m7r")
 
-[node name="Control2" type="Control" parent="Popup/CardArea/HBoxContainer/PopupButtons"]
+[node name="Control2" type="Control" parent="PopupLayer/Popup/CardArea/HBoxContainer/PopupButtons"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
@@ -515,8 +533,126 @@ text = "AI VS AI MATCH COMPLETE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="OptionsLayer" type="CanvasLayer" parent="."]
+layer = 110
+
+[node name="OptionsOverlay" type="Control" parent="OptionsLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("26_options_menu")
+
+[node name="Dimmer" type="ColorRect" parent="OptionsLayer/OptionsOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.01, 0.012, 0.014, 0.84)
+
+[node name="CenterContainer" type="CenterContainer" parent="OptionsLayer/OptionsOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="OptionsPanel" type="PanelContainer" parent="OptionsLayer/OptionsOverlay/CenterContainer"]
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_options_panel")
+
+[node name="Content" type="VBoxContainer" parent="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel"]
+layout_mode = 2
+theme = ExtResource("17_dgrnn")
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("19_n4jhl")
+theme_override_font_sizes/font_size = 42
+theme_override_colors/font_color = Color(0.9, 0.88, 0.84, 1)
+text = "OPTIONS"
+horizontal_alignment = 1
+
+[node name="MatchNote" type="Label" parent="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("19_n4jhl")
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.72, 0.7, 0.67, 1)
+text = "The match continues while options are open."
+horizontal_alignment = 1
+
+[node name="SfxRow" type="HBoxContainer" parent="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="SfxLabel" type="Label" parent="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content/SfxRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("19_n4jhl")
+theme_override_font_sizes/font_size = 24
+text = "SOUND EFFECTS"
+vertical_alignment = 1
+
+[node name="SfxVolume" type="HSlider" parent="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content/SfxRow"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.1
+value = 40.0
+allow_greater = false
+
+[node name="SfxValue" type="Label" parent="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content/SfxRow"]
+custom_minimum_size = Vector2(54, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("19_n4jhl")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 2
+vertical_alignment = 1
+text = "40%"
+
+[node name="Spacer" type="Control" parent="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Resume" type="Button" parent="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme = ExtResource("17_dgrnn")
+theme_override_styles/normal = ExtResource("20_secondary")
+theme_override_styles/hover = ExtResource("21_secondary_hover")
+theme_override_styles/pressed = ExtResource("22_secondary_pressed")
+theme_override_styles/disabled = ExtResource("23_secondary_disabled")
+theme_override_fonts/font = ExtResource("19_n4jhl")
+theme_override_font_sizes/font_size = 24
+text = "RESUME MATCH"
+
+[node name="MainMenu" type="Button" parent="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme = ExtResource("17_dgrnn")
+theme_override_styles/normal = ExtResource("20_secondary")
+theme_override_styles/hover = ExtResource("21_secondary_hover")
+theme_override_styles/pressed = ExtResource("22_secondary_pressed")
+theme_override_styles/disabled = ExtResource("23_secondary_disabled")
+theme_override_fonts/font = ExtResource("19_n4jhl")
+theme_override_font_sizes/font_size = 24
+text = "RETURN TO MAIN MENU"
+
 [connection signal="gui_input" from="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea/OpponentDiscardClick" to="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea/OpponentDiscardClick" method="_on_gui_input"]
 [connection signal="gui_input" from="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDiscardClick" to="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDiscardClick" method="_on_gui_input"]
-[connection signal="gui_input" from="Popup" to="Popup" method="_on_gui_input"]
-[connection signal="pressed" from="Popup/CardArea/HBoxContainer/PopupButtons/Submit" to="Popup/CardArea/HBoxContainer/PopupButtons/Submit" method="_on_pressed"]
-[connection signal="pressed" from="Popup/CardArea/HBoxContainer/PopupButtons/Cancel" to="Popup/CardArea/HBoxContainer/PopupButtons/Cancel" method="_on_pressed"]
+[connection signal="gui_input" from="PopupLayer/Popup" to="PopupLayer/Popup" method="_on_gui_input"]
+[connection signal="pressed" from="PopupLayer/Popup/CardArea/HBoxContainer/PopupButtons/Submit" to="PopupLayer/Popup/CardArea/HBoxContainer/PopupButtons/Submit" method="_on_pressed"]
+[connection signal="pressed" from="PopupLayer/Popup/CardArea/HBoxContainer/PopupButtons/Cancel" to="PopupLayer/Popup/CardArea/HBoxContainer/PopupButtons/Cancel" method="_on_pressed"]
+[connection signal="value_changed" from="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content/SfxRow/SfxVolume" to="OptionsLayer/OptionsOverlay" method="_on_sfx_volume_changed"]
+[connection signal="pressed" from="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content/Resume" to="OptionsLayer/OptionsOverlay" method="_on_resume_pressed"]
+[connection signal="pressed" from="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content/MainMenu" to="OptionsLayer/OptionsOverlay" method="_on_main_menu_pressed"]
