@@ -11,7 +11,13 @@ const SECONDARY_PRESSED = preload("res://assets/ui/styles/button_secondary_press
 const NAV_FONT = preload("res://assets/fonts/BarlowCondensed-SemiBold-Navigation.tres")
 const TITLE_FONT = preload("res://assets/fonts/BarlowCondensed-SemiBold-Tracked.tres")
 const BODY_FONT = preload("res://assets/fonts/Barlow-Regular.ttf")
-const DIAGRAM_FONT = preload("res://assets/fonts/CourierPrime-Regular.ttf")
+const SCREENSHOT_BOARD = preload("res://assets/tutorial/screenshots/01-board-overview.jpg")
+const SCREENSHOT_OPENING_HAND = preload("res://assets/tutorial/screenshots/02-opening-hand.jpg")
+const SCREENSHOT_CARD_ANATOMY = preload("res://assets/tutorial/screenshots/03-card-anatomy.jpg")
+const SCREENSHOT_STUDY = preload("res://assets/tutorial/screenshots/04-study.jpg")
+const SCREENSHOT_TURN_ORDER = preload("res://assets/tutorial/screenshots/05-turn-order.jpg")
+const SCREENSHOT_STACK_RESPONSE = preload("res://assets/tutorial/screenshots/06-stack-response.jpg")
+const SCREENSHOT_COMBAT = preload("res://assets/tutorial/screenshots/07-combat.jpg")
 const ACCENT := Color("#b53d3c")
 const TEXT := Color("#e8e5df")
 const MUTED := Color("#a9aaa5")
@@ -23,7 +29,7 @@ const LESSONS = [
 		"title": "Know the board. Know the goal.",
 		"subtitle": "Reduce your opponent's health to zero.",
 		"body": "Both players begin at 30 health. Damage and card effects change that total; when a player's health reaches zero, that player loses.\n\nYour hand is along the bottom. Units and assets stay in the central play area. Your deck, discard pile, health, energy, and knowledge are grouped at the right. The red divider separates your side from your opponent's.",
-		"diagram": "OPPONENT HAND (hidden)                         OPPONENT DECK / INFO\nOPPONENT UNITS  •  OPPONENT ASSETS\n==================== COMBAT LINE ====================\nYOUR UNITS  •  YOUR ASSETS\nYOUR HAND (bottom)                                 YOUR DECK / DISCARD / INFO",
+		"screenshot": SCREENSHOT_BOARD,
 		"question": "",
 		"answers": [],
 		"correct": -1,
@@ -34,7 +40,7 @@ const LESSONS = [
 		"title": "Choose your opening hand.",
 		"subtitle": "Keep a hand you can use, or redraw for fewer cards.",
 		"body": "You start with five cards. If the hand does not fit your plan, choose Redraw: those cards are shuffled back into your deck and you draw one fewer. Choose Keep when you are ready to begin.\n\nA balanced hand usually has cards you can afford, plus a card you can study to build your resources.",
-		"diagram": "FIVE CARD OPENING HAND\n       KEEP  →  START WITH THIS HAND\n       REDRAW  →  SHUFFLE IT BACK  →  DRAW ONE FEWER",
+		"screenshot": SCREENSHOT_OPENING_HAND,
 		"question": "",
 		"answers": [],
 		"correct": -1,
@@ -45,7 +51,7 @@ const LESSONS = [
 		"title": "Read the cost before you play.",
 		"subtitle": "Energy and knowledge are separate requirements.",
 		"body": "The number in a card's cost is the energy you spend. Colored knowledge icons show the knowledge you must have in your pool. You need to meet both requirements to play the card.\n\nUnits have attack and health and usually remain on the board. Spells often resolve and go to the discard pile. The card's text explains its effect. Hover keywords for a reminder, or right-click a card to inspect it larger.",
-		"diagram": "   COST 2  +  RED KNOWLEDGE  →  NEED 2 ENERGY AND 1 RED\n   UNIT  3 / 3  →  ATTACK / HEALTH\n   CARD TEXT  →  EFFECT AND TIMING",
+		"screenshot": SCREENSHOT_CARD_ANATOMY,
 		"question": "A card costs 2 and shows one red knowledge icon. What do you need?",
 		"answers": ["2 energy and 1 red knowledge", "2 red knowledge only", "Any 2 knowledge"],
 		"correct": 0,
@@ -56,7 +62,7 @@ const LESSONS = [
 		"title": "Study to grow your resources.",
 		"subtitle": "You get one regular study each turn.",
 		"body": "Drag an eligible card from your hand onto your deck to study it. A regular study normally shuffles that card back into your deck, adds one to your maximum and current energy, and adds one knowledge of a type shown on the card. Some special cards have different study effects.\n\nThe green border around your deck means a card in your hand can be studied now. If the card offers more than one knowledge type, choose the one you need.",
-		"diagram": "ELIGIBLE CARD IN HAND  →  STUDY ONCE THIS TURN\nCARD RETURNS TO DECK  •  +1 MAX ENERGY  •  +1 ENERGY\nGAIN 1 OFFERED KNOWLEDGE",
+		"screenshot": SCREENSHOT_STUDY,
 		"question": "What does a regular study usually give you?",
 		"answers": ["One energy, one max energy, and one offered knowledge", "Two cards drawn", "A free play of that card"],
 		"correct": 0,
@@ -67,7 +73,7 @@ const LESSONS = [
 		"title": "Take your turn in phases.",
 		"subtitle": "The phase label shows what actions are available.",
 		"body": "At the start of your turn, the game draws cards, refreshes your energy to its maximum, and restores your study. In Main Before and Main After you can take slow actions, including studying.\n\nThe middle of the turn is combat: declare attackers, allow responses, let the defender assign blockers, then allow another response window. Fast cards and abilities can be used in the windows shown by the game. Eligible actions are highlighted on the board.",
-		"diagram": "BEGIN → MAIN BEFORE → ATTACKERS → ATTACK RESPONSE\n      → BLOCKERS → BLOCK RESPONSE → MAIN AFTER → END",
+		"screenshot": SCREENSHOT_TURN_ORDER,
 		"question": "When can you take a slow action such as studying?",
 		"answers": ["Main Before or Main After", "Only during combat", "Any time, including the opponent's turn"],
 		"correct": 0,
@@ -78,7 +84,7 @@ const LESSONS = [
 		"title": "Respond before effects resolve.",
 		"subtitle": "Priority passes between players while an effect is pending.",
 		"body": "Playing a card or activating an ability can put an effect on the stack. The other player gets a chance to respond with a fast card or ability. When both players pass in succession, the top item on the stack resolves. If the stack is empty, passing advances the phase instead.\n\nA targeted card asks you to choose a legal target before it is sent. Read the target prompt and follow its highlights.",
-		"diagram": "PLAYER A: PLAY A FAST CARD\nPLAYER B: RESPOND — OR PASS\nBOTH PASS  →  TOP OF STACK RESOLVES",
+		"screenshot": SCREENSHOT_STACK_RESPONSE,
 		"question": "The stack is not empty. Both players pass in succession. What happens?",
 		"answers": ["The top stack item resolves", "The match ends", "The stack is discarded"],
 		"correct": 0,
@@ -89,7 +95,7 @@ const LESSONS = [
 		"title": "Attack, block, and learn from the exchange.",
 		"subtitle": "Choose attackers; the defending player chooses legal blockers.",
 		"body": "In the Attack phase, select the units you want to send. Only units that are allowed to attack will be selectable; newly played units and card abilities can change that. After responses, the opponent assigns eligible blockers to attackers.\n\nCombat damage uses each unit's attack against the other unit's health. If an attacker is unblocked, it can damage the defending player. Shields and abilities can change the result, so check the card text and combat arrows before submitting.",
-		"diagram": "YOU SELECT ATTACKERS  →  OPPONENT ASSIGNS BLOCKERS\nRESPONSE WINDOW  →  COMBAT DAMAGE\nUNBLOCKED ATTACKERS CAN DAMAGE THE OPPONENT",
+		"screenshot": SCREENSHOT_COMBAT,
 		"question": "Who chooses which units block an attack?",
 		"answers": ["The defending player", "The attacking player", "The game always chooses"],
 		"correct": 0,
@@ -106,7 +112,7 @@ var _lesson_count: Label
 var _title: Label
 var _subtitle: Label
 var _body: Label
-var _diagram: Label
+var _lesson_screenshot: TextureRect
 var _quiz_panel: PanelContainer
 var _question: Label
 var _answers: VBoxContainer
@@ -258,7 +264,7 @@ func _build_lessons(parent: VBoxContainer) -> void:
 	columns.add_child(lesson_panel)
 
 	var content := VBoxContainer.new()
-	content.add_theme_constant_override("separation", 12)
+	content.add_theme_constant_override("separation", 8)
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	lesson_panel.add_child(content)
@@ -288,28 +294,28 @@ func _build_lessons(parent: VBoxContainer) -> void:
 	content.add_child(_subtitle)
 
 	_body = Label.new()
-	_body.custom_minimum_size.y = 132
-	_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_body.custom_minimum_size.y = 80
+	_body.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_body.vertical_alignment = VERTICAL_ALIGNMENT_TOP
-	_set_label_style(_body, 19, BODY_FONT, TEXT)
+	_set_label_style(_body, 18, BODY_FONT, TEXT)
 	content.add_child(_body)
 
-	var diagram_panel := _make_panel()
-	diagram_panel.custom_minimum_size.y = 170
-	diagram_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	content.add_child(diagram_panel)
-	_diagram = Label.new()
-	_diagram.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_diagram.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_diagram.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_diagram.add_theme_color_override("font_color", Color("#d9c8aa"))
-	_diagram.add_theme_font_override("font", DIAGRAM_FONT)
-	_diagram.add_theme_font_size_override("font_size", 18)
-	diagram_panel.add_child(_diagram)
+	var screenshot_panel := _make_panel()
+	screenshot_panel.custom_minimum_size.y = 360
+	screenshot_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.add_child(screenshot_panel)
+	_lesson_screenshot = TextureRect.new()
+	_lesson_screenshot.name = "LessonScreenshot"
+	_lesson_screenshot.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_lesson_screenshot.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_lesson_screenshot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_lesson_screenshot.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_lesson_screenshot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	screenshot_panel.add_child(_lesson_screenshot)
 
 	_quiz_panel = _make_panel()
-	_quiz_panel.custom_minimum_size.y = 190
+	_quiz_panel.custom_minimum_size.y = 160
 	_quiz_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.add_child(_quiz_panel)
 	var quiz_content := VBoxContainer.new()
@@ -326,6 +332,9 @@ func _build_lessons(parent: VBoxContainer) -> void:
 	_feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_set_label_style(_feedback, 15, BODY_FONT, GREEN)
 	quiz_content.add_child(_feedback)
+	var footer_spacer := Control.new()
+	footer_spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	content.add_child(footer_spacer)
 
 	var footer := HBoxContainer.new()
 	footer.add_theme_constant_override("separation", 10)
@@ -363,7 +372,8 @@ func _show_lesson(index: int) -> void:
 	_title.text = lesson["title"]
 	_subtitle.text = lesson["subtitle"]
 	_body.text = lesson["body"]
-	_diagram.text = lesson["diagram"]
+	_lesson_screenshot.texture = lesson["screenshot"]
+	_lesson_screenshot.tooltip_text = lesson["title"]
 	_progress.value = _current_lesson + 1
 	_progress_label.text = "%02d / %02d" % [_current_lesson + 1, LESSONS.size()]
 	_previous.disabled = _current_lesson == 0
@@ -382,7 +392,8 @@ func _show_lesson(index: int) -> void:
 	for i in range(lesson["answers"].size()):
 		var answer_button := _make_button(lesson["answers"][i], false)
 		answer_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		answer_button.custom_minimum_size.y = 38
+		answer_button.custom_minimum_size.y = 28
+		answer_button.add_theme_font_size_override("font_size", 16)
 		answer_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		answer_button.add_theme_stylebox_override("normal", SECONDARY_DEFAULT)
 		answer_button.add_theme_stylebox_override("hover", SECONDARY_HOVER)
