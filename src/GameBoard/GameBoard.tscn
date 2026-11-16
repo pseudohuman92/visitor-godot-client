@@ -23,9 +23,10 @@
 [ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_hover.tres" id="21_secondary_hover"]
 [ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_pressed.tres" id="22_secondary_pressed"]
 [ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_disabled.tres" id="23_secondary_disabled"]
+[ext_resource type="Texture2D" uid="uid://bij2elpga8pt3" path="res://assets/backgrounds/omen_board_background.png" id="24_board_background"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqqf3"]
-bg_color = Color(0.043137, 0.05098, 0.054902, 1)
+bg_color = Color(0.043137, 0.05098, 0.054902, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xdiac"]
 
@@ -54,6 +55,18 @@ font_size = 28
 
 [node name="GameBoard" type="Node2D"]
 script = ExtResource("1_vx3oc")
+
+[node name="BoardBackground" type="TextureRect" parent="."]
+z_index = -1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("24_board_background")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="MainContainer" type="PanelContainer" parent="."]
 clip_contents = true
