@@ -4,6 +4,7 @@ const BASE_CARD_WIDTH := 200.0
 const MIN_FONT_SCALE := 0.55
 const MAX_FONT_SCALE := 1.5
 const MIN_FONT_SIZE := 9
+const INLINE_ICON_SCALE := 1.5
 const LABEL_BASE_SIZE_META := "card_base_label_font_size"
 const LAST_SCALE_META := "card_last_font_scale"
 var _title_label: Label
@@ -88,7 +89,7 @@ func _scale_rich_text(label: RichTextLabel, scale_factor: float):
 	for size_name in ["normal_font_size", "bold_font_size", "italics_font_size", "bold_italics_font_size", "mono_font_size"]:
 		_scale_theme_font_size(label, size_name, "card_base_" + size_name, scale_factor)
 	if label.has_method("set_icon_size"):
-		label.set_icon_size(label.get_theme_font_size("normal_font_size"))
+		label.set_icon_size(roundi(label.get_theme_font_size("normal_font_size") * INLINE_ICON_SCALE))
 
 func _scale_theme_font_size(control: Control, size_name: StringName, meta_name: String, scale_factor: float):
 	if not control.has_meta(meta_name):
