@@ -369,7 +369,7 @@ func _build_board_panel(parent: HBoxContainer) -> void:
 	parent.add_child(frame)
 
 	var board := VBoxContainer.new()
-	board.add_theme_constant_override("separation", 8)
+	board.add_theme_constant_override("separation", 5)
 	board.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	board.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	frame.add_child(board)
@@ -642,9 +642,9 @@ func _refresh_view() -> void:
 	_render_card_row(_player_units_row, _player_units, "unit:")
 	_render_card_row(_player_hand_row, _player_hand, "card:")
 
-	var opponent_energy := _setup_data.get("opponent_energy", 1)
-	var opponent_max_energy := _setup_data.get("opponent_max_energy", 1)
-	var opponent_knowledge := _setup_data.get("opponent_knowledge", "—")
+	var opponent_energy: int = int(_setup_data.get("opponent_energy", 1))
+	var opponent_max_energy: int = int(_setup_data.get("opponent_max_energy", 1))
+	var opponent_knowledge: String = str(_setup_data.get("opponent_knowledge", "—"))
 	var opponent_name := "DEFEATED" if _game_won else "RIVAL"
 	_opponent_info_button.text = "%s    ♥ %d    ENERGY  %d / %d    KNOWLEDGE  %s    TIME 20:00" % [opponent_name, _opponent_health, opponent_energy, opponent_max_energy, opponent_knowledge]
 	_player_info_button.text = "YOU    ♥ %d    ENERGY  %d / %d    KNOWLEDGE  %s    TIME 20:00" % [_player_health, _energy, _max_energy, _knowledge_summary()]
@@ -696,7 +696,7 @@ func _render_card_row(row: HBoxContainer, cards: Array, target_prefix: String) -
 
 func _make_card_view(card: Dictionary, target_id: String) -> Control:
 	var root := Control.new()
-	root.custom_minimum_size = Vector2(126, 164)
+	root.custom_minimum_size = Vector2(112, 122)
 	root.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	var face := PanelContainer.new()
 	face.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -707,7 +707,7 @@ func _make_card_view(card: Dictionary, target_id: String) -> Control:
 	content.add_theme_constant_override("separation", 3)
 	face.add_child(content)
 	var art := TextureRect.new()
-	art.custom_minimum_size = Vector2(0, 68)
+	art.custom_minimum_size = Vector2(0, 38)
 	art.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
@@ -715,15 +715,15 @@ func _make_card_view(card: Dictionary, target_id: String) -> Control:
 	if ResourceLoader.exists(card.get("art", "")):
 		art.texture = load(card.art)
 	content.add_child(art)
-	var name := _make_label(str(card.get("name", "Card")), 16, NAV_FONT, PAPER)
+	var name := _make_label(str(card.get("name", "Card")), 14, NAV_FONT, PAPER)
 	name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	name.custom_minimum_size.y = 32
+	name.custom_minimum_size.y = 28
 	content.add_child(name)
-	var cost := _make_label("%d ENERGY  •  %s" % [int(card.get("cost", 0)), str(card.get("knowledge", "—"))], 12, NAV_FONT, BRASS)
+	var cost := _make_label("%d ENERGY  •  %s" % [int(card.get("cost", 0)), str(card.get("knowledge", "—"))], 11, NAV_FONT, BRASS)
 	cost.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content.add_child(cost)
 	if card.get("attack", 0) > 0:
-		var stats := _make_label("%d  /  %d" % [card.attack, card.health], 14, NAV_FONT, GREEN)
+		var stats := _make_label("%d  /  %d" % [card.attack, card.health], 13, NAV_FONT, GREEN)
 		content.add_child(stats)
 	else:
 		var type_label := _make_label(str(card.get("type", "CARD")), 12, NAV_FONT, BLUE)
@@ -744,6 +744,10 @@ func _make_card_view(card: Dictionary, target_id: String) -> Control:
 func _card_style(focused: bool, selected: bool) -> StyleBoxFlat:
 	var border := BRASS if focused else (GREEN if selected else Color("#777e79"))
 	var box := _make_box(Color("#202729"), border, 3 if focused or selected else 1, 5)
+	box.content_margin_left = 5
+	box.content_margin_right = 5
+	box.content_margin_top = 3
+	box.content_margin_bottom = 3
 	return box
 
 
@@ -790,7 +794,7 @@ func _refresh_highlight() -> void:
 			continue
 		if _card_panels.has(target_id):
 			var card := _find_card(str(target_id).trim_prefix("card:").trim_prefix("unit:"))
-			var is_selected := card.get("card_id", "") == _selected_card_id
+			var is_selected: bool = str(card.get("card_id", "")) == _selected_card_id
 			_card_panels[target_id].add_theme_stylebox_override("panel", _card_style(target_id == expected, is_selected))
 		else:
 			control.modulate = Color(1.18, 1.11, 0.87, 1.0) if target_id == expected else Color.WHITE
@@ -813,20 +817,21 @@ func _refresh_arrow_positions() -> void:
 	var target_id := str(current_step.get("target", ""))
 	var target: Control = _target_controls.get(target_id)
 	var active := is_instance_valid(target) and not _lesson_complete
-	var start := Vector2.ZERO
-	var finish := Vector2.ZERO
+	var start: Vector2 = Vector2.ZERO
+	var finish: Vector2 = Vector2.ZERO
+	var inverse_transform: Transform2D = _arrow_overlay.get_global_transform_with_canvas().affine_inverse()
 	if active:
-		var from_global := _coach_panel.get_global_rect().position + Vector2(0, _coach_panel.size.y * 0.5)
-		var to_global := target.get_global_rect().get_center()
-		start = _arrow_overlay.get_global_transform_with_canvas().affine_inverse() * from_global
-		finish = _arrow_overlay.get_global_transform_with_canvas().affine_inverse() * to_global
+		var from_global: Vector2 = _coach_panel.get_global_rect().position + Vector2(0, _coach_panel.size.y * 0.5)
+		var to_global: Vector2 = target.get_global_rect().get_center()
+		start = inverse_transform * from_global
+		finish = inverse_transform * to_global
 	var routes: Array = []
 	for route in _combat_routes:
 		var source: Control = _target_controls.get(route.get("from", ""))
 		var destination: Control = _target_controls.get(route.get("to", ""))
 		if is_instance_valid(source) and is_instance_valid(destination):
-			var source_point := _arrow_overlay.get_global_transform_with_canvas().affine_inverse() * source.get_global_rect().get_center()
-			var destination_point := _arrow_overlay.get_global_transform_with_canvas().affine_inverse() * destination.get_global_rect().get_center()
+			var source_point: Vector2 = inverse_transform * source.get_global_rect().get_center()
+			var destination_point: Vector2 = inverse_transform * destination.get_global_rect().get_center()
 			routes.append({"from": source_point, "to": destination_point})
 	_arrow_overlay.set_arrows(start, finish, active, routes)
 
