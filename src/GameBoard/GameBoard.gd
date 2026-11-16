@@ -1,5 +1,9 @@
 extends Node2D
 
+signal tutorial_action(action: String, payload: Variant)
+
+var tutorial_mode := false
+var tutorial_submit_enabled := false
 var arrows = []
 var block_arrows = []
 var _state_revision = 0
@@ -35,6 +39,9 @@ func _ready():
 	GS.close_connections()
 	_apply_reference_board_composition()
 	SFX.reset_match()
+	if tutorial_mode:
+		_prepare_tutorial_client()
+		return
 	var socket = Websocket.new()
 	socket.connect("initialize_game_state", initialize_game_state)
 	socket.connect("got_login_response", func(): socket.joinQueue(GS.queue_type))
@@ -136,6 +143,110 @@ func _apply_reference_board_composition():
 	get_viewport().size_changed.connect(_layout_board_hud)
 	_layout_board_hud()
 
+func _prepare_tutorial_client():
+	GS.gameType = GS.Types.GameType.BO1_CONSTRUCTED
+	GS.playerId = "tutorial-player"
+	GS.is_waiting = false
+	GS.is_spectating_ai_match = false
+	GS.connection_error = ""
+	GS.pending_decision = ""
+	GS.clear_popup()
+	var socket = preload("res://src/Tutorial/TutorialGameSocket.gd").new()
+	socket.name = "TutorialGameSocket"
+	socket.action_requested.connect(_on_tutorial_socket_action)
+	add_child(socket)
+	GS.gameSocket = socket
+	_create_tutorial_submit_button()
+	_find_board_node("LoadingPanel").hide()
+	_find_board_node("AiVsAiResult").hide()
+	_find_board_node("OptionsOverlay").hide()
+	_install_tutorial_input_targets()
+
+func _install_tutorial_input_targets():
+	var targets = {
+		"OpponentDisplayFront": "opponent_info",
+		"OpponentDeck": "opponent_deck",
+		"OpponentUnitArea": "opponent_zone",
+		"PlayerDisplayFront": "player_info",
+		"PlayerDeckBorder": "player_deck",
+		"PlayerUnitArea": "player_zone"
+	}
+	for node_name in targets:
+		var control = _find_board_node(node_name)
+		if not control is Control:
+			continue
+		if node_name in ["OpponentUnitArea", "PlayerUnitArea", "PlayerDeckBorder", "OpponentDeck"]:
+			control.mouse_filter = Control.MOUSE_FILTER_PASS
+		control.gui_input.connect(_on_tutorial_target_input.bind(targets[node_name]))
+	for deck_node_name in ["PlayerDeck", "PlayerDeckSize", "OpponentDeckSize"]:
+		var deck_child = _find_board_node(deck_node_name)
+		if deck_child is Control:
+			deck_child.mouse_filter = Control.MOUSE_FILTER_PASS
+	var submit = _find_board_node("TutorialSubmit")
+	if submit:
+		submit.pressed.connect(_on_tutorial_submit_pressed)
+
+func _on_tutorial_target_input(event, target_id: String):
+	if tutorial_mode and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		notify_tutorial_action("target_click", target_id)
+
+func _on_tutorial_socket_action(action: String, payload: Variant):
+	notify_tutorial_action(action, payload)
+
+func notify_tutorial_action(action: String, payload: Variant = null):
+	if tutorial_mode:
+		tutorial_action.emit(action, payload)
+
+func _create_tutorial_submit_button():
+	var action_layer = CanvasLayer.new()
+	action_layer.name = "TutorialActionLayer"
+	action_layer.layer = 120
+	add_child(action_layer)
+	var submit = Button.new()
+	submit.name = "TutorialSubmit"
+	submit.custom_minimum_size = Vector2(240, 56)
+	submit.size = submit.custom_minimum_size
+	submit.theme = preload("res://src/Themes/MainTheme.tres")
+	submit.add_theme_font_override("font", preload("res://assets/fonts/BarlowCondensed-SemiBold-Tracked.tres"))
+	submit.add_theme_font_size_override("font_size", 22)
+	submit.add_theme_stylebox_override("normal", preload("res://assets/ui/styles/button_primary_default.tres"))
+	submit.add_theme_stylebox_override("hover", preload("res://assets/ui/styles/button_primary_hover.tres"))
+	submit.add_theme_stylebox_override("pressed", preload("res://assets/ui/styles/button_primary_pressed.tres"))
+	submit.add_theme_stylebox_override("disabled", preload("res://assets/ui/styles/button_primary_disabled.tres"))
+	submit.text = "SUBMIT"
+	submit.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	submit.visible = false
+	action_layer.add_child(submit)
+	_layout_tutorial_submit_button()
+	get_viewport().size_changed.connect(_layout_tutorial_submit_button)
+
+func _layout_tutorial_submit_button():
+	var submit = _find_board_node("TutorialSubmit")
+	if not submit:
+		return
+	submit.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	submit.position = Vector2(maxf(12.0, get_viewport_rect().size.x - 500.0), get_viewport_rect().size.y - 260.0)
+
+func _on_tutorial_submit_pressed():
+	if not tutorial_mode or not GS.gameState or not GS.gameSocket:
+		return
+	match GS.gameState.get_phase():
+		GS.Types.Phase.ATTACK:
+			GS.gameSocket.select_attackers()
+		GS.Types.Phase.BLOCK:
+			GS.gameSocket.select_blockers()
+
+func set_tutorial_submit_enabled(enabled: bool):
+	tutorial_submit_enabled = enabled
+	var submit = _find_board_node("TutorialSubmit")
+	if submit:
+		submit.visible = enabled
+		if enabled and GS.gameState:
+			submit.text = "DECLARE ATTACK" if GS.gameState.get_phase() == GS.Types.Phase.ATTACK else "CONFIRM BLOCKS"
+		submit.disabled = (GS.gameState.get_phase() == GS.Types.Phase.ATTACK \
+			and SS.selected_single.is_empty()) or (GS.gameState.get_phase() == GS.Types.Phase.BLOCK \
+			and SS.selected.is_empty())
+
 func _layout_board_hud():
 	if not is_instance_valid(_board_hud_root):
 		return
@@ -188,7 +299,11 @@ func initialize_game_state(new_state):
 
 	_find_board_node("PlayerEnergyDisplay").find_child("AvatarContainer", true, false).set_name(new_state.get_player().get_id())
 	_find_board_node("OpponentEnergyDisplay").find_child("AvatarContainer", true, false).set_name(new_state.get_opponent().get_id())
-	initialize_game_socket()
+	if not tutorial_mode:
+		initialize_game_socket()
+	else:
+		_find_board_node("LoadingPanel").hide()
+		_find_board_node("AiVsAiResult").hide()
 	update_game_state(new_state)
 	if is_instance_valid(_board_hud_root):
 		_board_hud_root.visible = true
@@ -242,7 +357,7 @@ func update_game_state(new_state):
 	else:
 		_sync_arrows(GS.block_arrow_targets.values(), true)
 
-	if O.smart_pass:
+	if O.smart_pass and not tutorial_mode:
 		check_smart_pass_deferred(new_state, _state_revision)
 
 func _capture_card_origins():
@@ -498,6 +613,14 @@ func _process(_delta):
 		GS.socket._process(_delta)
 	if GS.gameSocket:
 		GS.gameSocket._process(_delta)
+	if tutorial_mode and tutorial_submit_enabled:
+		var options: Control = _find_board_node("OptionsOverlay") as Control
+		var options_open: bool = is_instance_valid(options) and options.visible
+		var submit: Button = _find_board_node("TutorialSubmit") as Button
+		if is_instance_valid(submit):
+			submit.visible = not options_open
+			if not options_open:
+				set_tutorial_submit_enabled(true)
 
 func _snapshot_game_clocks(state):
 	var player = state.get_player()

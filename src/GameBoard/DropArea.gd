@@ -10,6 +10,14 @@ func _drop_data(at_position, data):
 	if not _can_drop_data(at_position, data):
 		return
 	if data.card:
+		var board = find_parent("GameBoard")
+		if is_instance_valid(board) and bool(board.get("tutorial_mode")):
+			GS.clear_drag()
+			if name.contains("PlayContainer"):
+				GS.gameSocket.play_card(data.card.get_id())
+			elif name.contains("PlayerDeck"):
+				GS.gameSocket.study_card(data.card.get_id())
+			return
 		print("Dropped to " + get_name() + ": ", data.card.get_id())
 		#data.set_visible(true)
 		GS.clear_drag()

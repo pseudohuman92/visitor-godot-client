@@ -5,6 +5,10 @@ var hover = false
 func _on_gui_input(event):
 	if event is InputEventMouseButton:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			var board = find_parent("GameBoard")
+			if is_instance_valid(board) and bool(board.get("tutorial_mode")) and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+				board.call("notify_tutorial_action", "avatar_click", name)
+				accept_event()
 			if SS.is_selecting():
 				var id
 				if get_parent().name.contains("Player"):

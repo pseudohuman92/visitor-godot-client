@@ -5,6 +5,7 @@ const TITLE_FONT = preload("res://assets/fonts/BarlowCondensed-SemiBold-Tracked.
 const NAV_FONT = preload("res://assets/fonts/BarlowCondensed-SemiBold-Navigation.tres")
 const BODY_FONT = preload("res://assets/fonts/Barlow-Regular.ttf")
 const ARROW_OVERLAY = preload("res://src/Tutorial/TutorialArrowOverlay.gd")
+const GAME_BOARD_SCENE = preload("res://src/GameBoard/GameBoard.tscn")
 
 const INK := Color("#111719")
 const PANEL := Color("#1d2526")
@@ -84,7 +85,7 @@ const LESSONS := [
 		"nav": "BOARD BASICS", "title": "Read the board at a glance", "setup": {"player_hand": ["rooftop_scout"], "opponent_hand": 3},
 		"steps": [
 			{"target": "opponent_info", "prompt": "Start with the opponent's status.", "body": "This panel shows the rival's health, energy, knowledge, and match clock. Bring their health to zero to win.", "hint": "Click the opponent's information panel.", "effect": "explain", "success": "Health is the match goal: protect yours and reduce theirs."},
-			{"target": "opponent_hand", "prompt": "The opponent's hand is hidden.", "body": "You can see how many cards the rival holds, but their card faces stay private. Your own hand is visible at the bottom.", "hint": "Click the opponent hand row.", "effect": "explain", "success": "Hidden information keeps both players making decisions with incomplete knowledge."},
+			{"target": "opponent_hand", "prompt": "The opponent's hand is hidden.", "body": "You can see how many cards the rival holds, but their card faces stay private. Your own hand is visible at the bottom.", "hint": "Click a card back in the opponent's hand.", "effect": "explain", "success": "Hidden information keeps both players making decisions with incomplete knowledge."},
 			{"target": "opponent_deck", "prompt": "Track the rival's deck and discard pile.", "body": "Deck and discard counts are public. Opponent cards in hand stay hidden, while their discarded cards are open information.", "hint": "Click the opponent deck counter.", "effect": "explain", "success": "You can track how many cards remain in the rival's deck."},
 			{"target": "opponent_discard", "prompt": "The opponent's discard pile is public too.", "body": "Cards that resolve or leave play may end up here. Check the visible top card and count when planning around the rival's options.", "hint": "Click the opponent discard counter.", "effect": "explain", "success": "Discard piles can reveal which answers have already been used."},
 			{"target": "opponent_zone", "prompt": "This is the opponent's battlefield.", "body": "Their units and assets appear on their side of the combat line. You can inspect public cards and follow their combat arrows.", "hint": "Click the opponent battlefield label.", "effect": "explain", "success": "Cards above the divider belong to the opponent."},
@@ -92,7 +93,7 @@ const LESSONS := [
 			{"target": "player_info", "prompt": "Check your resources before acting.", "body": "Energy pays the numeric cost. Knowledge icons are separate requirements. This simulated match also shows your health and remaining time.", "hint": "Click your information panel.", "effect": "explain", "success": "Plan around both the energy number and the knowledge symbols."},
 			{"target": "player_deck", "prompt": "Cards drawn leave your deck.", "body": "The deck count changes as you draw. Studying sends a card from your hand back into the deck.", "hint": "Click your deck counter.", "effect": "explain", "success": "You can track how many cards remain to draw."},
 			{"target": "player_discard", "prompt": "Your discard pile keeps used cards visible.", "body": "Resolved spells and defeated units commonly go here. Their top card and total count help you track what has happened.", "hint": "Click your discard counter.", "effect": "explain", "success": "You now know the main places cards move during a match."},
-			{"target": "player_hand_area", "prompt": "Your hand is where decisions begin.", "body": "Select a card to inspect it. Depending on its type, you may play it, study it, or keep it for a later turn.", "hint": "Click the hand label above your cards.", "effect": "explain", "success": "Board tour complete. Next, trade a card for lasting resources."}
+			{"target": "player_hand_area", "prompt": "Your hand is where decisions begin.", "body": "Select a card to inspect it. Depending on its type, you may play it, study it, or keep it for a later turn.", "hint": "Click Rooftop Scout in your hand.", "effect": "explain", "success": "Board tour complete. Next, trade a card for lasting resources."}
 		]
 	},
 	{
@@ -108,7 +109,7 @@ const LESSONS := [
 		"nav": "PLAY A CARD", "title": "Play a unit to the battlefield", "setup": {"energy": 3, "max_energy": 3, "red_knowledge": 1, "player_hand": ["field_recruit"]},
 		"steps": [
 			{"target": "card:field_recruit", "prompt": "Select the Field Recruit.", "body": "The Recruit costs 2 energy and one red knowledge. You have enough of both, so this play is legal.", "hint": "Select Field Recruit in your hand.", "effect": "select_card", "card_id": "field_recruit", "success": "Card selected. Play it from your hand."},
-			{"target": "confirm_button", "action_text": "PLAY UNIT", "prompt": "Play the selected unit.", "body": "Playing a unit spends its cost and moves it from your hand to your battlefield. Units remain in play unless an effect removes them.", "hint": "Press PLAY UNIT.", "effect": "play_unit", "success": "The Recruit is in play. Its attack and health are shown on the card."},
+			{"target": "play_zone", "prompt": "Play the selected unit.", "body": "Playing a unit spends its cost and moves it from your hand to your battlefield. Units remain in play unless an effect removes them.", "hint": "Drag Field Recruit from your hand onto the central play area.", "effect": "play_unit", "success": "The Recruit is in play. Its attack and health are shown on the card."},
 			{"target": "unit:field_recruit", "prompt": "Inspect your new unit.", "body": "The left stat is attack; the right stat is health. The green edge marks the unit you just played for this lesson.", "hint": "Click the Field Recruit on your battlefield.", "effect": "explain", "success": "You have played a card and can read its stats on the board."}
 		]
 	},
@@ -116,7 +117,7 @@ const LESSONS := [
 		"nav": "ATTACK", "title": "Declare attackers and deal damage", "setup": {"opponent_health": 6, "player_units": ["field_recruit"]},
 		"steps": [
 			{"target": "unit:field_recruit", "prompt": "Choose a unit to attack.", "body": "Only units allowed to attack in the current phase are selectable. Select the Recruit to mark it as an attacker.", "hint": "Select Field Recruit on your battlefield.", "effect": "select_attacker", "card_id": "field_recruit", "success": "Attacker selected. Confirm the attack to send it at the opponent."},
-			{"target": "confirm_button", "action_text": "DECLARE ATTACK", "prompt": "Declare the attack.", "body": "With no blocker in this exercise, the Recruit deals its 2 attack directly to the opponent.", "hint": "Press DECLARE ATTACK.", "effect": "attack_opponent", "success": "The attack dealt 2 damage. Follow the health total on the rival's panel."},
+			{"target": "submit_button", "prompt": "Declare the attack.", "body": "With no blocker in this exercise, the Recruit deals its 2 attack directly to the opponent.", "hint": "Press DECLARE ATTACK on the board.", "effect": "attack_opponent", "success": "The attack dealt 2 damage. Follow the health total on the rival's panel."},
 			{"target": "opponent_info", "prompt": "Check the result of combat.", "body": "Unblocked attackers can damage the defending player. A blocker would have changed this exchange.", "hint": "Click the opponent's updated health panel.", "effect": "explain", "success": "Attackers are chosen by the attacking player; blockers are chosen by the defender."}
 		]
 	},
@@ -125,7 +126,7 @@ const LESSONS := [
 		"steps": [
 			{"target": "unit:rook_guard", "prompt": "Choose your blocker.", "body": "The Ash Raider is attacking. Select Rook Guard; blockers must be ready and allowed by the rules.", "hint": "Select Rook Guard on your battlefield.", "effect": "select_blocker", "card_id": "rook_guard", "success": "Blocker selected. Now choose which attacker it will stop."},
 			{"target": "unit:raider", "prompt": "Assign the blocker to the Raider.", "body": "The defending player chooses which of their units blocks each attacker. The arrow will show your assignment.", "hint": "Click the attacking Ash Raider.", "effect": "assign_block", "success": "Block assigned. Both units will deal combat damage to each other."},
-			{"target": "confirm_button", "action_text": "RESOLVE COMBAT", "prompt": "Resolve the block.", "body": "Rook Guard deals 2 damage to the 2-health Raider. The Raider deals 2 damage to the Guard, which survives with 1 health.", "hint": "Press RESOLVE COMBAT.", "effect": "resolve_block", "success": "The Raider was defeated and the Guard protected your health."},
+			{"target": "submit_button", "prompt": "Resolve the block.", "body": "Rook Guard deals 2 damage to the 2-health Raider. The Raider deals 2 damage to the Guard, which survives with 1 health.", "hint": "Press CONFIRM BLOCKS on the board.", "effect": "resolve_block", "success": "The Raider was defeated and the Guard protected your health."},
 			{"target": "unit:rook_guard", "prompt": "Inspect the survivor.", "body": "Damage reduced the Guard's remaining health. If damage had met or exceeded its health, it would have been defeated too.", "hint": "Click the damaged Rook Guard.", "effect": "explain", "success": "Blocking can trade units or preserve a valuable defender, depending on stats and abilities."}
 		]
 	},
@@ -134,7 +135,7 @@ const LESSONS := [
 		"steps": [
 			{"target": "card:ember_bolt", "prompt": "Select Ember Bolt.", "body": "This spell costs 2 energy and one red knowledge. Unlike a unit, a resolved spell goes to the discard pile.", "hint": "Select Ember Bolt in your hand.", "effect": "select_card", "card_id": "ember_bolt", "success": "Spell selected. Choose its target."},
 			{"target": "opponent_info", "prompt": "Choose the opponent as the target.", "body": "Targeted effects ask for a legal target before they are placed on the stack.", "hint": "Click the opponent's information panel.", "effect": "target_opponent", "success": "Target chosen. Now cast the spell."},
-			{"target": "confirm_button", "action_text": "CAST EMBER BOLT", "prompt": "Put Ember Bolt on the stack.", "body": "Casting spends the cost and puts the spell on the stack. Players get a response window before it resolves.", "hint": "Press CAST EMBER BOLT.", "effect": "cast_spell", "success": "Ember Bolt is pending on the stack. It has not dealt damage yet."},
+			{"target": "play_zone", "prompt": "Put Ember Bolt on the stack.", "body": "Casting spends the cost and puts the spell on the stack. Players get a response window before it resolves.", "hint": "Drag Ember Bolt onto the central play area.", "effect": "cast_spell", "success": "Ember Bolt is pending on the stack. It has not dealt damage yet."},
 			{"target": "stack_item", "prompt": "Inspect the pending effect.", "body": "The stack shows effects waiting to resolve. A fast spell or ability could be played here before this item resolves.", "hint": "Click Ember Bolt in the stack area.", "effect": "explain", "success": "You can respond while an item is pending."},
 			{"target": "resolve_button", "action_text": "RESOLVE TOP", "prompt": "Resolve the top item.", "body": "In this exercise, both players pass. Ember Bolt resolves, deals 3 damage, and moves to your discard pile.", "hint": "Press RESOLVE TOP.", "effect": "resolve_spell", "success": "The spell resolved. The opponent's health changed and the card reached your discard."}
 		]
@@ -143,7 +144,7 @@ const LESSONS := [
 		"nav": "TRIGGERED ABILITIES", "title": "A card can trigger an ability", "setup": {"energy": 2, "max_energy": 2, "red_knowledge": 1, "opponent_health": 8, "player_hand": ["ash_warden"]},
 		"steps": [
 			{"target": "card:ash_warden", "prompt": "Select Ash Warden.", "body": "Its text begins with “When this enters play”. That wording describes a triggered ability, which happens automatically when its event occurs.", "hint": "Select Ash Warden in your hand.", "effect": "select_card", "card_id": "ash_warden", "success": "The Warden is selected. Playing it will cause its ability to trigger."},
-			{"target": "confirm_button", "action_text": "PLAY ASH WARDEN", "prompt": "Play the Warden and create its trigger.", "body": "The unit enters play. Its triggered ability is then put on the stack as a separate effect.", "hint": "Press PLAY ASH WARDEN.", "effect": "play_trigger", "success": "Ash Whispers triggered automatically and is waiting on the stack."},
+			{"target": "play_zone", "prompt": "Play the Warden and create its trigger.", "body": "The unit enters play. Its triggered ability is then put on the stack as a separate effect.", "hint": "Drag Ash Warden onto the central play area.", "effect": "play_trigger", "success": "Ash Whispers triggered automatically and is waiting on the stack."},
 			{"target": "stack_item", "prompt": "Read the triggered ability on the stack.", "body": "The ability is independent of its source now. It will still resolve even if the Warden leaves play.", "hint": "Click Ash Whispers in the stack area.", "effect": "explain", "success": "Triggered abilities use the same response and resolution flow as spells."},
 			{"target": "resolve_button", "action_text": "RESOLVE TRIGGER", "prompt": "Resolve Ash Whispers.", "body": "The simulated trigger deals 1 damage to the rival and draws a card for you.", "hint": "Press RESOLVE TRIGGER.", "effect": "resolve_trigger", "success": "The trigger resolved: the rival lost health and a card entered your hand."}
 		]
@@ -152,10 +153,10 @@ const LESSONS := [
 		"nav": "COMBAT TRICKS", "title": "Respond in combat with a trick", "setup": {"energy": 1, "max_energy": 1, "red_knowledge": 1, "player_hand": ["rally"], "player_units": ["duelist"], "opponent_units": ["bulwark"]},
 		"steps": [
 			{"target": "unit:duelist", "prompt": "Select Street Duelist as your attacker.", "body": "The combat trick is useful after blockers are assigned. Start by declaring an attack with your unit.", "hint": "Select Street Duelist.", "effect": "select_trick_attacker", "card_id": "duelist", "success": "Attacker selected. Declare the attack."},
-			{"target": "confirm_button", "action_text": "DECLARE ATTACK", "prompt": "Declare attackers.", "body": "Iron Bulwark blocks the Duelist. The game now gives you a combat response window before damage.", "hint": "Press DECLARE ATTACK.", "effect": "declare_trick_attack", "success": "The Bulwark is blocking. You can respond before combat damage."},
+			{"target": "submit_button", "prompt": "Declare attackers.", "body": "Iron Bulwark blocks the Duelist. The game now gives you a combat response window before damage.", "hint": "Press DECLARE ATTACK on the board.", "effect": "declare_trick_attack", "success": "The Bulwark is blocking. You can respond before combat damage."},
 			{"target": "card:rally", "prompt": "Choose Rallying Cry during the response window.", "body": "Fast spells can be played in response to combat. This one boosts attack and prevents damage for the turn.", "hint": "Select Rallying Cry in your hand.", "effect": "select_card", "card_id": "rally", "success": "Rallying Cry selected. Choose the unit it will protect."},
 			{"target": "unit:duelist", "prompt": "Target your blocked attacker.", "body": "The Duelist is a legal target for the trick. The arrow points from the effect to its target.", "hint": "Click Street Duelist.", "effect": "target_trick_unit", "success": "Target set. Cast the trick onto the stack."},
-			{"target": "confirm_button", "action_text": "CAST RALLYING CRY", "prompt": "Cast Rallying Cry before damage.", "body": "The trick is now above the combat damage event. Resolve it first, then combat continues with the changed stats.", "hint": "Press CAST RALLYING CRY.", "effect": "cast_trick", "success": "Rallying Cry is pending. Resolve the top item."},
+			{"target": "play_zone", "prompt": "Cast Rallying Cry before damage.", "body": "The trick is now above the combat damage event. Resolve it first, then combat continues with the changed stats.", "hint": "Drag Rallying Cry onto the central play area.", "effect": "cast_trick", "success": "Rallying Cry is pending. Resolve the top item."},
 			{"target": "stack_item", "prompt": "Check the order on the stack.", "body": "The combat trick resolves before damage. If both players pass, it changes the Duelist's stats and shields it.", "hint": "Click Rallying Cry in the stack area.", "effect": "explain", "success": "Order matters: the trick resolves before combat damage."},
 			{"target": "resolve_button", "action_text": "RESOLVE TRICK", "prompt": "Resolve the combat trick.", "body": "The Duelist gets +2 attack and a shield that prevents 2 damage this turn.", "hint": "Press RESOLVE TRICK.", "effect": "resolve_trick", "success": "The Duelist is now stronger and protected. Resolve combat."},
 			{"target": "resolve_combat_button", "action_text": "RESOLVE COMBAT", "prompt": "Finish combat with the new stats.", "body": "The 4-attack Duelist defeats the 3-health Bulwark. Its shield prevents 2 of the 3 incoming damage, so it survives with 1 health.", "hint": "Press RESOLVE COMBAT.", "effect": "resolve_trick_combat", "success": "The trick changed the combat outcome: your unit survived and defeated its blocker."}
@@ -165,7 +166,7 @@ const LESSONS := [
 		"nav": "WIN THE GAME", "title": "Put the lessons together", "setup": {"opponent_health": 2, "player_units": ["finisher"]},
 		"steps": [
 			{"target": "unit:finisher", "prompt": "Choose your ready attacker.", "body": "The opponent has 2 health and no blocker. Your Last Vanguard can deal 2 damage, exactly enough to win.", "hint": "Select Last Vanguard.", "effect": "select_attacker", "card_id": "finisher", "success": "The attack is ready. Declare it to end the match."},
-			{"target": "confirm_button", "action_text": "DECLARE LETHAL ATTACK", "prompt": "Declare the final attack.", "body": "The unblocked unit deals its attack directly to the rival. The client simulation will show the match ending at zero health.", "hint": "Press DECLARE LETHAL ATTACK.", "effect": "final_attack", "success": "Lethal damage! The opponent has been defeated."},
+			{"target": "submit_button", "prompt": "Declare the final attack.", "body": "The unblocked unit deals its attack directly to the rival. The client simulation will show the match ending at zero health.", "hint": "Press DECLARE ATTACK on the board.", "effect": "final_attack", "success": "Lethal damage! The opponent has been defeated."},
 			{"target": "opponent_info", "prompt": "Confirm the match result.", "body": "You have studied a card, built resources, played units and spells, used combat, resolved a trigger, and changed a block with a trick.", "hint": "Click the defeated opponent panel.", "effect": "explain", "success": "Tutorial complete. You are ready to try a real match."}
 		]
 	}
@@ -194,6 +195,7 @@ var _opponent_deck_count := 24
 var _opponent_hand_count := 3
 var _selected_card_id := ""
 var _selected_target_id := ""
+var _phase_value := 0
 var _attacking_unit_id := ""
 var _blocking_unit_id := ""
 var _assigned_blocker_id := ""
@@ -203,10 +205,13 @@ var _coach_feedback := ""
 
 var _target_controls: Dictionary = {}
 var _card_panels: Dictionary = {}
+var _game_board: Variant
+var _tutorial_layer: CanvasLayer
 var _arrow_overlay
 var _coach_panel: Control
 var _course_list: VBoxContainer
 var _course_buttons: Array[Button] = []
+var _lesson_selector: OptionButton
 var _chapter_label: Label
 var _coach_step: Label
 var _coach_title: Label
@@ -239,6 +244,7 @@ var _stack_button: Button
 var _action_button: Button
 var _phase_label: Label
 var _result_banner: Label
+var _board_initialized := false
 
 
 func _ready() -> void:
@@ -251,79 +257,75 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if is_instance_valid(_game_board) and is_instance_valid(_coach_panel):
+		var options: Control = _game_board.find_child("OptionsOverlay", true, false) as Control
+		var options_open: bool = is_instance_valid(options) and options.visible
+		_coach_panel.visible = not options_open
+		_arrow_overlay.visible = not options_open
 	_refresh_arrow_positions()
 
 
 func _build_interface() -> void:
-	var background := TextureRect.new()
-	background.texture = load("res://assets/backgrounds/omen_board_background.png")
-	background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_set_full_rect(background)
-	add_child(background)
+	_game_board = GAME_BOARD_SCENE.instantiate()
+	_game_board.name = "GameBoard"
+	_game_board.set("tutorial_mode", true)
+	_game_board.tutorial_action.connect(_on_game_board_action)
+	add_child(_game_board)
 
-	var veil := ColorRect.new()
-	veil.color = Color(0.025, 0.031, 0.035, 0.56)
-	veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_set_full_rect(veil)
-	add_child(veil)
-
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 24)
-	margin.add_theme_constant_override("margin_right", 24)
-	margin.add_theme_constant_override("margin_top", 18)
-	margin.add_theme_constant_override("margin_bottom", 18)
-	_set_full_rect(margin)
-	add_child(margin)
-
-	var main := VBoxContainer.new()
-	main.add_theme_constant_override("separation", 14)
-	main.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	main.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	margin.add_child(main)
-	_build_header(main)
-
-	var columns := HBoxContainer.new()
-	columns.add_theme_constant_override("separation", 14)
-	columns.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	main.add_child(columns)
-	_build_course_panel(columns)
-	_build_board_panel(columns)
-	_build_coach_panel(columns)
-
+	_tutorial_layer = CanvasLayer.new()
+	_tutorial_layer.name = "TutorialOverlayLayer"
+	_tutorial_layer.layer = 200
+	add_child(_tutorial_layer)
 	_arrow_overlay = ARROW_OVERLAY.new()
 	_arrow_overlay.name = "TutorialArrowOverlay"
 	_arrow_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_arrow_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_arrow_overlay.z_index = 100
-	add_child(_arrow_overlay)
+	_tutorial_layer.add_child(_arrow_overlay)
+
+	_coach_panel = _make_panel()
+	_coach_panel.name = "TutorialCoachPanel"
+	_coach_panel.position = Vector2(24, 24)
+	_coach_panel.custom_minimum_size = Vector2(430, 0)
+	_coach_panel.size = Vector2(430, 480)
+	_tutorial_layer.add_child(_coach_panel)
+	var content := VBoxContainer.new()
+	content.add_theme_constant_override("separation", 12)
+	_coach_panel.add_child(content)
+	_build_coach_panel(content)
+	call_deferred("_fit_coach_panel")
+
+
+func _fit_coach_panel() -> void:
+	if is_instance_valid(_coach_panel):
+		_coach_panel.size = Vector2(430, maxf(480.0, _coach_panel.get_combined_minimum_size().y))
 
 
 func _build_header(parent: VBoxContainer) -> void:
 	var header := HBoxContainer.new()
-	header.custom_minimum_size.y = 70
-	header.add_theme_constant_override("separation", 18)
+	header.add_theme_constant_override("separation", 8)
 	parent.add_child(header)
-
 	var brand := VBoxContainer.new()
-	brand.add_theme_constant_override("separation", 0)
 	brand.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(brand)
-	var title := _make_label("LEARN TO PLAY", 30, TITLE_FONT, PAPER)
-	brand.add_child(title)
-	var note := _make_label("OFFLINE FIELD TRAINING  •  SIMULATED MATCHES", 15, NAV_FONT, MUTED)
-	brand.add_child(note)
-
+	brand.add_child(_make_label("LEARN TO PLAY", 24, TITLE_FONT, PAPER))
+	brand.add_child(_make_label("LOCAL PRACTICE MATCH", 13, NAV_FONT, MUTED))
 	_chapter_label = _make_label("PART 01 / 09", 20, NAV_FONT, BRASS)
 	_chapter_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	header.add_child(_chapter_label)
-
+	brand.add_child(_chapter_label)
 	var exit_button := _make_button("MAIN MENU", false)
-	exit_button.custom_minimum_size = Vector2(170, 46)
+	exit_button.custom_minimum_size = Vector2(112, 38)
 	exit_button.pressed.connect(_return_to_menu)
 	header.add_child(exit_button)
+
+	_lesson_selector = OptionButton.new()
+	_lesson_selector.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_lesson_selector.theme = MAIN_THEME
+	_lesson_selector.add_theme_font_override("font", NAV_FONT)
+	_lesson_selector.add_theme_font_size_override("font_size", 16)
+	for lesson in LESSONS:
+		_lesson_selector.add_item(str(lesson.nav))
+	_lesson_selector.item_selected.connect(_select_lesson)
+	parent.add_child(_lesson_selector)
 
 
 func _build_course_panel(parent: HBoxContainer) -> void:
@@ -490,24 +492,16 @@ func _build_board_panel(parent: HBoxContainer) -> void:
 	board.add_child(_result_banner)
 
 
-func _build_coach_panel(parent: HBoxContainer) -> void:
-	_coach_panel = _make_panel()
-	_coach_panel.custom_minimum_size.x = 334
-	_coach_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	parent.add_child(_coach_panel)
-
-	var content := VBoxContainer.new()
-	content.add_theme_constant_override("separation", 12)
-	_coach_panel.add_child(content)
-	content.add_child(_make_label("FIELD GUIDE", 21, TITLE_FONT, BRASS))
+func _build_coach_panel(content: VBoxContainer) -> void:
+	_build_header(content)
+	content.add_child(_make_label("FIELD GUIDE", 17, TITLE_FONT, BRASS))
 	_coach_step = _make_label("STEP 01 / 01", 15, NAV_FONT, RED)
 	content.add_child(_coach_step)
-	_coach_title = _make_label("Welcome", 25, TITLE_FONT, PAPER)
+	_coach_title = _make_label("Welcome", 22, TITLE_FONT, PAPER)
 	_coach_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content.add_child(_coach_title)
-	_coach_body = _make_label("Follow the highlighted prompt and the arrow to explore the board.", 17, BODY_FONT, PAPER)
+	_coach_body = _make_label("Follow the highlighted prompt and the arrow to explore the board.", 16, BODY_FONT, PAPER)
 	_coach_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_coach_body.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	content.add_child(_coach_body)
 
 	var prompt_panel := _make_panel()
@@ -537,17 +531,20 @@ func _build_coach_panel(parent: HBoxContainer) -> void:
 	_coach_feedback_label = _make_label("", 15, BODY_FONT, GREEN)
 	_coach_feedback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content.add_child(_coach_feedback_label)
-	var spacer := Control.new()
-	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	content.add_child(spacer)
+	_progress_label = _make_label("0 / 9 PARTS COMPLETE", 13, NAV_FONT, GREEN)
+	content.add_child(_progress_label)
 	_restart_button = _make_button("RESTART THIS PART", false)
-	_restart_button.custom_minimum_size.y = 42
+	_restart_button.custom_minimum_size.y = 36
 	_restart_button.pressed.connect(_restart_lesson)
 	content.add_child(_restart_button)
 	_next_button = _make_button("NEXT PART", true)
-	_next_button.custom_minimum_size.y = 46
+	_next_button.custom_minimum_size.y = 40
 	_next_button.pressed.connect(_next_lesson)
 	content.add_child(_next_button)
+	_action_button = _make_button("RESOLVE TOP", true)
+	_action_button.custom_minimum_size.y = 40
+	_action_button.pressed.connect(_on_action_button_pressed)
+	content.add_child(_action_button)
 
 
 func _make_zone_panel(title: String, min_height: float) -> Dictionary:
@@ -582,7 +579,9 @@ func _add_rule(parent: HBoxContainer) -> void:
 
 func _start_lesson(index: int) -> void:
 	_lesson_index = clampi(index, 0, LESSONS.size() - 1)
+	_lesson_selector.select(_lesson_index)
 	_step_index = 0
+	SS.clear_selection_data()
 	_lesson_complete = false
 	_game_won = false
 	_selected_card_id = ""
@@ -609,6 +608,11 @@ func _start_lesson(index: int) -> void:
 	_deck_count = _setup_data.get("deck_count", 24)
 	_opponent_deck_count = _setup_data.get("opponent_deck_count", 24)
 	_opponent_hand_count = _setup_data.get("opponent_hand", 3)
+	_phase_value = GS.Types.Phase.MAIN_BEFORE
+	if not str(_setup_data.get("attacking_unit", "")).is_empty():
+		_phase_value = GS.Types.Phase.BLOCK
+	elif _lesson_index in [3, 7, 8]:
+		_phase_value = GS.Types.Phase.ATTACK
 	if not str(_setup_data.get("attacking_unit", "")).is_empty():
 		var attacker := _find_card(_setup_data.attacking_unit)
 		if not attacker.is_empty():
@@ -625,6 +629,8 @@ func _instantiate_cards(ids: Array) -> Array:
 			var card: Dictionary = CARD_LIBRARY[card_id].duplicate(true)
 			card["card_id"] = card_id
 			card["shield"] = 0
+			card["ready"] = true
+			card["exhausted"] = false
 			result.append(card)
 	return result
 
@@ -634,48 +640,204 @@ func _register_static_target(target_id: String, control: Control) -> void:
 
 
 func _refresh_view() -> void:
-	for target_id in _target_controls.keys().duplicate():
-		if str(target_id).begins_with("card:") or str(target_id).begins_with("unit:"):
-			_target_controls.erase(target_id)
-	_card_panels.clear()
-	_render_card_row(_opponent_units_row, _opponent_units, "unit:")
-	_render_card_row(_player_units_row, _player_units, "unit:")
-	_render_card_row(_player_hand_row, _player_hand, "card:")
-
-	var opponent_energy: int = int(_setup_data.get("opponent_energy", 1))
-	var opponent_max_energy: int = int(_setup_data.get("opponent_max_energy", 1))
-	var opponent_knowledge: String = str(_setup_data.get("opponent_knowledge", "—"))
-	var opponent_name := "DEFEATED" if _game_won else "RIVAL"
-	_opponent_info_button.text = "%s    ♥ %d    ENERGY  %d / %d    KNOWLEDGE  %s    TIME 20:00" % [opponent_name, _opponent_health, opponent_energy, opponent_max_energy, opponent_knowledge]
-	_player_info_button.text = "YOU    ♥ %d    ENERGY  %d / %d    KNOWLEDGE  %s    TIME 20:00" % [_player_health, _energy, _max_energy, _knowledge_summary()]
-	_opponent_hand_button.text = "OPPONENT HAND     %s" % _card_back_glyphs(_opponent_hand_count)
-	_player_hand_button.text = "YOUR HAND  •  SELECT A CARD TO INSPECT IT  (%d)" % _player_hand.size()
-	_player_deck_button.text = "DECK  %d" % _deck_count
-	_player_discard_button.text = "DISCARD  %d" % _player_discard.size()
-	_opponent_deck_button.text = "RIVAL DECK  %d" % _opponent_deck_count
-	_opponent_discard_button.text = "RIVAL DISCARD  %d" % _opponent_discard.size()
-	_knowledge_red_button.text = "RED KNOWLEDGE  %d" % _red_knowledge
-	_stack_button.text = _stack_display_text()
-	_stack_button.disabled = _stack.is_empty()
-	_result_banner.visible = _game_won
-	_result_banner.text = "VICTORY  •  OPPONENT DEFEATED" if _game_won else ""
-	_phase_label.text = "PART %02d  •  %s" % [_lesson_index + 1, LESSONS[_lesson_index]["nav"]]
-
-	for action_target in ["confirm_button", "resolve_button", "resolve_combat_button"]:
-		_target_controls.erase(action_target)
+	if not is_instance_valid(_game_board):
+		return
+	_sync_game_board()
+	_register_board_targets()
 	var step := _current_step()
 	var current_target := str(step.get("target", ""))
-	var action_targets := ["confirm_button", "resolve_button", "resolve_combat_button"]
+	var action_targets := ["resolve_button", "resolve_combat_button"]
 	var is_action_step := action_targets.has(current_target)
+	_action_button.visible = is_action_step and not _lesson_complete
 	_action_button.disabled = not is_action_step
-	_action_button.text = str(step.get("action_text", "FOLLOW THE HIGHLIGHT")) if is_action_step else "FOLLOW THE HIGHLIGHT"
+	_action_button.text = str(step.get("action_text", "RESOLVE")) if is_action_step else "RESOLVE"
 	if is_action_step:
 		_target_controls[current_target] = _action_button
+	_game_board.call("set_tutorial_submit_enabled", current_target == "submit_button" and not _lesson_complete)
 
 	_refresh_coach()
 	_refresh_highlight()
 	_refresh_course_nav()
 	_refresh_arrow_positions()
+	_lesson_selector.select(_lesson_index)
+	if _progress_label:
+		_progress_label.text = "%d / %d PARTS COMPLETE" % [_completed_count(), LESSONS.size()]
+	if _action_button:
+		_action_button.visible = is_action_step and not _lesson_complete
+	call_deferred("_fit_coach_panel")
+
+
+func _sync_game_board() -> void:
+	var state: GS.ServerGameMessages.GameStateP = GS.ServerGameMessages.GameStateP.new()
+	state.set_id("tutorial-match")
+	state.set_phase(_phase_value)
+	state.set_turnPlayer("tutorial-player")
+	state.set_activePlayer("tutorial-player")
+	var player_model: GS.ServerGameMessages.Player = state.new_player()
+	_fill_player_model(player_model, "tutorial-player", "YOU", _player_hand, _player_units, _player_discard,
+		_energy, _max_energy, _player_health, _deck_count, _red_knowledge, _blue_knowledge, 0)
+	var opponent_model: GS.ServerGameMessages.Player = state.new_opponent()
+	var opponent_energy: int = int(_setup_data.get("opponent_energy", 1))
+	var opponent_max_energy: int = int(_setup_data.get("opponent_max_energy", 1))
+	var opponent_red: int = int(_setup_data.get("opponent_red_knowledge", 0))
+	var opponent_blue: int = int(_setup_data.get("opponent_blue_knowledge", 0))
+	_fill_player_model(opponent_model, "tutorial-opponent", "RIVAL", [], _opponent_units,
+		_opponent_discard, opponent_energy, opponent_max_energy, _opponent_health, _opponent_deck_count,
+		opponent_red, opponent_blue, _opponent_hand_count)
+	for stack_card in _stack:
+		_fill_card_model(state.add_stack(), stack_card, "Stack", "tutorial-player")
+	if not _board_initialized:
+		_game_board.initialize_game_state(state)
+		_board_initialized = true
+	else:
+		_game_board.update_game_state(state)
+	_refresh_board_card_names()
+
+
+func _fill_player_model(player: GS.ServerGameMessages.Player, player_id: String, username: String,
+		hand: Array, units: Array, discard: Array, energy: int, maximum_energy: int, health: int,
+		deck_size: int, red_knowledge: int, blue_knowledge: int, hidden_hand_size: int) -> void:
+	player.set_id(player_id)
+	player.set_username(username)
+	player.set_deckSize(deck_size)
+	player.set_energy(energy)
+	player.set_maxEnergy(maximum_energy)
+	player.set_health(health)
+	player.set_handSize(hidden_hand_size if player_id == "tutorial-opponent" else hand.size())
+	player.set_time(1200000)
+	for card in hand:
+		_fill_card_model(player.add_hand(), card, "Hand", player_id)
+	for card in units:
+		_fill_card_model(player.add_play(), card, "Play", player_id)
+	for card in discard:
+		_fill_card_model(player.add_discardPile(), card, "Discard", player_id)
+	if red_knowledge > 0:
+		var red: GS.ServerGameMessages.KnowledgeGroup = player.add_knowledgePool()
+		red.set_knowledge(GS.Types.Knowledge.RED)
+		red.set_count(red_knowledge)
+	if blue_knowledge > 0:
+		var blue: GS.ServerGameMessages.KnowledgeGroup = player.add_knowledgePool()
+		blue.set_knowledge(GS.Types.Knowledge.BLUE)
+		blue.set_count(blue_knowledge)
+
+
+func _fill_card_model(model: GS.ServerGameMessages.CardP, card: Dictionary, zone: String, owner_id: String) -> void:
+	var card_id: String = str(card.get("card_id", ""))
+	var card_type: String = str(card.get("type", "UNIT"))
+	var game_type: String = "Unit" if card_type == "UNIT" else ("Tome" if card_type == "TOME" else "Spell")
+	model.set_id(card_id)
+	var art_path: String = str(card.get("art", ""))
+	var asset_name: String = art_path.get_file().get_basename() if not art_path.is_empty() else str(card.get("name", "Card"))
+	model.set_name(asset_name)
+	model.set_set("base2")
+	model.set_description(str(card.get("text", "")))
+	model.set_controller(owner_id)
+	model.set_cost(str(card.get("cost", 0)))
+	model.add_types(game_type)
+	if game_type == "Spell":
+		model.add_subtypes("Spell")
+	model.set_depleted(bool(card.get("exhausted", false)) or not bool(card.get("ready", true)))
+	var knowledge: int = GS.Types.Knowledge.NONE
+	match str(card.get("knowledge", "")):
+		"RED": knowledge = GS.Types.Knowledge.RED
+		"BLUE": knowledge = GS.Types.Knowledge.BLUE
+	if knowledge != GS.Types.Knowledge.NONE:
+		var cost_group: GS.ServerGameMessages.KnowledgeGroup = model.add_knowledgeCost()
+		cost_group.set_knowledge(knowledge)
+		cost_group.set_count(1)
+	var in_hand: bool = zone == "Hand"
+	var can_play: bool = in_hand and card_type != "TOME" and _energy >= int(card.get("cost", 0))
+	if knowledge == GS.Types.Knowledge.RED:
+		can_play = can_play and _red_knowledge > 0
+	elif knowledge == GS.Types.Knowledge.BLUE:
+		can_play = can_play and _blue_knowledge > 0
+	model.set_canPlay(can_play)
+	model.set_canStudy(in_hand and card_type == "TOME")
+	model.set_canAttack(zone == "Play" and owner_id == "tutorial-player" and card_type == "UNIT" \
+		and _phase_value == GS.Types.Phase.ATTACK and bool(card.get("ready", true)) \
+		and not bool(card.get("exhausted", false)))
+	model.set_canBlock(zone == "Play" and owner_id == "tutorial-player" and card_type == "UNIT" \
+		and _phase_value == GS.Types.Phase.BLOCK and bool(card.get("ready", true)) \
+		and not bool(card.get("exhausted", false)))
+	if card_type == "UNIT":
+		var combat: GS.ServerGameMessages.Combat = model.new_combat()
+		combat.set_attack(int(card.get("attack", 0)))
+		combat.set_health(int(card.get("health", 0)))
+		combat.set_shield(int(card.get("shield", 0)))
+		combat.set_deploying(not bool(card.get("ready", true)))
+		if card_id == _attacking_unit_id:
+			combat.set_attackTarget("tutorial-opponent" if owner_id == "tutorial-player" else "tutorial-player")
+		if card_id == _assigned_blocker_id:
+			combat.set_blockedAttacker(_attacking_unit_id)
+		if zone == "Play" and owner_id == "tutorial-player" and _phase_value == GS.Types.Phase.BLOCK \
+		and card_type == "UNIT" and bool(card.get("ready", true)) and not _attacking_unit_id.is_empty():
+			combat.add_possibleBlockTargets(_attacking_unit_id)
+
+
+func _refresh_board_card_names() -> void:
+	for zone_name in ["PlayerHand", "PlayerUnitArea", "OpponentUnitArea", "PlayerDiscard", "OpponentDiscard", "Stack"]:
+		var zone: Node = _game_board.find_child(zone_name, true, false)
+		if not zone:
+			continue
+		for view in zone.get_children():
+			var internal = view.find_child("InternalContainer", true, false)
+			if not internal or not internal.card:
+				continue
+			var tutorial_card: Dictionary = _find_card(internal.card.get_id())
+			if tutorial_card.is_empty():
+				continue
+			var name_label = internal.find_child("Name", true, false)
+			if name_label:
+				name_label.text = str(tutorial_card.get("name", internal.card.get_name()))
+
+
+func _register_board_targets() -> void:
+	_target_controls.clear()
+	var mappings := {
+		"opponent_hand": "OpponentHand",
+		"opponent_deck": "OpponentDeck",
+		"opponent_discard": "OpponentDiscardClick",
+		"opponent_zone": "OpponentUnitArea",
+		"player_hand_area": "PlayerHand",
+		"player_deck": "PlayerDeckBorder",
+		"player_discard": "PlayerDiscardClick",
+		"player_zone": "PlayerUnitArea",
+		"play_zone": "PlayContainer",
+		"stack_item": "StackContainer",
+		"submit_button": "TutorialSubmit"
+	}
+	for target_id in mappings:
+		var control: Control = _game_board.find_child(mappings[target_id], true, false) as Control
+		if is_instance_valid(control):
+			_target_controls[target_id] = control
+	var opponent_avatar: Control = _game_board.find_child("OpponentEnergyDisplay", true, false).find_child("tutorial-opponent", true, false) as Control
+	var player_avatar: Control = _game_board.find_child("PlayerEnergyDisplay", true, false).find_child("tutorial-player", true, false) as Control
+	if is_instance_valid(opponent_avatar):
+		_target_controls["opponent_info"] = opponent_avatar
+	if is_instance_valid(player_avatar):
+		_target_controls["player_info"] = player_avatar
+	var knowledge = _game_board.find_child("KnowledgeSelection", true, false)
+	if knowledge:
+		var red = knowledge.find_child("RContainer", true, false)
+		if red:
+			_target_controls["knowledge_red"] = red
+	for zone_name in ["PlayerHand", "PlayerUnitArea", "OpponentUnitArea", "Stack"]:
+		var zone: Node = _game_board.find_child(zone_name, true, false)
+		if not zone:
+			continue
+		for view_index in range(zone.get_child_count()):
+			var view = zone.get_child(view_index)
+			var internal = view.find_child("InternalContainer", true, false)
+			if not internal or not internal.card:
+				continue
+			var card_id: String = internal.card.get_id()
+			if zone_name == "PlayerHand":
+				_target_controls["card:" + card_id] = view
+			elif zone_name == "Stack":
+				if view_index == 0:
+					_target_controls["stack_item"] = view
+			else:
+				_target_controls["unit:" + card_id] = view
 
 
 func _render_card_row(row: HBoxContainer, cards: Array, target_prefix: String) -> void:
@@ -821,7 +983,7 @@ func _refresh_arrow_positions() -> void:
 	var finish: Vector2 = Vector2.ZERO
 	var inverse_transform: Transform2D = _arrow_overlay.get_global_transform_with_canvas().affine_inverse()
 	if active:
-		var from_global: Vector2 = _coach_panel.get_global_rect().position + Vector2(0, _coach_panel.size.y * 0.5)
+		var from_global: Vector2 = _coach_panel.get_global_rect().position + Vector2(_coach_panel.size.x, _coach_panel.size.y * 0.5)
 		var to_global: Vector2 = target.get_global_rect().get_center()
 		start = inverse_transform * from_global
 		finish = inverse_transform * to_global
@@ -850,12 +1012,78 @@ func _on_target_pressed(target_id: String) -> void:
 		_coach_feedback_label.add_theme_color_override("font_color", Color("#e5a09a"))
 		return
 	_nudge_text = ""
-	_apply_effect(str(step.get("effect", "explain")), step, target_id)
+	var effect: String = str(step.get("effect", "explain"))
+	_apply_effect(effect, step, target_id)
 	_coach_feedback = str(step.get("success", "Good move."))
 	_step_index += 1
 	if _step_index >= LESSONS[_lesson_index].steps.size():
 		_finish_lesson()
 	_refresh_view()
+
+
+func _on_game_board_action(action: String, payload: Variant) -> void:
+	if _lesson_complete:
+		return
+	var target_id := ""
+	var card_id := ""
+	match action:
+		"target_click":
+			target_id = str(payload)
+			var step: Dictionary = _current_step()
+			if target_id == "player_deck" and str(step.get("effect", "")) == "study_card":
+				_nudge_text = "Drag the selected study card onto your deck."
+				_refresh_coach()
+				return
+		"avatar_click":
+			target_id = "opponent_info" if str(payload) == "tutorial-opponent" else "player_info"
+		"card_click":
+			var details: Dictionary = payload if payload is Dictionary else {}
+			var zone: String = str(details.get("zone", ""))
+			card_id = str(details.get("card_id", ""))
+			var expected: String = str(_current_step().get("target", ""))
+			if expected == "player_hand_area" and zone == "PlayerHand":
+				target_id = "player_hand_area"
+				_selected_card_id = card_id
+			elif expected == "opponent_hand" and zone == "OpponentHand":
+				target_id = "opponent_hand"
+			elif expected == "stack_item" and zone == "Stack":
+				target_id = "stack_item"
+			elif expected == "player_zone" and zone == "PlayerUnitArea":
+				target_id = "player_zone"
+			elif expected == "opponent_zone" and zone == "OpponentUnitArea":
+				target_id = "opponent_zone"
+			elif zone == "PlayerHand":
+				target_id = "card:" + card_id
+			elif zone in ["PlayerUnitArea", "OpponentUnitArea"]:
+				target_id = "unit:" + card_id
+			elif zone == "OpponentHand":
+				target_id = "opponent_hand"
+			elif zone == "Stack":
+				target_id = "stack_item"
+			elif zone == "PlayerDiscard":
+				target_id = "player_discard"
+			elif zone == "OpponentDiscard":
+				target_id = "opponent_discard"
+		"card_drop", "play_card", "study_card":
+			var drop: Dictionary = payload if payload is Dictionary else {"card_id": str(payload)}
+			card_id = str(drop.get("card_id", ""))
+			if action == "study_card":
+				target_id = "player_deck"
+			else:
+				target_id = str(drop.get("target", "play_zone"))
+			if not card_id.is_empty():
+				if not _selected_card_id.is_empty() and _selected_card_id != card_id:
+					_nudge_text = "Drag the highlighted card from your hand."
+					_refresh_coach()
+					return
+				_selected_card_id = card_id
+		"select_attackers", "select_blockers":
+			target_id = "submit_button"
+		"knowledge_select":
+			if int(payload) == GS.Types.Knowledge.RED:
+				target_id = "knowledge_red"
+	if not target_id.is_empty():
+		_on_target_pressed(target_id)
 
 
 func _on_action_button_pressed() -> void:
@@ -881,10 +1109,15 @@ func _apply_effect(effect: String, step: Dictionary, target_id: String) -> void:
 				_max_energy += 1
 				_energy += 1
 				_selected_card_id = ""
+				SS.clear_selection_data()
+				SS.selecting_for = SS.selection_type.KNOWLEDGE
+				SS.selection_targets = [GS.Types.Knowledge.RED]
 		"gain_red_knowledge":
 			_red_knowledge += 1
+			SS.clear_selection_data()
 		"play_unit":
 			_play_selected_unit()
+			_phase_value = GS.Types.Phase.MAIN_AFTER
 		"select_attacker":
 			_selected_card_id = str(step.get("card_id", ""))
 			_attacking_unit_id = _selected_card_id
@@ -894,6 +1127,7 @@ func _apply_effect(effect: String, step: Dictionary, target_id: String) -> void:
 				attacker["exhausted"] = true
 				_opponent_health = maxi(0, _opponent_health - int(attacker.get("attack", 0)))
 				_combat_routes = [{"from": "unit:" + _attacking_unit_id, "to": "opponent_info"}]
+				_phase_value = GS.Types.Phase.MAIN_AFTER
 		"select_blocker":
 			_blocking_unit_id = str(step.get("card_id", ""))
 			_selected_card_id = _blocking_unit_id
@@ -902,14 +1136,17 @@ func _apply_effect(effect: String, step: Dictionary, target_id: String) -> void:
 			_combat_routes = [{"from": "unit:" + _assigned_blocker_id, "to": "unit:" + _attacking_unit_id}]
 		"resolve_block":
 			_resolve_block()
+			_phase_value = GS.Types.Phase.MAIN_AFTER
 		"target_opponent":
 			_selected_target_id = "opponent_info"
 		"cast_spell":
 			_cast_selected_card("spell", "Ember Bolt", "Deal 3 damage to the opponent.")
+			_phase_value = GS.Types.Phase.MAIN_AFTER
 		"resolve_spell":
 			_resolve_spell()
 		"play_trigger":
 			_play_trigger_unit()
+			_phase_value = GS.Types.Phase.MAIN_AFTER
 		"resolve_trigger":
 			_resolve_trigger()
 		"select_trick_attacker":
@@ -921,15 +1158,18 @@ func _apply_effect(effect: String, step: Dictionary, target_id: String) -> void:
 				attacker["exhausted"] = true
 			_attacking_unit_id = "duelist"
 			_assigned_blocker_id = "bulwark"
+			_phase_value = GS.Types.Phase.BLOCK_PLAY
 			_combat_routes = [{"from": "unit:bulwark", "to": "unit:duelist"}]
 		"target_trick_unit":
 			_selected_target_id = _card_id_from_target(target_id)
 		"cast_trick":
 			_cast_selected_card("trick", "Rallying Cry", "Give Street Duelist +2 attack and prevent the next 2 damage.")
+			_phase_value = GS.Types.Phase.MAIN_AFTER
 		"resolve_trick":
 			_resolve_trick()
 		"resolve_trick_combat":
 			_resolve_trick_combat()
+			_phase_value = GS.Types.Phase.MAIN_AFTER
 		"final_attack":
 			var finisher := _find_card(_attacking_unit_id)
 			if not finisher.is_empty():
@@ -937,6 +1177,7 @@ func _apply_effect(effect: String, step: Dictionary, target_id: String) -> void:
 				_opponent_health = maxi(0, _opponent_health - int(finisher.get("attack", 0)))
 				_combat_routes = [{"from": "unit:" + _attacking_unit_id, "to": "opponent_info"}]
 				_game_won = _opponent_health == 0
+				_phase_value = GS.Types.Phase.MAIN_AFTER
 
 
 func _play_selected_unit() -> void:
@@ -945,6 +1186,7 @@ func _play_selected_unit() -> void:
 		return
 	_energy = maxi(0, _energy - int(card.get("cost", 0)))
 	card["ready"] = false
+	card["exhausted"] = true
 	_player_units.append(card)
 	_selected_card_id = ""
 
@@ -996,7 +1238,7 @@ func _play_trigger_unit() -> void:
 		return
 	_energy = maxi(0, _energy - int(card.get("cost", 0)))
 	_player_units.append(card)
-	_stack.append({"card_id": "ash_trigger", "name": "ASH WHISPERS", "type": "TRIGGER", "cost": 0, "knowledge": "—", "text": "Deal 1 damage to the opponent and draw a card.", "kind": "trigger", "effect_name": "ASH WHISPERS"})
+	_stack.append({"card_id": "ash_trigger", "name": "ASH WHISPERS", "type": "TRIGGER", "cost": 0, "knowledge": "—", "text": "Deal 1 damage to the opponent and draw a card.", "art": "res://assets/card-images/base2/Explosive Shot.png", "kind": "trigger", "effect_name": "ASH WHISPERS"})
 	_selected_card_id = ""
 	_combat_routes = [{"from": "unit:ash_warden", "to": "stack_item"}]
 

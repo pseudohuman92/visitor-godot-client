@@ -211,6 +211,26 @@ func _on_gui_input(event):
 							var c = GS.AbilityCardScene.instantiate()
 							c.setup(card, false, ability)
 							GS.popup_cards.append(c)
+			var board = find_parent("GameBoard")
+			if is_instance_valid(board) and bool(board.get("tutorial_mode")) and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+				var zone := ""
+				if find_parent("PlayerHand"):
+					zone = "PlayerHand"
+				elif find_parent("OpponentHand"):
+					zone = "OpponentHand"
+				elif find_parent("PlayerUnitArea"):
+					zone = "PlayerUnitArea"
+				elif find_parent("OpponentUnitArea"):
+					zone = "OpponentUnitArea"
+				elif find_parent("Stack"):
+					zone = "Stack"
+				elif find_parent("PlayerDiscard"):
+					zone = "PlayerDiscard"
+				elif find_parent("OpponentDiscard"):
+					zone = "OpponentDiscard"
+				if not zone.is_empty():
+					board.call("notify_tutorial_action", "card_click", {"card_id": card.get_id() if card else "", "zone": zone})
+					accept_event()
 
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 			if card:

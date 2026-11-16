@@ -28,8 +28,9 @@ func _draw_arrow(start: Vector2, finish: Vector2, color: Color, width: float) ->
 	if distance < 12.0:
 		return
 	var direction := (finish - start).normalized()
-	var control_a := start + Vector2(-minf(distance * 0.38, 180.0), 0)
-	var control_b := finish + Vector2(minf(distance * 0.18, 80.0), 0)
+	var horizontal_direction := 1.0 if finish.x >= start.x else -1.0
+	var control_a := start + Vector2(horizontal_direction * minf(distance * 0.38, 180.0), 0)
+	var control_b := finish - Vector2(horizontal_direction * minf(distance * 0.18, 80.0), 0)
 	var previous := start
 	for index in range(1, 25):
 		var t := float(index) / 24.0
