@@ -141,22 +141,30 @@ func change_stylebox_override(field, node, fun):
 		fun.call(image_box)
 		node.add_theme_stylebox_override(field, image_box)
 
+func set_card_art(node, texture, modulate_color=Color.WHITE):
+	node.texture = texture
+	node.modulate = modulate_color
+
+func set_stylebox_knowledge_color(field, node, color):
+	change_stylebox_override(field, node, func(style_box):
+		if style_box is StyleBoxTexture:
+			style_box.modulate_color = color
+		elif style_box is StyleBoxFlat:
+			style_box.bg_color = color)
+
 func load_card_image_and_type(c):
-	change_stylebox_override("panel", c.find_child("CardImage"),
-	func(image_box):
-		var image = get_card_image(c.card.get_set(),c.card.get_name())
-		var type
-		if c.card.get_types()[0] == "Spell" and c.card.get_subtypes():
-			type = c.card.get_subtypes()[0]
-		else:
-			type = c.card.get_types()[0]
-		if image:
-			image_box.set_modulate(Color.WHITE)
-			image_box.set_texture(image)
-		else:
-			image_box.set_texture(get_placeholder_image(type))
-			image_box.set_modulate(Color.GRAY)
-		c.find_child("TypeIcon").set_texture(get_type_icon(type)))
+	var image = get_card_image(c.card.get_set(), c.card.get_name())
+	var type
+	if c.card.get_types()[0] == "Spell" and c.card.get_subtypes():
+		type = c.card.get_subtypes()[0]
+	else:
+		type = c.card.get_types()[0]
+	var tint = Color.WHITE
+	if image == null:
+		image = get_placeholder_image(type)
+		tint = Color.GRAY
+	set_card_art(c.find_child("Artwork"), image, tint)
+	c.find_child("TypeIcon").set_texture(get_type_icon(type))
 
 
 func setup_card(n, card=null):
@@ -167,7 +175,7 @@ func setup_card(n, card=null):
 		n.find_child("CostArea").update(card.get_cost(), card.get_knowledgeCost())
 		n.find_child("Name").set_text(card.get_name())
 		n.find_child("DepletePanel").set_visible(card.get_depleted())
-		CS.change_stylebox_override("normal", n.find_child("Name"), func(b): b.set_modulate(to_knowledge_color(card.get_knowledgeCost())))
+		CS.set_stylebox_knowledge_color("normal", n.find_child("Name"), to_knowledge_color(card.get_knowledgeCost()))
 		var ability_text = ""
 		var combat = card.get_combat()
 		if combat:
@@ -202,7 +210,7 @@ func setup_card(n, card=null):
 			else:
 				n.find_child("AbilityPanel").set_visible(false)
 	else:
-		CS.change_stylebox_override("panel", n.find_child("CardImage"), func(i): i.set_texture(load(GS.card_back_path)))
+		CS.set_card_art(n.find_child("Artwork"), load(GS.card_back_path))
 		n.find_child("Contents").set_visible(false)
 
 func sanitize_card_name(name):

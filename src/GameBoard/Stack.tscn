@@ -1,17 +1,29 @@
-[gd_scene load_steps=9 format=3 uid="uid://cyf4auv3kwlej"]
+[gd_scene load_steps=16 format=3 uid="uid://cyf4auv3kwlej"]
 
 [ext_resource type="Script" path="res://src/GameBoard/CardContainer.gd" id="1_isthh"]
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="2_b1f2l"]
-[ext_resource type="Texture2D" uid="uid://bjeer40kdm3ir" path="res://assets/buttons/grunge-highlight-red.png" id="3_vi5qa"]
 [ext_resource type="LabelSettings" uid="uid://fslojvlky0sj" path="res://src/Themes/EnergyDisplayNumbers.tres" id="4_76dgi"]
 [ext_resource type="Script" path="res://src/GameBoard/Phase.gd" id="5_0smbc"]
 [ext_resource type="Script" path="res://src/GameBoard/XSelector.gd" id="6_20bhx"]
 [ext_resource type="Script" path="res://src/GameBoard/Buttons.gd" id="7_jjq3l"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_default.tres" id="8_secondary"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_hover.tres" id="9_secondary_hover"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_ghost_default.tres" id="10_ghost"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_ghost_hover.tres" id="11_ghost_hover"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6xsbi"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_pressed.tres" id="12_secondary_pressed"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_disabled.tres" id="13_secondary_disabled"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_ghost_pressed.tres" id="14_ghost_pressed"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_ghost_disabled.tres" id="15_ghost_disabled"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phase"]
+content_margin_left = 8.0
 content_margin_top = 4.0
+content_margin_right = 8.0
 content_margin_bottom = 4.0
-texture = ExtResource("3_vi5qa")
+bg_color = Color(0.109804, 0.12549, 0.133333, 1)
+border_width_left = 2
+border_width_bottom = 1
+border_color = Color(0.705882, 0.278431, 0.262745, 1)
 
 [node name="StackContainer" type="VBoxContainer"]
 size_flags_horizontal = 3
@@ -36,7 +48,8 @@ layout_mode = 2
 size_flags_vertical = 1
 mouse_filter = 1
 theme = ExtResource("2_b1f2l")
-theme_override_styles/normal = SubResource("StyleBoxTexture_6xsbi")
+theme_override_styles/normal = SubResource("StyleBoxFlat_phase")
+theme_override_font_sizes/font_size = 20
 text = "Phase"
 label_settings = ExtResource("4_76dgi")
 horizontal_alignment = 1
@@ -56,6 +69,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme = ExtResource("2_b1f2l")
+theme_override_styles/normal = ExtResource("10_ghost")
+theme_override_styles/hover = ExtResource("11_ghost_hover")
+theme_override_styles/pressed = ExtResource("14_ghost_pressed")
+theme_override_styles/disabled = ExtResource("15_ghost_disabled")
 text = "-"
 
 [node name="XValue" type="Label" parent="Buttons/XSelector"]
@@ -71,6 +88,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme = ExtResource("2_b1f2l")
+theme_override_styles/normal = ExtResource("10_ghost")
+theme_override_styles/hover = ExtResource("11_ghost_hover")
+theme_override_styles/pressed = ExtResource("14_ghost_pressed")
+theme_override_styles/disabled = ExtResource("15_ghost_disabled")
 text = "+"
 
 [node name="MaxButton" type="Button" parent="Buttons/XSelector"]
@@ -78,6 +99,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme = ExtResource("2_b1f2l")
+theme_override_styles/normal = ExtResource("10_ghost")
+theme_override_styles/hover = ExtResource("11_ghost_hover")
+theme_override_styles/pressed = ExtResource("14_ghost_pressed")
+theme_override_styles/disabled = ExtResource("15_ghost_disabled")
 text = "MAX"
 
 [node name="ButtonContainer" type="VBoxContainer" parent="Buttons"]
@@ -88,6 +113,10 @@ layout_mode = 2
 size_flags_vertical = 2
 mouse_filter = 1
 theme = ExtResource("2_b1f2l")
+theme_override_styles/normal = ExtResource("8_secondary")
+theme_override_styles/hover = ExtResource("9_secondary_hover")
+theme_override_styles/pressed = ExtResource("12_secondary_pressed")
+theme_override_styles/disabled = ExtResource("13_secondary_disabled")
 text = "Pass"
 expand_icon = true
 script = ExtResource("7_jjq3l")
@@ -97,6 +126,10 @@ layout_mode = 2
 size_flags_vertical = 2
 mouse_filter = 1
 theme = ExtResource("2_b1f2l")
+theme_override_styles/normal = ExtResource("8_secondary")
+theme_override_styles/hover = ExtResource("9_secondary_hover")
+theme_override_styles/pressed = ExtResource("12_secondary_pressed")
+theme_override_styles/disabled = ExtResource("13_secondary_disabled")
 text = "Keep"
 expand_icon = true
 script = ExtResource("7_jjq3l")
@@ -106,6 +139,10 @@ layout_mode = 2
 size_flags_vertical = 2
 mouse_filter = 1
 theme = ExtResource("2_b1f2l")
+theme_override_styles/normal = ExtResource("8_secondary")
+theme_override_styles/hover = ExtResource("9_secondary_hover")
+theme_override_styles/pressed = ExtResource("12_secondary_pressed")
+theme_override_styles/disabled = ExtResource("13_secondary_disabled")
 text = "Redraw"
 expand_icon = true
 script = ExtResource("7_jjq3l")
@@ -128,6 +165,10 @@ script = ExtResource("7_jjq3l")
 layout_mode = 2
 size_flags_vertical = 0
 theme = ExtResource("2_b1f2l")
+theme_override_styles/normal = ExtResource("8_secondary")
+theme_override_styles/hover = ExtResource("9_secondary_hover")
+theme_override_styles/pressed = ExtResource("12_secondary_pressed")
+theme_override_styles/disabled = ExtResource("13_secondary_disabled")
 text = "Cancel"
 script = ExtResource("7_jjq3l")
 

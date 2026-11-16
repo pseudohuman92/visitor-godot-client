@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dxt4uxlm1lr2i"]
+[gd_scene load_steps=33 format=3 uid="uid://dxt4uxlm1lr2i"]
 
 [ext_resource type="Script" path="res://src/DeckBuilder/DeckBuilder.gd" id="1_dlswc"]
 [ext_resource type="Script" path="res://src/GameBoard/MainContainer.gd" id="2_eb0sf"]
@@ -9,22 +9,32 @@
 [ext_resource type="Script" path="res://src/DeckBuilder/CollectionButtons.gd" id="5_1uxfn"]
 [ext_resource type="Script" path="res://src/DeckBuilder/DeckName.gd" id="5_n672i"]
 [ext_resource type="Script" path="res://src/DeckBuilder/Buttons.gd" id="6_w0hd3"]
-[ext_resource type="Texture2D" uid="uid://b5tsncxfiknsk" path="res://assets/card-components/knowledge-B.png" id="9_6qh7i"]
-[ext_resource type="Texture2D" uid="uid://cch0avhur5qc4" path="res://assets/card-components/knowledge-C.png" id="9_7wmh3"]
+[ext_resource type="Texture2D" uid="uid://dcfh3awf60bjk" path="res://assets/card-components/Factions/Blue.png" id="9_6qh7i"]
+[ext_resource type="Texture2D" path="res://assets/icons/global/colorless.svg" id="9_7wmh3"]
 [ext_resource type="Texture2D" uid="uid://b0uced55vuxng" path="res://assets/card-components/Types/Unit.png" id="9_b257f"]
 [ext_resource type="Script" path="res://src/DeckBuilder/Search.gd" id="9_bivu5"]
 [ext_resource type="Texture2D" uid="uid://bq50nyvh4jgu6" path="res://assets/card-components/Types/Ritual.png" id="10_2i5ob"]
 [ext_resource type="Script" path="res://src/DeckBuilder/FilterButtons.gd" id="10_bpo0c"]
-[ext_resource type="Texture2D" uid="uid://bla5kmox0uutt" path="res://assets/card-components/knowledge-G.png" id="10_htogd"]
-[ext_resource type="Texture2D" uid="uid://ubacjv4amyn1" path="res://assets/card-components/knowledge-P.png" id="11_0mvn8"]
+[ext_resource type="Texture2D" uid="uid://lbx14w350wg7" path="res://assets/card-components/Factions/Green.png" id="10_htogd"]
+[ext_resource type="Texture2D" uid="uid://0okhd46g74cw" path="res://assets/card-components/Factions/Purple.png" id="11_0mvn8"]
 [ext_resource type="Texture2D" uid="uid://bxs2py6iiv3pb" path="res://assets/card-components/Types/Cantrip.png" id="11_x4nnp"]
 [ext_resource type="Texture2D" uid="uid://kqvj4pwdbf3f" path="res://assets/card-components/Types/Tome.png" id="12_kyu4u"]
-[ext_resource type="Texture2D" uid="uid://ctiwq73fpxfx1" path="res://assets/card-components/knowledge-R.png" id="12_wedx0"]
-[ext_resource type="Texture2D" uid="uid://cnnp27dobkbl6" path="res://assets/card-components/knowledge-Y.png" id="13_hdejf"]
+[ext_resource type="Texture2D" uid="uid://d2wiwbbsrdylr" path="res://assets/card-components/Factions/Red.png" id="12_wedx0"]
+[ext_resource type="Texture2D" uid="uid://dk4mcbav8185j" path="res://assets/card-components/Factions/Yellow.png" id="13_hdejf"]
 [ext_resource type="Texture2D" uid="uid://bs7cv5dshovm8" path="res://assets/card-components/Types/Asset.png" id="19_wggbg"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_default.tres" id="20_secondary"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_hover.tres" id="21_secondary_hover"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_ghost_default.tres" id="22_ghost"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_ghost_hover.tres" id="23_ghost_hover"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_focus.tres" id="24_focus"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_pressed.tres" id="25_secondary_pressed"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_disabled.tres" id="26_secondary_disabled"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_ghost_pressed.tres" id="27_ghost_pressed"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_ghost_disabled.tres" id="28_ghost_disabled"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5uif8"]
 texture = ExtResource("2_wy6y3")
+modulate_color = Color(0.14, 0.16, 0.17, 1)
 
 [node name="DeckBuilder" type="Node2D"]
 script = ExtResource("1_dlswc")
@@ -53,7 +63,7 @@ size_flags_stretch_ratio = 7.0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 30
 text = "<"
 script = ExtResource("5_1uxfn")
 
@@ -70,7 +80,7 @@ script = ExtResource("3_7emcy")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 30
 text = ">"
 script = ExtResource("5_1uxfn")
 
@@ -121,14 +131,15 @@ stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
 [node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/C"]
+mouse_filter = 2
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+theme_override_styles/panel = ExtResource("24_focus")
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="B" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
 layout_mode = 2
@@ -140,14 +151,15 @@ stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
 [node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/B"]
+mouse_filter = 2
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+theme_override_styles/panel = ExtResource("24_focus")
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="G" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
 layout_mode = 2
@@ -159,14 +171,15 @@ stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
 [node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/G"]
+mouse_filter = 2
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+theme_override_styles/panel = ExtResource("24_focus")
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="P" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
 layout_mode = 2
@@ -178,14 +191,15 @@ stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
 [node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/P"]
+mouse_filter = 2
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+theme_override_styles/panel = ExtResource("24_focus")
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="R" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
 layout_mode = 2
@@ -197,14 +211,15 @@ stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
 [node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/R"]
+mouse_filter = 2
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+theme_override_styles/panel = ExtResource("24_focus")
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="Y" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
 layout_mode = 2
@@ -216,14 +231,15 @@ stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
 [node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter/Y"]
+mouse_filter = 2
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+theme_override_styles/panel = ExtResource("24_focus")
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="TypeFilter" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
 layout_mode = 2
@@ -239,14 +255,15 @@ stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
 [node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Unit"]
+mouse_filter = 2
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+theme_override_styles/panel = ExtResource("24_focus")
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="Ritual" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
 layout_mode = 2
@@ -258,14 +275,15 @@ stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
 [node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Ritual"]
+mouse_filter = 2
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+theme_override_styles/panel = ExtResource("24_focus")
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="Cantrip" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
 layout_mode = 2
@@ -277,14 +295,15 @@ stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
 [node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Cantrip"]
+mouse_filter = 2
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+theme_override_styles/panel = ExtResource("24_focus")
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="Asset" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
 layout_mode = 2
@@ -296,14 +315,15 @@ stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
 [node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Asset"]
+mouse_filter = 2
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+theme_override_styles/panel = ExtResource("24_focus")
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="Tome" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
 layout_mode = 2
@@ -315,14 +335,15 @@ stretch_mode = 5
 script = ExtResource("10_bpo0c")
 
 [node name="Panel" type="Panel" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter/Tome"]
+mouse_filter = 2
 visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+theme_override_styles/panel = ExtResource("24_focus")
 grow_vertical = 2
-mouse_filter = 1
 
 [node name="Save" type="Button" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
 layout_mode = 2
@@ -331,11 +352,19 @@ script = ExtResource("6_w0hd3")
 
 [node name="Load" type="Button" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
 layout_mode = 2
+theme_override_styles/normal = ExtResource("20_secondary")
+theme_override_styles/hover = ExtResource("21_secondary_hover")
+theme_override_styles/pressed = ExtResource("25_secondary_pressed")
+theme_override_styles/disabled = ExtResource("26_secondary_disabled")
 text = "Load Deck"
 script = ExtResource("6_w0hd3")
 
 [node name="New" type="Button" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
 layout_mode = 2
+theme_override_styles/normal = ExtResource("22_ghost")
+theme_override_styles/hover = ExtResource("23_ghost_hover")
+theme_override_styles/pressed = ExtResource("27_ghost_pressed")
+theme_override_styles/disabled = ExtResource("28_ghost_disabled")
 text = "New Deck"
 script = ExtResource("6_w0hd3")
 

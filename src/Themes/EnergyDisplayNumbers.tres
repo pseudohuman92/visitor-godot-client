@@ -1,9 +1,10 @@
 [gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://fslojvlky0sj"]
 
-[ext_resource type="FontFile" uid="uid://dhfc6u3d1k04t" path="res://assets/fonts/Depressionist_3_Revisited_2010.ttf" id="1_rf3ii"]
+[ext_resource type="FontVariation" path="res://assets/fonts/BarlowCondensed-SemiBold-Tracked.tres" id="1_energy"]
 
 [resource]
-font = ExtResource("1_rf3ii")
+font = ExtResource("1_energy")
 font_size = 20
-font_color = Color(0, 0, 0, 1)
-outline_size = 5
+font_color = Color(0.909804, 0.901961, 0.878431, 1)
+font_outline_color = Color(0.043137, 0.05098, 0.054902, 1)
+outline_size = 2

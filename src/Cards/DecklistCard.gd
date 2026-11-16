@@ -7,7 +7,7 @@ func setup(card, count):
 		self.card = card
 		CS.set_cost_texture(find_child("CostBG"), card.get_cost())
 		find_child("Name").set_text(card.get_name())
-		CS.change_stylebox_override("normal", find_child("Name"), func(b): b.set_modulate(CS.to_knowledge_color(card.get_knowledgeCost())))
+		CS.set_stylebox_knowledge_color("normal", find_child("Name"), CS.to_knowledge_color(card.get_knowledgeCost()))
 		find_child("Count").set_text(str(count)+"x")
 
 func _on_mouse_entered():

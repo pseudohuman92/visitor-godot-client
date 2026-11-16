@@ -1,40 +1,74 @@
 [gd_resource type="Theme" format=3 uid="uid://y7aot7vogdr6"]
 
-[ext_resource type="Texture2D" uid="uid://df5ivefvj4aj2" path="res://assets/buttons/grunge-highlight-gray.png" id="1_btp2h"]
-[ext_resource type="Texture2D" uid="uid://oqqgesnsg3n0" path="res://assets/buttons/grunge-highlight-white.png" id="2_lvlx5"]
-[ext_resource type="Texture2D" uid="uid://clxwqjxri4v7i" path="res://assets/buttons/grunge-highlight-black.png" id="3_lgemb"]
-[ext_resource type="Texture2D" uid="uid://bjeer40kdm3ir" path="res://assets/buttons/grunge-highlight-red.png" id="4_x603b"]
-[ext_resource type="FontFile" uid="uid://cpnwn6l4agwn2" path="res://assets/fonts/Leander.ttf" id="5_adlhe"]
-[ext_resource type="FontFile" uid="uid://dhfc6u3d1k04t" path="res://assets/fonts/Depressionist_3_Revisited_2010.ttf" id="5_fxbqr"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_primary_default.tres" id="1_primary"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_primary_hover.tres" id="2_primary_hover"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_primary_pressed.tres" id="3_primary_pressed"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_primary_disabled.tres" id="4_primary_disabled"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/button_focus.tres" id="5_focus"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/field_default.tres" id="6_field"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/field_focus.tres" id="7_field_focus"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/panel_standard.tres" id="8_panel"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/panel_tooltip.tres" id="9_tooltip"]
+[ext_resource type="FontVariation" path="res://assets/fonts/BarlowCondensed-Regular-Tracked.tres" id="11_condensed_tracked"]
+[ext_resource type="FontVariation" path="res://assets/fonts/BarlowCondensed-SemiBold-Tracked.tres" id="12_condensed_semibold"]
+[ext_resource type="FontFile" path="res://assets/fonts/Barlow-Regular.ttf" id="13_body"]
+[ext_resource type="FontFile" path="res://assets/fonts/Barlow-Bold.ttf" id="14_body_bold"]
+[ext_resource type="FontFile" path="res://assets/fonts/Barlow-Italic.ttf" id="15_body_italic"]
+[ext_resource type="FontFile" path="res://assets/fonts/Barlow-BoldItalic.ttf" id="16_body_bold_italic"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_esea5"]
-texture = ExtResource("1_btp2h")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rwfj4"]
-texture = ExtResource("2_lvlx5")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fayyw"]
-content_margin_top = 4.0
-content_margin_bottom = 4.0
-texture = ExtResource("3_lgemb")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iafod"]
-texture = ExtResource("4_x603b")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3obiw"]
-content_margin_left = 2.0
-content_margin_top = 4.0
-content_margin_right = 2.0
-content_margin_bottom = 2.0
-draw_center = false
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rich_text"]
 
 [resource]
-default_font = ExtResource("5_fxbqr")
-Button/colors/font_hover_color = Color(0, 0, 0, 1)
-Button/styles/disabled = SubResource("StyleBoxTexture_esea5")
-Button/styles/hover = SubResource("StyleBoxTexture_rwfj4")
-Button/styles/normal = SubResource("StyleBoxTexture_fayyw")
-Button/styles/pressed = SubResource("StyleBoxTexture_iafod")
-RichTextLabel/font_sizes/normal_font_size = 14
-RichTextLabel/fonts/normal_font = ExtResource("5_adlhe")
-RichTextLabel/styles/normal = SubResource("StyleBoxFlat_3obiw")
+default_font = ExtResource("13_body")
+default_font_size = 16
+Button/colors/font_color = Color(0.909804, 0.901961, 0.878431, 1)
+Button/colors/font_focus_color = Color(0.909804, 0.901961, 0.878431, 1)
+Button/colors/font_hover_color = Color(0.909804, 0.901961, 0.878431, 1)
+Button/colors/font_pressed_color = Color(0.909804, 0.901961, 0.878431, 1)
+Button/colors/font_disabled_color = Color(0.513725, 0.541176, 0.541176, 1)
+Button/fonts/font = ExtResource("12_condensed_semibold")
+Button/font_sizes/font_size = 18
+Button/styles/normal = ExtResource("1_primary")
+Button/styles/hover = ExtResource("2_primary_hover")
+Button/styles/pressed = ExtResource("3_primary_pressed")
+Button/styles/disabled = ExtResource("4_primary_disabled")
+Button/styles/focus = ExtResource("5_focus")
+Label/colors/font_color = Color(0.909804, 0.901961, 0.878431, 1)
+Label/colors/font_outline_color = Color(0.043137, 0.050980, 0.054902, 1)
+Label/fonts/font = ExtResource("11_condensed_tracked")
+Label/font_sizes/font_size = 16
+LineEdit/colors/font_color = Color(0.909804, 0.901961, 0.878431, 1)
+LineEdit/colors/font_placeholder_color = Color(0.513725, 0.541176, 0.541176, 1)
+LineEdit/colors/font_selected_color = Color(0.909804, 0.901961, 0.878431, 1)
+LineEdit/colors/font_uneditable_color = Color(0.702, 0.709804, 0.698039, 1)
+LineEdit/colors/caret_color = Color(0.909804, 0.901961, 0.878431, 1)
+LineEdit/colors/selection_color = Color(0.356863, 0.623529, 0.768627, 0.45)
+LineEdit/fonts/font = ExtResource("11_condensed_tracked")
+LineEdit/font_sizes/font_size = 18
+LineEdit/styles/normal = ExtResource("6_field")
+LineEdit/styles/focus = ExtResource("7_field_focus")
+LineEdit/styles/read_only = ExtResource("6_field")
+RichTextLabel/colors/default_color = Color(0.909804, 0.901961, 0.878431, 1)
+RichTextLabel/colors/font_selected_color = Color(0.909804, 0.901961, 0.878431, 1)
+RichTextLabel/font_sizes/normal_font_size = 16
+RichTextLabel/fonts/normal_font = ExtResource("13_body")
+RichTextLabel/fonts/bold_font = ExtResource("14_body_bold")
+RichTextLabel/fonts/italics_font = ExtResource("15_body_italic")
+RichTextLabel/fonts/bold_italics_font = ExtResource("16_body_bold_italic")
+RichTextLabel/styles/normal = SubResource("StyleBoxEmpty_rich_text")
+TextEdit/colors/font_color = Color(0.909804, 0.901961, 0.878431, 1)
+TextEdit/colors/font_readonly_color = Color(0.702, 0.709804, 0.698039, 1)
+TextEdit/colors/font_selected_color = Color(0.909804, 0.901961, 0.878431, 1)
+TextEdit/colors/caret_color = Color(0.909804, 0.901961, 0.878431, 1)
+TextEdit/colors/selection_color = Color(0.356863, 0.623529, 0.768627, 0.45)
+TextEdit/fonts/font = ExtResource("13_body")
+TextEdit/font_sizes/font_size = 16
+TextEdit/styles/normal = ExtResource("6_field")
+TextEdit/styles/focus = ExtResource("7_field_focus")
+TextEdit/styles/read_only = ExtResource("6_field")
+TooltipLabel/colors/font_color = Color(0.909804, 0.901961, 0.878431, 1)
+TooltipLabel/fonts/font = ExtResource("13_body")
+TooltipLabel/font_sizes/font_size = 15
+TooltipPanel/styles/panel = ExtResource("9_tooltip")
+PanelContainer/styles/panel = ExtResource("8_panel")
+Panel/styles/panel = ExtResource("8_panel")
