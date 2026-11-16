@@ -26,6 +26,7 @@ func unpack_selection(selection_options):
 	selected_single = []
 	if max_select > 0 and selection_options.get_targetingZone() == GS.Types.SelectFromType.DISCARD_PILE:
 		GS.ability_selection_popup = false
+		GS.popup_discard_pile = true
 		GS.popup_message = selection_message
 		selection_message = ""
 		var player = false

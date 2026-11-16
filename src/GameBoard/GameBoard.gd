@@ -15,6 +15,12 @@ var _opponent_hand_mask: Control
 var _player_front: Control
 var _player_deck_area: Control
 var _player_hand: Control
+var _player_time_ms := 0
+var _opponent_time_ms := 0
+var _clock_active_player_id := ""
+var _clock_snapshot_msec := 0
+var _clock_initialized := false
+var _clock_running := true
 @export_range(0.0, 2.0, 0.01) var card_move_duration := 0.28
 var _card_movement
 const CARD_ZONES = ["PlayerHand", "PlayerUnitArea", "PlayerAssetArea", "PlayerDiscard", "OpponentUnitArea", "OpponentAssetArea", "OpponentDiscard", "Stack"]
@@ -135,7 +141,7 @@ func _layout_board_hud():
 		return
 	var viewport_size = get_viewport_rect().size
 	var front_width = min(430.0, viewport_size.x * 0.42)
-	var front_height = 140.0
+	var front_height = 160.0
 	var front_scale = 0.5
 	var deck_scale = 0.4
 	var deck_size = Vector2(400, 280)
@@ -197,6 +203,8 @@ func initialize_game_socket():
 	_find_board_node("AiVsAiResult").set_visible(false)
 
 func show_game_result(won):
+	_clock_running = false
+	_update_game_clocks()
 	if not GS.is_spectating_ai_match:
 		return
 	var state = GS.gameState
@@ -212,6 +220,7 @@ func update_game_state(new_state):
 	# has no previous visible positions and intentionally does not animate.
 	var origins = _capture_card_origins() if not _zone_bytes.is_empty() else {}
 	GS.gameState = new_state
+	_snapshot_game_clocks(new_state)
 	_state_revision += 1
 	if new_state.get_activePlayer() != GS.playerId:
 		GS.is_waiting = true
@@ -479,6 +488,7 @@ func populate_block_arrows(state):
 	_sync_arrows(assignments.values(), true)
 
 func _process(_delta):
+	_update_game_clocks()
 	for arrow in arrows + block_arrows:
 		if is_instance_valid(arrow):
 			update_arrow(arrow)
@@ -488,6 +498,35 @@ func _process(_delta):
 		GS.socket._process(_delta)
 	if GS.gameSocket:
 		GS.gameSocket._process(_delta)
+
+func _snapshot_game_clocks(state):
+	var player = state.get_player()
+	var opponent = state.get_opponent()
+	_player_time_ms = maxi(0, player.get_time()) if player else 0
+	_opponent_time_ms = maxi(0, opponent.get_time()) if opponent else 0
+	_clock_active_player_id = state.get_activePlayer()
+	_clock_snapshot_msec = Time.get_ticks_msec()
+	_clock_initialized = true
+	_clock_running = true
+
+func _update_game_clocks():
+	if not _clock_initialized or not GS.gameState:
+		return
+	var elapsed_msec = maxi(0, Time.get_ticks_msec() - _clock_snapshot_msec) if _clock_running else 0
+	var player = GS.gameState.get_player()
+	var opponent = GS.gameState.get_opponent()
+	var player_time = _player_time_ms
+	var opponent_time = _opponent_time_ms
+	if player and _clock_active_player_id == player.get_id():
+		player_time = maxi(0, player_time - elapsed_msec)
+	if opponent and _clock_active_player_id == opponent.get_id():
+		opponent_time = maxi(0, opponent_time - elapsed_msec)
+	_set_text_if_changed("PlayerClock", _format_clock(player_time))
+	_set_text_if_changed("OpponentClock", _format_clock(opponent_time))
+
+func _format_clock(time_msec: int) -> String:
+	var total_seconds = ceili(float(maxi(0, time_msec)) / 1000.0)
+	return "⌚ %02d:%02d" % [floori(float(total_seconds) / 60.0), total_seconds % 60]
 
 func _exit_tree():
 	_state_revision += 1

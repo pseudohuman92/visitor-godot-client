@@ -3,6 +3,7 @@ extends Control
 func _on_gui_input(event):
 	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT or not event.pressed or not GS.gameState:
 		return
+	GS.popup_discard_pile = true
 	if name.contains("Player"):
 		GS.ability_selection_popup = false
 		GS.popup_message = "Player's Discard Pile"

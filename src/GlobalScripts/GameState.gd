@@ -70,6 +70,7 @@ var pending_decision = ""
 var popup_cards = []
 var popup_message = ""
 var ability_selection_popup = false
+var popup_discard_pile = false
 
 var arrow_targets = []
 var block_arrow_targets = {}
@@ -97,6 +98,7 @@ func clear_popup():
 	popup_cards = []
 	popup_message = ""
 	ability_selection_popup = false
+	popup_discard_pile = false
 
 func has_action():
 	for c in gameState.get_player().get_hand():

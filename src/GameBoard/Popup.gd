@@ -9,16 +9,19 @@ func _ready():
 	hide()
 
 func _process(_delta):
+	var cards = find_child("Cards")
 	if GS.popup_cards.is_empty():
 		if popup_setup:
-			find_child("Cards").clear()
+			cards.clear()
 		popup_setup = false
 		displayed_cards.clear()
 		displayed_message = ""
+		GS.popup_discard_pile = false
+		cards.set_discard_layout(false)
 		hide()
-	elif not popup_setup or displayed_cards != GS.popup_cards:
-		var cards = find_child("Cards")
+	elif not popup_setup or displayed_cards != GS.popup_cards or displayed_message != GS.popup_message:
 		cards.clear()
+		cards.set_discard_layout(GS.popup_discard_pile)
 		find_child("PopupText").text = GS.popup_message
 		if GS.ability_selection_popup:
 			for entry in GS.popup_cards:

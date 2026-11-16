@@ -26,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://bij2elpga8pt3" path="res://assets/backgrounds/omen_board_background.png" id="24_board_background"]
 [ext_resource type="Script" path="res://src/GameBoard/HandFan.gd" id="25_hand_fan"]
 [ext_resource type="Script" path="res://src/GameBoard/OptionsMenu.gd" id="26_options_menu"]
+[ext_resource type="Script" path="res://src/GameBoard/PopupCards.gd" id="27_popup_cards"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqqf3"]
 bg_color = Color(0.043137, 0.05098, 0.054902, 0)
@@ -192,6 +193,15 @@ script = ExtResource("10_wn45f")
 layout_mode = 2
 size_flags_stretch_ratio = 0.3
 
+[node name="OpponentClock" type="Label" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDisplayFront/VBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("19_n4jhl")
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.82, 0.79, 0.74, 1)
+text = "⌚ 20:00"
+horizontal_alignment = 1
+
 [node name="ArrowArea" type="VBoxContainer" parent="MainContainer/HBoxContainer/DisplayArea"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -220,6 +230,15 @@ layout_mode = 2
 
 [node name="PlayerEnergyDisplay" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDisplayFront/VBoxContainer" instance=ExtResource("11_lfiyj")]
 layout_mode = 2
+
+[node name="PlayerClock" type="Label" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDisplayFront/VBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("19_n4jhl")
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.82, 0.79, 0.74, 1)
+text = "⌚ 20:00"
+horizontal_alignment = 1
 
 [node name="PlayerKnowledgeDisplay" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDisplayFront/VBoxContainer" instance=ExtResource("9_i3v6k")]
 layout_mode = 2
@@ -431,15 +450,15 @@ vertical_alignment = 1
 [node name="ScrollContainer" type="ScrollContainer" parent="PopupLayer/Popup/CardArea"]
 layout_mode = 2
 size_flags_vertical = 3
-vertical_scroll_mode = 0
+horizontal_scroll_mode = 1
+vertical_scroll_mode = 1
 
-[node name="Cards" type="HBoxContainer" parent="PopupLayer/Popup/CardArea/ScrollContainer"]
+[node name="Cards" type="Container" parent="PopupLayer/Popup/CardArea/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("17_dgrnn")
-alignment = 1
-script = ExtResource("6_b5knn")
+script = ExtResource("27_popup_cards")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PopupLayer/Popup/CardArea"]
 layout_mode = 2
