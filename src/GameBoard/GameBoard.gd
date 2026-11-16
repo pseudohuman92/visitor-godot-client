@@ -5,15 +5,27 @@ var block_arrows = []
 var _state_revision = 0
 var _zone_bytes = {}
 var _display_values = {}
+var _board_hud_root: Control
+var _opponent_hud: Control
+var _player_hud: Control
+var _opponent_front: Control
+var _opponent_deck_area: Control
+var _player_front: Control
+var _player_deck_area: Control
+var _player_hand: Control
 @export_range(0.0, 2.0, 0.01) var card_move_duration := 0.28
 var _card_movement
 const CARD_ZONES = ["PlayerHand", "PlayerUnitArea", "PlayerAssetArea", "PlayerDiscard", "OpponentUnitArea", "OpponentAssetArea", "OpponentDiscard", "Stack"]
+
+func _find_board_node(node_name: String):
+	return find_child(node_name, true, false)
 
 func _ready():
 	if OS.get_cmdline_user_args().has("--ai-vs-ai-demo"):
 		GS.queue_type = GS.Types.GameType.AI_VS_AI
 		GS.game_decklist = GS.ai_vs_ai_demo_decklist.duplicate()
 	GS.close_connections()
+	_apply_reference_board_composition()
 	SFX.reset_match()
 	var socket = Websocket.new()
 	socket.connect("initialize_game_state", initialize_game_state)
@@ -21,15 +33,135 @@ func _ready():
 	GS.socket = socket
 	socket.connect_to_server()
 
+func _apply_reference_board_composition():
+	var main_container = _find_board_node("MainContainer")
+	var old_layout = _find_board_node("HBoxContainer")
+	var old_display_area = _find_board_node("DisplayArea")
+	var old_opponent_display = _find_board_node("OpponentDisplay")
+	var old_player_display = _find_board_node("PlayerDisplay")
+	var play_area = _find_board_node("PlayArea")
+	var stack_container = _find_board_node("StackContainer")
+	_player_hand = _find_board_node("ScrollContainer4")
+	if not main_container or not old_layout or not old_display_area or not old_opponent_display \
+			or not old_player_display or not play_area or not stack_container or not _player_hand:
+		return
+
+	_opponent_front = old_opponent_display.find_child("OpponentDisplayFront", true, false)
+	_opponent_deck_area = old_opponent_display.find_child("OpponentDeckArea", true, false)
+	_player_front = old_player_display.find_child("PlayerDisplayFront", true, false)
+	_player_deck_area = old_player_display.find_child("PlayerDeckArea", true, false)
+	if not _opponent_front or not _opponent_deck_area or not _player_front or not _player_deck_area:
+		return
+
+	# Replace the left-side HUD column with top and bottom rows around the board.
+	var board_layout = VBoxContainer.new()
+	board_layout.name = "BoardLayout"
+	board_layout.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	board_layout.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	board_layout.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	board_layout.add_theme_constant_override("separation", 0)
+	main_container.remove_child(old_layout)
+	main_container.add_child(board_layout)
+
+	var opponent_row = Control.new()
+	opponent_row.name = "OpponentHudRow"
+	opponent_row.custom_minimum_size = Vector2(0, 150)
+	board_layout.add_child(opponent_row)
+	var battle_row = HBoxContainer.new()
+	battle_row.name = "BattleRow"
+	battle_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	battle_row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	battle_row.add_theme_constant_override("separation", 8)
+	board_layout.add_child(battle_row)
+	var player_row = Control.new()
+	player_row.name = "PlayerHudRow"
+	player_row.custom_minimum_size = Vector2(0, 300)
+	board_layout.add_child(player_row)
+
+	old_layout.remove_child(play_area)
+	old_layout.remove_child(stack_container)
+	battle_row.add_child(play_area)
+	battle_row.add_child(stack_container)
+	play_area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	play_area.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	stack_container.custom_minimum_size.x = 180
+	stack_container.size_flags_horizontal = Control.SIZE_FILL
+	stack_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	old_layout.queue_free()
+
+	var hud_layer = CanvasLayer.new()
+	hud_layer.name = "BoardHudLayer"
+	hud_layer.layer = 2
+	add_child(hud_layer)
+	_board_hud_root = Control.new()
+	_board_hud_root.name = "BoardHudRoot"
+	_board_hud_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_board_hud_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_board_hud_root.visible = false
+	hud_layer.add_child(_board_hud_root)
+
+	_opponent_hud = Control.new()
+	_opponent_hud.name = "OpponentDisplay"
+	_opponent_hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_opponent_hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_board_hud_root.add_child(_opponent_hud)
+	_player_hud = Control.new()
+	_player_hud.name = "PlayerDisplay"
+	_player_hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_player_hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_board_hud_root.add_child(_player_hud)
+	_opponent_front.reparent(_opponent_hud)
+	_opponent_deck_area.reparent(_opponent_hud)
+	_player_front.reparent(_player_hud)
+	_player_deck_area.reparent(_player_hud)
+	_player_hand.reparent(_player_hud)
+	old_display_area.queue_free()
+
+	get_viewport().size_changed.connect(_layout_board_hud)
+	_layout_board_hud()
+
+func _layout_board_hud():
+	if not is_instance_valid(_board_hud_root):
+		return
+	var viewport_size = get_viewport_rect().size
+	var front_width = min(430.0, viewport_size.x * 0.42)
+	var front_height = 140.0
+	_place_board_hud_control(_opponent_front,
+		Vector2((viewport_size.x - front_width) * 0.5, 4), Vector2(front_width, front_height))
+	_place_board_hud_control(_player_front,
+		Vector2((viewport_size.x - front_width) * 0.5, viewport_size.y - front_height - 180),
+		Vector2(front_width, front_height))
+	var deck_scale = 0.4
+	var deck_size = Vector2(400, 280)
+	_place_board_hud_control(_opponent_deck_area,
+		Vector2(viewport_size.x - deck_size.x * deck_scale - 8, 4), deck_size, deck_scale)
+	_place_board_hud_control(_player_deck_area,
+		Vector2(8, viewport_size.y - deck_size.y * deck_scale - 4), deck_size, deck_scale)
+	var hand_width = viewport_size.x * 0.76
+	_place_board_hud_control(_player_hand,
+		Vector2((viewport_size.x - hand_width) * 0.5, viewport_size.y - 180),
+		Vector2(hand_width, 180))
+
+func _place_board_hud_control(control: Control, position: Vector2, size: Vector2,
+			control_scale: float = 1.0):
+	if not is_instance_valid(control):
+		return
+	control.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	control.position = position
+	control.size = size
+	control.scale = Vector2.ONE * control_scale
+
 func initialize_game_state(new_state):
 	GS.gameState = new_state
 	GS.gameId = new_state.get_id()
 	GS.playerId = new_state.get_player().get_id()
 
-	find_child("PlayerEnergyDisplay").find_child("AvatarContainer").set_name(new_state.get_player().get_id())
-	find_child("OpponentEnergyDisplay").find_child("AvatarContainer").set_name(new_state.get_opponent().get_id())
+	_find_board_node("PlayerEnergyDisplay").find_child("AvatarContainer", true, false).set_name(new_state.get_player().get_id())
+	_find_board_node("OpponentEnergyDisplay").find_child("AvatarContainer", true, false).set_name(new_state.get_opponent().get_id())
 	initialize_game_socket()
 	update_game_state(new_state)
+	if is_instance_valid(_board_hud_root):
+		_board_hud_root.visible = true
 
 func initialize_game_socket():
 	var gameSocket = GameSocket.new()
@@ -37,8 +169,8 @@ func initialize_game_socket():
 	gameSocket.connect("game_ended", show_game_result)
 	GS.gameSocket = gameSocket
 	gameSocket.connect_to_server()
-	find_child("LoadingPanel").set_visible(false)
-	find_child("AiVsAiResult").set_visible(false)
+	_find_board_node("LoadingPanel").set_visible(false)
+	_find_board_node("AiVsAiResult").set_visible(false)
 
 func show_game_result(won):
 	if not GS.is_spectating_ai_match:
@@ -47,8 +179,8 @@ func show_game_result(won):
 	if state == null:
 		return
 	var winner = state.get_player().get_username() if won else state.get_opponent().get_username()
-	find_child("AiVsAiResultText").text = "AI VS AI MATCH COMPLETE\n%s WINS\nPress Escape to return to the menu." % winner.to_upper()
-	find_child("AiVsAiResult").set_visible(true)
+	_find_board_node("AiVsAiResultText").text = "AI VS AI MATCH COMPLETE\n%s WINS\nPress Escape to return to the menu." % winner.to_upper()
+	_find_board_node("AiVsAiResult").set_visible(true)
 
 func update_game_state(new_state):
 	SFX.observe(new_state)
@@ -83,8 +215,8 @@ func update_game_state(new_state):
 func _capture_card_origins():
 	var origins = {}
 	for zone_name in CARD_ZONES:
-		for view in find_child(zone_name).get_children():
-			var data = view.find_child("InternalContainer").card
+		for view in _find_board_node(zone_name).get_children():
+			var data = view.find_child("InternalContainer", true, false).card
 			if data and not data.get_id().is_empty():
 				var rect = _card_movement.current_rect(data.get_id(), view) if is_instance_valid(_card_movement) else _screen_card_rect(view)
 				origins[data.get_id()] = {"zone": zone_name, "rect": rect}
@@ -93,7 +225,7 @@ func _capture_card_origins():
 func _screen_card_rect(view):
 	var transform = view.get_global_transform_with_canvas()
 	var offset = Vector2.ZERO
-	var internal = view.find_child("InternalContainer")
+	var internal = view.find_child("InternalContainer", true, false)
 	if internal != null and internal.has_method("get_hover_offset"):
 		offset = internal.get_hover_offset()
 	return Rect2(transform * offset, view.size * transform.get_scale().abs())
@@ -101,8 +233,8 @@ func _screen_card_rect(view):
 func _animate_zone_changes(origins):
 	var destinations = {}
 	for zone_name in CARD_ZONES:
-		for view in find_child(zone_name).get_children():
-			var data = view.find_child("InternalContainer").card
+		for view in _find_board_node(zone_name).get_children():
+			var data = view.find_child("InternalContainer", true, false).card
 			if data and not data.get_id().is_empty():
 				destinations[data.get_id()] = {"zone": zone_name, "view": view, "data": data}
 	if is_instance_valid(_card_movement):
@@ -132,14 +264,14 @@ func _sync_player(player, prefix):
 	_set_text_if_changed(prefix + "DeckSize", str(player.get_deckSize()) if player else "0")
 	var energy = [player.get_energy(), player.get_maxEnergy(), player.get_health()] if player else []
 	if _display_values.get(prefix + "Energy") != energy:
-		find_child(prefix + "EnergyDisplay").update_player(player)
+		_find_board_node(prefix + "EnergyDisplay").update_player(player)
 		_display_values[prefix + "Energy"] = energy
 	var knowledge = []
 	if player:
 		for group in player.get_knowledgePool():
 			knowledge.append([group.get_knowledge(), group.get_count()])
 	if _display_values.get(prefix + "Knowledge") != knowledge:
-		find_child(prefix + "KnowledgeDisplay").update_pool(player.get_knowledgePool() if player else [])
+		_find_board_node(prefix + "KnowledgeDisplay").update_pool(player.get_knowledgePool() if player else [])
 		_display_values[prefix + "Knowledge"] = knowledge
 
 	if prefix == "Opponent":
@@ -163,7 +295,7 @@ func _sync_player(player, prefix):
 
 func _set_text_if_changed(node_name, value):
 	if _display_values.get(node_name) != value:
-		find_child(node_name).text = value
+		_find_board_node(node_name).text = value
 		_display_values[node_name] = value
 
 func _sync_zone(node_name, cards, square=false, setup=true):
@@ -173,24 +305,24 @@ func _sync_zone(node_name, cards, square=false, setup=true):
 			values.append(card.to_bytes())
 	else:
 		values.append(cards.size())
-	if _zone_bytes.get(node_name) == values and find_child(node_name).get_child_count() == cards.size():
+	if _zone_bytes.get(node_name) == values and _find_board_node(node_name).get_child_count() == cards.size():
 		# Refresh data references without touching the scene tree or presentation.
 		if setup:
-			var zone = find_child(node_name)
+			var zone = _find_board_node(node_name)
 			var ordered = cards.duplicate()
 			if node_name == "Stack":
 				ordered.reverse()
 			for i in range(ordered.size()):
-				zone.get_child(i).find_child("InternalContainer").card = ordered[i]
+				zone.get_child(i).find_child("InternalContainer", true, false).card = ordered[i]
 		return
-	var created = find_child(node_name).sync_cards(cards, square, setup)
+	var created = _find_board_node(node_name).sync_cards(cards, square, setup)
 	_zone_bytes[node_name] = values
 	connect_arrow_signals(node_name, created)
 
 func connect_arrow_signals(node_name, cards=null):
-	var views = find_child(node_name).get_children() if cards == null else cards
+	var views = _find_board_node(node_name).get_children() if cards == null else cards
 	for view in views:
-		var internal = view.find_child("InternalContainer")
+		var internal = view.find_child("InternalContainer", true, false)
 		if not internal.draw_target_arrows.is_connected(draw_target_arrows):
 			internal.draw_target_arrows.connect(draw_target_arrows)
 		if not internal.remove_target_arrows.is_connected(remove_target_arrows):
@@ -205,8 +337,8 @@ func _sync_local_block_selections():
 				SS.selected.erase(key)
 				GS.block_arrow_targets.erase(key)
 	for zone_name in ["PlayerUnitArea", "OpponentUnitArea"]:
-		for view in find_child(zone_name).get_children():
-			var internal = view.find_child("InternalContainer")
+		for view in _find_board_node(zone_name).get_children():
+			var internal = view.find_child("InternalContainer", true, false)
 			internal.blocking = false
 			internal.blocked = false
 	for pair in SS.selected.values():
@@ -217,8 +349,8 @@ func _sync_local_block_selections():
 func _refresh_hover_arrows():
 	var targets = []
 	for zone_name in ["PlayerHand", "PlayerUnitArea", "PlayerAssetArea", "OpponentUnitArea", "OpponentAssetArea", "Stack"]:
-		for view in find_child(zone_name).get_children():
-			var internal = view.find_child("InternalContainer")
+		for view in _find_board_node(zone_name).get_children():
+			var internal = view.find_child("InternalContainer", true, false)
 			if internal.hover and internal.card:
 				for target_id in internal.card.get_targets():
 					targets.append([internal.card.get_id(), target_id])
@@ -332,7 +464,7 @@ func _process(_delta):
 		if is_instance_valid(arrow):
 			update_arrow(arrow)
 	if not GS.connection_error.is_empty():
-		find_child("LoadingText").text = GS.connection_error + "\nPress Escape to return to the menu."
+		_find_board_node("LoadingText").text = GS.connection_error + "\nPress Escape to return to the menu."
 	if GS.socket:
 		GS.socket._process(_delta)
 	if GS.gameSocket:
