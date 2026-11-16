@@ -329,6 +329,13 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("14_er1e3")
 
+[node name="PlayAreaSeparator" type="ColorRect" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+color = Color(0.68, 0.18, 0.15, 0.95)
+
 [node name="ScrollContainer3" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3

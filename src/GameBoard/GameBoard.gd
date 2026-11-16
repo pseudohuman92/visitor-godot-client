@@ -10,6 +10,8 @@ var _opponent_hud: Control
 var _player_hud: Control
 var _opponent_front: Control
 var _opponent_deck_area: Control
+var _opponent_hand: Control
+var _opponent_hand_mask: Control
 var _player_front: Control
 var _player_deck_area: Control
 var _player_hand: Control
@@ -41,11 +43,13 @@ func _apply_reference_board_composition():
 	var old_player_display = _find_board_node("PlayerDisplay")
 	var play_area = _find_board_node("PlayArea")
 	var stack_container = _find_board_node("StackContainer")
+	var opponent_hand_zone = _find_board_node("OpponentHand")
 	_player_hand = _find_board_node("ScrollContainer4")
 	if not main_container or not old_layout or not old_display_area or not old_opponent_display \
-			or not old_player_display or not play_area or not stack_container or not _player_hand:
+			or not old_player_display or not play_area or not stack_container or not opponent_hand_zone or not _player_hand:
 		return
 
+	_opponent_hand = opponent_hand_zone.get_parent()
 	_opponent_front = old_opponent_display.find_child("OpponentDisplayFront", true, false)
 	_opponent_deck_area = old_opponent_display.find_child("OpponentDeckArea", true, false)
 	_player_front = old_player_display.find_child("PlayerDisplayFront", true, false)
@@ -65,7 +69,7 @@ func _apply_reference_board_composition():
 
 	var opponent_row = Control.new()
 	opponent_row.name = "OpponentHudRow"
-	opponent_row.custom_minimum_size = Vector2(0, 150)
+	opponent_row.custom_minimum_size = Vector2(0, 260)
 	board_layout.add_child(opponent_row)
 	var battle_row = HBoxContainer.new()
 	battle_row.name = "BattleRow"
@@ -105,6 +109,11 @@ func _apply_reference_board_composition():
 	_opponent_hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_opponent_hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_board_hud_root.add_child(_opponent_hud)
+	_opponent_hand_mask = Control.new()
+	_opponent_hand_mask.name = "OpponentHandMask"
+	_opponent_hand_mask.clip_contents = true
+	_opponent_hand_mask.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_opponent_hud.add_child(_opponent_hand_mask)
 	_player_hud = Control.new()
 	_player_hud.name = "PlayerDisplay"
 	_player_hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -112,6 +121,7 @@ func _apply_reference_board_composition():
 	_board_hud_root.add_child(_player_hud)
 	_opponent_front.reparent(_opponent_hud)
 	_opponent_deck_area.reparent(_opponent_hud)
+	_opponent_hand.reparent(_opponent_hand_mask)
 	_player_front.reparent(_player_hud)
 	_player_deck_area.reparent(_player_hud)
 	_player_hand.reparent(_player_hud)
@@ -126,17 +136,30 @@ func _layout_board_hud():
 	var viewport_size = get_viewport_rect().size
 	var front_width = min(430.0, viewport_size.x * 0.42)
 	var front_height = 140.0
-	_place_board_hud_control(_opponent_front,
-		Vector2((viewport_size.x - front_width) * 0.5, 4), Vector2(front_width, front_height))
-	_place_board_hud_control(_player_front,
-		Vector2((viewport_size.x - front_width) * 0.5, viewport_size.y - front_height - 180),
-		Vector2(front_width, front_height))
+	var front_scale = 0.5
 	var deck_scale = 0.4
 	var deck_size = Vector2(400, 280)
+	var deck_width = deck_size.x * deck_scale
+	var deck_height = deck_size.y * deck_scale
+	var deck_x = viewport_size.x - deck_width - 32
+	var front_x = deck_x + (deck_width - front_width * front_scale) * 0.5
+	var opponent_deck_y = 4.0
+	var opponent_info_y = opponent_deck_y + deck_height + 8
+	var player_deck_y = viewport_size.y - deck_height - 4
+	var player_info_y = player_deck_y - front_height * front_scale - 8
+	_place_board_hud_control(_opponent_front,
+		Vector2(front_x, opponent_info_y), Vector2(front_width, front_height), front_scale)
+	_place_board_hud_control(_player_front,
+		Vector2(front_x, player_info_y), Vector2(front_width, front_height), front_scale)
+	var opponent_hand_width = viewport_size.x * 0.76
+	_place_board_hud_control(_opponent_hand_mask,
+		Vector2((viewport_size.x - opponent_hand_width) * 0.5, 0),
+		Vector2(opponent_hand_width, 110))
+	_place_board_hud_control(_opponent_hand, Vector2.ZERO, Vector2(opponent_hand_width, 220))
 	_place_board_hud_control(_opponent_deck_area,
-		Vector2(viewport_size.x - deck_size.x * deck_scale - 8, 4), deck_size, deck_scale)
+		Vector2(deck_x, opponent_deck_y), deck_size, deck_scale)
 	_place_board_hud_control(_player_deck_area,
-		Vector2(8, viewport_size.y - deck_size.y * deck_scale - 4), deck_size, deck_scale)
+		Vector2(deck_x, player_deck_y), deck_size, deck_scale)
 	var hand_width = viewport_size.x * 0.76
 	_place_board_hud_control(_player_hand,
 		Vector2((viewport_size.x - hand_width) * 0.5, viewport_size.y - 180),
