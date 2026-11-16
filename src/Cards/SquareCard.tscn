@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://sdith3mm0tlc" path="res://assets/card-components/shield-white.png" id="18_v5xip"]
 
 [ext_resource type="FontVariation" path="res://assets/fonts/BarlowCondensed-SemiBold-Tracked.tres" id="17_card_name"]
+[ext_resource type="Script" path="res://src/Cards/CardTextScale.gd" id="card_text_scale"]
 [sub_resource type="StyleBoxFlat" id="StyleBoxTexture_q2wj6"]
 bg_color = Color(0.078431, 0.090196, 0.098039, 1)
 border_width_left = 1
@@ -320,7 +321,7 @@ texture = ExtResource("13_8esa3")
 
 [sub_resource type="LabelSettings" id="LabelSettings_k2rkx"]
 font = ExtResource("17_card_name")
-font_size = 21
+font_size = 18
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3nbvu"]
 
@@ -369,13 +370,27 @@ mouse_filter = 1
 theme_override_styles/panel = ExtResource("2_wqjv3")
 script = ExtResource("2_ox1oe")
 
-[node name="CardImage" type="PanelContainer" parent="InternalContainer"]
+[node name="CardImage" type="Panel" parent="InternalContainer"]
+clip_contents = true
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_q2wj6")
+script = ExtResource("card_text_scale")
+
+[node name="Artwork" type="TextureRect" parent="InternalContainer/CardImage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
 
 [node name="Contents" type="VBoxContainer" parent="InternalContainer/CardImage"]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="Control2" type="Control" parent="InternalContainer/CardImage/Contents"]
 layout_mode = 2

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://4xif6m82wbpo"]
+[gd_scene load_steps=10 format=3 uid="uid://4xif6m82wbpo"]
 
 [ext_resource type="Script" path="res://src/Cards/Setup.gd" id="1_e4mbt"]
 [ext_resource type="StyleBox" uid="uid://nrrp32xv522l" path="res://src/Themes/Border.tres" id="2_b0r1s"]
@@ -6,6 +6,7 @@
 [ext_resource type="StyleBox" uid="uid://dd7h5lyq1hbff" path="res://src/Themes/AbilityBox.tres" id="3_jpyc6"]
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="4_lffsn"]
 [ext_resource type="Script" path="res://src/Cards/Ability.gd" id="6_hyt0v"]
+[ext_resource type="Script" path="res://src/Cards/CardTextScale.gd" id="card_text_scale"]
 
 [sub_resource type="Theme" id="Theme_qwl5k"]
 
@@ -37,6 +38,7 @@ layout_mode = 2
 mouse_filter = 1
 theme = SubResource("Theme_qwl5k")
 theme_override_styles/panel = SubResource("StyleBoxTexture_i4get")
+script = ExtResource("card_text_scale")
 
 [node name="Contents" type="VBoxContainer" parent="InternalContainer/CardImage"]
 layout_mode = 2

@@ -3,6 +3,7 @@
 [ext_resource type="StyleBox" uid="uid://nrrp32xv522l" path="res://src/Themes/Border.tres" id="2_jaxwc"]
 [ext_resource type="Script" uid="uid://bcnc36x2thlhf" path="res://src/Cards/Setup.gd" id="2_kw154"]
 [ext_resource type="Script" uid="uid://dbmsmpx772wjv" path="res://src/Cards/Card.gd" id="2_sfrtf"]
+[ext_resource type="Script" path="res://src/Cards/CardTextScale.gd" id="card_text_scale"]
 [ext_resource type="Script" uid="uid://chjlgj7p0qrwk" path="res://src/GameBoard/CardCostArea.gd" id="4_4yl3l"]
 [ext_resource type="Texture2D" path="res://assets/card-components/numbers/Colorless/0.png" id="6_0c6qo"]
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="6_fuui8"]
@@ -329,7 +330,7 @@ texture = ExtResource("13_537tn")
 
 [sub_resource type="LabelSettings" id="LabelSettings_6m5r1"]
 font = ExtResource("22_card_name")
-font_size = 21
+font_size = 18
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wk3wl"]
 
@@ -385,6 +386,7 @@ clip_contents = true
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_efo68")
+script = ExtResource("card_text_scale")
 
 [node name="Artwork" type="TextureRect" parent="InternalContainer/CardImage" unique_id=1882435279]
 layout_mode = 1
