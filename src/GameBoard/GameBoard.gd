@@ -282,7 +282,12 @@ func _card_center(id, view):
 	if is_instance_valid(_card_movement) and _card_movement.motions.has(id):
 		var rect = _card_movement.current_rect(id, view)
 		return get_global_transform_with_canvas().affine_inverse() * rect.get_center()
-	return get_global_transform_with_canvas().affine_inverse() * _screen_card_rect(view).get_center()
+	var offset = Vector2.ZERO
+	var internal = view.find_child("InternalContainer", true, false)
+	if internal != null and internal.has_method("get_hover_offset"):
+		offset = internal.get_hover_offset()
+	var center = view.get_global_transform_with_canvas() * (view.size * 0.5 + offset)
+	return get_global_transform_with_canvas().affine_inverse() * center
 
 func _sync_player(player, prefix):
 	_set_text_if_changed(prefix + "DeckSize", str(player.get_deckSize()) if player else "0")
@@ -440,16 +445,6 @@ func draw_arrow(start_id, end_id, color, store):
 	store.append(arrow)
 	update_arrow(arrow)
 
-func _arrow_attachment(id, view, towards):
-	var center = _card_center(id, view)
-	var rect = _card_movement.current_rect(id, view) if is_instance_valid(_card_movement) else _screen_card_rect(view)
-	var inverse = get_global_transform_with_canvas().affine_inverse()
-	var half_size = ((inverse * rect.end) - (inverse * rect.position)).abs() * 0.5
-	var direction = (towards - center).normalized()
-	var x_distance = half_size.x / absf(direction.x) if absf(direction.x) > 0.001 else INF
-	var y_distance = half_size.y / absf(direction.y) if absf(direction.y) > 0.001 else INF
-	return center + direction * (minf(x_distance, y_distance) + 9.0)
-
 func update_arrow(arrow):
 	var start_id = arrow.get_meta("start_id")
 	var end_id = arrow.get_meta("end_id")
@@ -463,8 +458,8 @@ func update_arrow(arrow):
 	if source_center.distance_to(target_center) < 24.0:
 		arrow.visible = false
 		return
-	var start = _arrow_attachment(start_id, source, target_center)
-	var end = _arrow_attachment(end_id, target, source_center)
+	var start = source_center
+	var end = target_center
 	# Containers can temporarily overlap while sorting; suppress reversed arrows.
 	if (end - start).dot(target_center - source_center) <= 0:
 		arrow.visible = false

@@ -36,7 +36,16 @@ func _process(delta):
 	if GS.gameState:
 		var border = get_theme_stylebox("panel").duplicate()
 		if name.contains("PlayerDeck"):
-			if GS.dragged_card and GS.dragged_card.card.get_canStudy():
+			var can_study = false
+			var player = GS.gameState.get_player()
+			if player:
+				for card in player.get_hand():
+					if card.get_canStudy():
+						can_study = true
+						break
+			if GS.dragged_card and GS.dragged_card.card and GS.dragged_card.card.get_canStudy():
+				can_study = true
+			if can_study:
 				border.set_border_color(Color.GREEN_YELLOW)
 			else:
 				border.set_border_color(Color.TRANSPARENT)

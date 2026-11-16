@@ -9,11 +9,24 @@ var display = false
 var hover = false
 var _hover_lift
 var _deferred_hover_exit = false
+var _disable_hover_lift := false
 var _drag_source: WeakRef
 var _drag_source_modulate := Color.WHITE
 
 func _ready():
+	_disable_hover_lift = find_parent("PlayerDiscard") != null or find_parent("OpponentDiscard") != null
+	if _disable_hover_lift:
+		var card_root = get_parent()
+		if card_root is Control:
+			card_root.mouse_filter = Control.MOUSE_FILTER_PASS
+		_set_mouse_filter_pass_through(self)
 	_hover_lift = preload("res://src/Cards/HoverLift.gd").new(self)
+
+func _set_mouse_filter_pass_through(node):
+	if node is Control:
+		node.mouse_filter = Control.MOUSE_FILTER_PASS
+	for child in node.get_children():
+		_set_mouse_filter_pass_through(child)
 
 func get_hover_offset():
 	return _hover_lift.offset() if _hover_lift != null else Vector2.ZERO
@@ -64,7 +77,7 @@ func get_border_color():
 				return Color.DARK_GREEN
 
 		if !SS.is_selecting() and card.get_controller() == GS.playerId \
-		and (card.get_canPlay() or card.get_canStudy() or card.get_canActivate()):
+		and (card.get_canPlay() or card.get_canActivate()):
 			return Color.DARK_GREEN
 
 		if card.get_combat() and card.get_combat().get_attackTarget():
@@ -136,7 +149,7 @@ func _process(delta):
 	if _deferred_hover_exit and not get_parent().get_global_rect().has_point(get_global_mouse_position()) and not get_global_rect().has_point(get_global_mouse_position()):
 		_on_mouse_exited()
 	if _hover_lift != null:
-		_hover_lift.update(delta, hover and not display and not GS.is_dragging)
+		_hover_lift.update(delta, hover and not display and not GS.is_dragging and not _disable_hover_lift)
 	if !display and !hover:
 		set_border_color(get_border_color())
 

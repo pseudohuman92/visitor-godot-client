@@ -171,7 +171,7 @@ func run():
 	expect(curve.size() > 2 and not curve[curve.size() / 2].is_equal_approx(curve[0].lerp(curve[-1], 0.5)), "Target arrow follows a curved path")
 	expect(arrow.get_node("Glow") is Line2D and arrow.get_node("Shadow") is Line2D, "Arrow has layered glow and contrast")
 	expect(arrow.get_node("Line").width_curve != null and arrow.get_node("Line").gradient != null, "Arrow stroke has taper and a colour gradient")
-	expect(not arrow.get_node("Line").points[-1].is_equal_approx(board._card_center("target", target)), "Target arrow attaches outside the card text area")
+	expect(arrow.get_node("Line").points[0].is_equal_approx(board._card_center("source", source)) and arrow.get_node("Line").points[-1].is_equal_approx(board._card_center("target", target)), "Target arrow starts and ends at card centers")
 	var short_arrow = load("res://src/GameBoard/TargetArrow.gd").new()
 	root.add_child(short_arrow)
 	short_arrow.set_endpoints(Vector2.ZERO, Vector2(10, 0))
