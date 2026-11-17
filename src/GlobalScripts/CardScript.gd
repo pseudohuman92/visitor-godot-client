@@ -22,17 +22,16 @@ const text_icons = {
 	"{X}": "res://assets/card-components/numbers/Colorless/X.png",
 }
 
-const combat_ability_hints = {
-	"Evasive": "Can only be blocked by evasive units.",
-	"Blitz": "Can attack and use abilities the turn its played.",
-	"Vigilance": "Attacking doesn't exhaust it.",
-	"Deadly": "Damage it deals kills the target.",
-	"Drain": "Gains life equal to the damage dealt.",
-	"Decay": "Loses 1 attack, 1 health, and 1 max health at the start of your turn.",
-	"Trample": "Deals excess combat damage to the player",
-	"Deploying": "Can't attack.",
-	"Defender": "Can't attack.",
-}
+const DEPLOYING_ICON_PATH = "res://assets/icons/properties/deploying.png"
+const KEYWORD_ICON_DIR = "res://assets/icons/keywords/png_64/"
+const KEYWORD_ICON_ORDER = [
+	"Deadly", "Defender", "FirstStrike", "Trample", "Evasive",
+	"Vigilance", "Lifelink", "Reach", "Drain", "Unblockable",
+	"Blitz", "Decay", "Regenerate",
+]
+const EDGE_ICON_SIZE = 28.0
+const EDGE_ICON_STEP = 30.0
+const EDGE_ICON_TOP = 42.0
 
 func get_card_image(set_name, card_name):
 	var path = "res://assets/card-images/" + set_name + "/" + card_name + ".png"
@@ -167,6 +166,77 @@ func load_card_image_and_type(c):
 	c.find_child("TypeIcon").set_texture(get_type_icon(type))
 
 
+func set_card_property_icons(card_view, combat):
+	var card_image = card_view.find_child("CardImage") as Control
+	if card_image == null:
+		return
+	var icons = []
+	if combat:
+		var abilities = combat.get_combatAbilities()
+		if combat.get_deploying() and not abilities.has("Blitz"):
+			icons.append(["Deploying", DEPLOYING_ICON_PATH])
+		for keyword in KEYWORD_ICON_ORDER:
+			if abilities.has(keyword):
+				icons.append([keyword, KEYWORD_ICON_DIR + keyword.to_snake_case() + ".png"])
+	var column = card_image.get_node_or_null("CardPropertyIcons") as Control
+	if icons.is_empty():
+		if column:
+			column.hide()
+		return
+	if column == null:
+		column = Control.new()
+		column.name = "CardPropertyIcons"
+		column.anchor_left = 1.0
+		column.anchor_right = 1.0
+		column.offset_left = -EDGE_ICON_SIZE - 2.0
+		column.offset_right = -2.0
+		column.offset_top = EDGE_ICON_TOP
+		column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		column.z_index = 1
+		card_image.add_child(column)
+	for child in column.get_children():
+		column.remove_child(child)
+		child.queue_free()
+	var square = card_view.get_parent() is AspectRatioContainer and card_view.get_parent().ratio > 0.95
+	var max_icons = 3 if square else 4
+	var visible_count = mini(icons.size(), max_icons)
+	if icons.size() > max_icons:
+		visible_count -= 1
+	var overflow = icons.size() - visible_count
+	for index in range(visible_count):
+		var icon = TextureRect.new()
+		icon.name = icons[index][0] + "Icon"
+		icon.texture = load(icons[index][1])
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_SCALE
+		icon.position = Vector2(0.0, index * EDGE_ICON_STEP)
+		icon.size = Vector2.ONE * EDGE_ICON_SIZE
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		column.add_child(icon)
+	if overflow > 0:
+		var badge = Panel.new()
+		badge.name = "OverflowBadge"
+		badge.position = Vector2(0.0, visible_count * EDGE_ICON_STEP)
+		badge.size = Vector2.ONE * EDGE_ICON_SIZE
+		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var style = StyleBoxFlat.new()
+		style.bg_color = Color("#1C2022")
+		style.border_color = Color("#6C7375")
+		style.set_border_width_all(1)
+		badge.add_theme_stylebox_override("panel", style)
+		var count = Label.new()
+		count.text = "+" + str(overflow)
+		count.set_anchors_preset(Control.PRESET_FULL_RECT)
+		count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		count.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		count.add_theme_font_size_override("font_size", 16)
+		count.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		badge.add_child(count)
+		column.add_child(badge)
+	column.offset_bottom = EDGE_ICON_TOP + (visible_count + (1 if overflow > 0 else 0) - 1) * EDGE_ICON_STEP + EDGE_ICON_SIZE
+	column.show()
+
+
 func setup_card(n, card=null):
 	if card:
 		n.card = card
@@ -194,13 +264,11 @@ func setup_card(n, card=null):
 				n.find_child("Health").set_text(str(combat.get_health()))
 			else:
 				n.find_child("Health").set_text("0")
-			if combat.get_deploying() and !(combat.get_combatAbilities() and combat.get_combatAbilities().has("Blitz")):
-				ability_text += "Can't Attack\n"
 			if combat.get_combatAbilities():
-				var abilities = combat.get_combatAbilities().map(func(s): return "[hint="+combat_ability_hints[s]+"]"+s+"[/hint]")
-				ability_text += to_array_string(abilities, ", ") + "\n"
+				ability_text += to_array_string(combat.get_combatAbilities(), ", ").trim_suffix(", ") + "\n"
 		else:
 			n.find_child("Stats").set_visible(false)
+		set_card_property_icons(n, combat)
 		ability_text += card.get_description()
 		if n.find_child("Ability"):
 			if ability_text != "":
@@ -212,6 +280,7 @@ func setup_card(n, card=null):
 	else:
 		CS.set_card_art(n.find_child("Artwork"), load(GS.card_back_path))
 		n.find_child("Contents").set_visible(false)
+		set_card_property_icons(n, null)
 
 func sanitize_card_name(name):
 	return name.replace(" ","").replace(".","").replace("-","")

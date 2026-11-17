@@ -1,6 +1,11 @@
 extends PanelContainer
 
 var hover = false
+var _base_panel_style: StyleBox
+var _last_visual_state = -1
+
+func _ready():
+	_base_panel_style = get_theme_stylebox("panel")
 
 func _on_gui_input(event):
 	if event is InputEventMouseButton:
@@ -30,17 +35,28 @@ func _process(_delta):
 		else:
 			id = GS.gameState.get_opponent().get_id()
 
-		var border = get_theme_stylebox("panel").duplicate()
-
+		var visual_state = 0
 		if SS.is_selecting() and SS.selection_targets.has(id):
 			if hover:
-				border.set_border_color(Color.DARK_GOLDENROD)
+				visual_state = 2
 			else:
-				border.set_border_color(Color.GREEN_YELLOW)
+				visual_state = 1
 		elif id == GS.gameState.get_activePlayer():
-			border.set_border_color(Color.LIGHT_BLUE)
-		else:
-			border.set_border_color(Color.TRANSPARENT)
+			visual_state = 3
+		if visual_state == _last_visual_state:
+			return
+		_last_visual_state = visual_state
+		var highlight = Color.TRANSPARENT
+		match visual_state:
+			1: highlight = Color.GREEN_YELLOW
+			2: highlight = Color.DARK_GOLDENROD
+			3: highlight = Color.LIGHT_BLUE
+		var border = _base_panel_style.duplicate() as StyleBox
+		if border is StyleBoxFlat:
+			(border as StyleBoxFlat).set_border_color(highlight)
+		elif border is StyleBoxTexture and visual_state != 0:
+			var source_tint = (_base_panel_style as StyleBoxTexture).modulate_color
+			(border as StyleBoxTexture).modulate_color = source_tint.lerp(highlight, 0.78)
 
 		add_theme_stylebox_override("panel", border)
 

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="750" height="1050"
+  viewBox="0 0 750 1050">
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="0.95" y2="1">
+      <stop offset="0" stop-color="#353B3E"/>
+      <stop offset="0.5" stop-color="#1C2022"/>
+      <stop offset="1" stop-color="#0B0D0E"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#282D2F"/>
+      <stop offset="1" stop-color="#1C2022"/>
+    </linearGradient>
+  </defs>
+
+      <path d="M17 110 V39 L39 17 H111 M639 17 H711 L733 39 V110
+        M17 940 V1011 L39 1033 H111 M639 1033 H711 L733 1011 V940"
+        fill="none" stroke="#7FA36E" stroke-width="7"/>
+
+          <path d="M364 19 H386 M364 1031 H386 M18 515 V535 M732 515 V535"
+            stroke="#7FA36E" stroke-width="5"/>
+
+</svg>

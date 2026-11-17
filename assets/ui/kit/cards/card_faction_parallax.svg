@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="750" height="1050"
+  viewBox="0 0 750 1050">
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="0.95" y2="1">
+      <stop offset="0" stop-color="#353B3E"/>
+      <stop offset="0.5" stop-color="#1C2022"/>
+      <stop offset="1" stop-color="#0B0D0E"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#282D2F"/>
+      <stop offset="1" stop-color="#1C2022"/>
+    </linearGradient>
+  </defs>
+
+      <path d="M55 154 H697 M52 703 H698" stroke="#5B9FC4" stroke-width="4"
+        stroke-opacity="0.85"/>
+      <path d="M31 178 V304 M31 571 V682 M719 178 V304 M719 571 V682"
+        stroke="#5B9FC4" stroke-width="6" stroke-opacity="0.66"/>
+      <path d="M54 714 H89 M661 714 H696 M54 970 H89 M661 970 H696"
+        stroke="#5B9FC4" stroke-width="5"/>
+      <path d="M121 46 H534" stroke="#5B9FC4" stroke-width="3" stroke-opacity="0.5"/>
+      <path d="M37 36 L58 15 M692 1035 L713 1014" stroke="#5B9FC4"
+        stroke-width="4" stroke-opacity="0.55"/>
+      <circle cx="59" cy="67" r="14" fill="none" stroke="#5B9FC4" stroke-width="3" stroke-linecap="square"/>
+          <circle cx="59" cy="67" r="6" fill="none" stroke="#5B9FC4" stroke-width="3" stroke-linecap="square"/>
+          <path d="M59 48 V54 M59 80 V86 M40 67 H46 M72 67 H78" fill="none" stroke="#5B9FC4" stroke-width="3" stroke-linecap="square"/>
+
+</svg>

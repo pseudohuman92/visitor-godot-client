@@ -15,15 +15,18 @@
 [ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_disabled.tres" id="13_secondary_disabled"]
 [ext_resource type="StyleBox" path="res://assets/ui/styles/button_ghost_pressed.tres" id="14_ghost_pressed"]
 [ext_resource type="StyleBox" path="res://assets/ui/styles/button_ghost_disabled.tres" id="15_ghost_disabled"]
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phase"]
+[ext_resource type="Texture2D" path="res://assets/ui/library/banners/dark_transparent.png" id="16_phase_banner"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_phase"]
+texture = ExtResource("16_phase_banner")
+texture_margin_left = 36.0
+texture_margin_top = 18.0
+texture_margin_right = 36.0
+texture_margin_bottom = 18.0
 content_margin_left = 8.0
-content_margin_top = 4.0
+content_margin_top = 6.0
 content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.109804, 0.12549, 0.133333, 1)
-border_width_left = 2
-border_width_bottom = 1
-border_color = Color(0.705882, 0.278431, 0.262745, 1)
+content_margin_bottom = 6.0
 
 [node name="StackContainer" type="VBoxContainer"]
 size_flags_horizontal = 3
@@ -49,7 +52,7 @@ layout_mode = 2
 size_flags_vertical = 1
 mouse_filter = 1
 theme = ExtResource("2_b1f2l")
-theme_override_styles/normal = SubResource("StyleBoxFlat_phase")
+theme_override_styles/normal = SubResource("StyleBoxTexture_phase")
 theme_override_font_sizes/font_size = 20
 text = "Phase"
 label_settings = ExtResource("4_76dgi")

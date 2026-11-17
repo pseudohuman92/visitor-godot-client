@@ -6,6 +6,18 @@ const NAV_FONT = preload("res://assets/fonts/BarlowCondensed-SemiBold-Navigation
 const BODY_FONT = preload("res://assets/fonts/Barlow-Regular.ttf")
 const ARROW_OVERLAY = preload("res://src/Tutorial/TutorialArrowOverlay.gd")
 const GAME_BOARD_SCENE = preload("res://src/GameBoard/GameBoard.tscn")
+const PANEL_STYLE = preload("res://assets/ui/styles/panel_standard.tres")
+const PRIMARY_BUTTON_NORMAL = preload("res://assets/ui/styles/button_primary_default.tres")
+const PRIMARY_BUTTON_HOVER = preload("res://assets/ui/styles/button_primary_hover.tres")
+const PRIMARY_BUTTON_PRESSED = preload("res://assets/ui/styles/button_primary_pressed.tres")
+const PRIMARY_BUTTON_DISABLED = preload("res://assets/ui/styles/button_primary_disabled.tres")
+const SECONDARY_BUTTON_NORMAL = preload("res://assets/ui/styles/button_secondary_default.tres")
+const SECONDARY_BUTTON_HOVER = preload("res://assets/ui/styles/button_secondary_hover.tres")
+const SECONDARY_BUTTON_PRESSED = preload("res://assets/ui/styles/button_secondary_pressed.tres")
+const SECONDARY_BUTTON_DISABLED = preload("res://assets/ui/styles/button_secondary_disabled.tres")
+const BUTTON_FOCUS = preload("res://assets/ui/styles/button_focus.tres")
+const HEADER_BANNER = preload("res://assets/ui/library/banners/metal_transparent.png")
+const PROMPT_PANEL = preload("res://assets/ui/library/panels/red_panel_transparent.png")
 
 const INK := Color("#111719")
 const PANEL := Color("#1d2526")
@@ -260,8 +272,10 @@ func _process(_delta: float) -> void:
 	if is_instance_valid(_game_board) and is_instance_valid(_coach_panel):
 		var options: Control = _game_board.find_child("OptionsOverlay", true, false) as Control
 		var options_open: bool = is_instance_valid(options) and options.visible
-		_coach_panel.visible = not options_open
-		_arrow_overlay.visible = not options_open
+		var popup: Control = _game_board.find_child("Popup", true, false) as Control
+		var modal_open: bool = options_open or (is_instance_valid(popup) and popup.visible)
+		_coach_panel.visible = not modal_open
+		_arrow_overlay.visible = not modal_open
 	_refresh_arrow_positions()
 
 
@@ -301,9 +315,12 @@ func _fit_coach_panel() -> void:
 
 
 func _build_header(parent: VBoxContainer) -> void:
+	var header_frame := PanelContainer.new()
+	header_frame.add_theme_stylebox_override("panel", _make_asset_box(HEADER_BANNER, 24, 18, 13, 9))
+	parent.add_child(header_frame)
 	var header := HBoxContainer.new()
 	header.add_theme_constant_override("separation", 8)
-	parent.add_child(header)
+	header_frame.add_child(header)
 	var brand := VBoxContainer.new()
 	brand.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(brand)
@@ -505,7 +522,7 @@ func _build_coach_panel(content: VBoxContainer) -> void:
 	content.add_child(_coach_body)
 
 	var prompt_panel := _make_panel()
-	prompt_panel.add_theme_stylebox_override("panel", _make_box(PANEL_LIGHT, BRASS, 1, 10))
+	prompt_panel.add_theme_stylebox_override("panel", _make_asset_box(PROMPT_PANEL, 22, 20, 14, 10))
 	content.add_child(prompt_panel)
 	var prompt_content := VBoxContainer.new()
 	prompt_content.add_theme_constant_override("separation", 5)
@@ -552,7 +569,7 @@ func _make_zone_panel(title: String, min_height: float) -> Dictionary:
 	panel.custom_minimum_size.y = min_height
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	panel.add_theme_stylebox_override("panel", _make_box(Color(0.06, 0.075, 0.08, 0.78), Color("#647071"), 1, 6))
+	panel.add_theme_stylebox_override("panel", PANEL_STYLE)
 	var content := VBoxContainer.new()
 	content.add_theme_constant_override("separation", 3)
 	panel.add_child(content)
@@ -1392,7 +1409,7 @@ func _return_to_menu() -> void:
 
 func _make_panel() -> PanelContainer:
 	var panel := PanelContainer.new()
-	panel.add_theme_stylebox_override("panel", _make_box(Color(0.06, 0.075, 0.08, 0.95), Color("#535d5d"), 1, 7))
+	panel.add_theme_stylebox_override("panel", PANEL_STYLE)
 	return panel
 
 
@@ -1404,11 +1421,26 @@ func _make_button(text: String, primary: bool) -> Button:
 	button.add_theme_color_override("font_color", PAPER)
 	button.add_theme_color_override("font_hover_color", Color.WHITE)
 	button.add_theme_color_override("font_disabled_color", MUTED)
-	button.add_theme_stylebox_override("normal", _make_box(RED if primary else PANEL_LIGHT, BRASS if primary else Color("#697270"), 1, 5))
-	button.add_theme_stylebox_override("hover", _make_box(Color("#9e3736") if primary else Color("#384345"), BRASS, 2, 5))
-	button.add_theme_stylebox_override("pressed", _make_box(Color("#722827") if primary else Color("#242d2f"), BRASS, 2, 5))
-	button.add_theme_stylebox_override("focus", _make_box(Color(0, 0, 0, 0), BRASS, 2, 5))
+	button.add_theme_stylebox_override("normal", PRIMARY_BUTTON_NORMAL if primary else SECONDARY_BUTTON_NORMAL)
+	button.add_theme_stylebox_override("hover", PRIMARY_BUTTON_HOVER if primary else SECONDARY_BUTTON_HOVER)
+	button.add_theme_stylebox_override("pressed", PRIMARY_BUTTON_PRESSED if primary else SECONDARY_BUTTON_PRESSED)
+	button.add_theme_stylebox_override("disabled", PRIMARY_BUTTON_DISABLED if primary else SECONDARY_BUTTON_DISABLED)
+	button.add_theme_stylebox_override("focus", BUTTON_FOCUS)
 	return button
+
+
+func _make_asset_box(texture: Texture2D, horizontal_border: float, vertical_border: float, horizontal_padding: float, vertical_padding: float) -> StyleBoxTexture:
+	var style := StyleBoxTexture.new()
+	style.texture = texture
+	style.texture_margin_left = horizontal_border
+	style.texture_margin_right = horizontal_border
+	style.texture_margin_top = vertical_border
+	style.texture_margin_bottom = vertical_border
+	style.content_margin_left = horizontal_padding
+	style.content_margin_right = horizontal_padding
+	style.content_margin_top = vertical_padding
+	style.content_margin_bottom = vertical_padding
+	return style
 
 
 func _make_label(text: String, size: int, font: Font, color: Color) -> Label:

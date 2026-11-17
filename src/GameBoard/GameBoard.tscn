@@ -27,6 +27,9 @@
 [ext_resource type="Script" path="res://src/GameBoard/HandFan.gd" id="25_hand_fan"]
 [ext_resource type="Script" path="res://src/GameBoard/OptionsMenu.gd" id="26_options_menu"]
 [ext_resource type="Script" path="res://src/GameBoard/PopupCards.gd" id="27_popup_cards"]
+[ext_resource type="Texture2D" path="res://assets/ui/library/panels/red_panel_transparent.png" id="28_red_panel"]
+[ext_resource type="Texture2D" path="res://assets/ui/library/banners/dark_transparent.png" id="29_dark_banner"]
+[ext_resource type="Texture2D" path="res://assets/ui/library/geometry/diamond_transparent.png" id="30_separator_mark"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqqf3"]
 bg_color = Color(0.043137, 0.05098, 0.054902, 0)
@@ -56,37 +59,38 @@ bg_color = Color(0, 0, 0, 1)
 font = ExtResource("19_n4jhl")
 font_size = 28
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ai_result"]
-bg_color = Color(0.043137, 0.05098, 0.054902, 0.96)
-border_color = Color(0.62, 0.16, 0.17, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ai_result"]
+texture = ExtResource("28_red_panel")
+texture_margin_left = 24.0
+texture_margin_top = 24.0
+texture_margin_right = 24.0
+texture_margin_bottom = 24.0
 content_margin_left = 28.0
 content_margin_top = 20.0
 content_margin_right = 28.0
 content_margin_bottom = 20.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_options_panel"]
-bg_color = Color(0.055, 0.062, 0.067, 0.98)
-border_color = Color(0.62, 0.16, 0.17, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_options_panel"]
+texture = ExtResource("28_red_panel")
+texture_margin_left = 24.0
+texture_margin_top = 24.0
+texture_margin_right = 24.0
+texture_margin_bottom = 24.0
 content_margin_left = 34.0
 content_margin_top = 30.0
 content_margin_right = 34.0
 content_margin_bottom = 30.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_options_title"]
+texture = ExtResource("29_dark_banner")
+texture_margin_left = 36.0
+texture_margin_top = 18.0
+texture_margin_right = 36.0
+texture_margin_bottom = 18.0
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
 
 [node name="GameBoard" type="Node2D"]
 script = ExtResource("1_vx3oc")
@@ -373,6 +377,21 @@ size_flags_horizontal = 3
 mouse_filter = 2
 color = Color(0.68, 0.18, 0.15, 0.95)
 
+[node name="SeparatorMark" type="TextureRect" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer/PlayAreaSeparator"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+mouse_filter = 2
+texture = ExtResource("30_separator_mark")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="ScrollContainer3" type="ScrollContainer" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -540,7 +559,7 @@ offset_bottom = 112.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ai_result")
+theme_override_styles/panel = SubResource("StyleBoxTexture_ai_result")
 
 [node name="AiVsAiResultText" type="Label" parent="AiVsAiResultLayer/AiVsAiResult"]
 custom_minimum_size = Vector2(780, 170)
@@ -587,7 +606,7 @@ mouse_filter = 2
 [node name="OptionsPanel" type="PanelContainer" parent="OptionsLayer/OptionsOverlay/CenterContainer"]
 custom_minimum_size = Vector2(560, 0)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_options_panel")
+theme_override_styles/panel = SubResource("StyleBoxTexture_options_panel")
 
 [node name="Content" type="VBoxContainer" parent="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel"]
 layout_mode = 2
@@ -595,7 +614,9 @@ theme = ExtResource("17_dgrnn")
 theme_override_constants/separation = 18
 
 [node name="Title" type="Label" parent="OptionsLayer/OptionsOverlay/CenterContainer/OptionsPanel/Content"]
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_options_title")
 theme_override_fonts/font = ExtResource("19_n4jhl")
 theme_override_font_sizes/font_size = 42
 theme_override_colors/font_color = Color(0.9, 0.88, 0.84, 1)

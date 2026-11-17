@@ -1,0 +1,2220 @@
+{
+  "generator": "generate.py",
+  "color_space": "sRGB",
+  "assets": [
+    {
+      "file": "ui_checkbox_unchecked.png",
+      "family": "checkbox",
+      "state": "unchecked",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        10,
+        38,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_checkbox_unchecked_hover.png",
+      "family": "checkbox",
+      "state": "unchecked_hover",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        10,
+        38,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_checkbox_checked.png",
+      "family": "checkbox",
+      "state": "checked",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        10,
+        38,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_checkbox_checked_hover.png",
+      "family": "checkbox",
+      "state": "checked_hover",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        10,
+        38,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_checkbox_indeterminate.png",
+      "family": "checkbox",
+      "state": "indeterminate",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        10,
+        38,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_checkbox_focused.png",
+      "family": "checkbox",
+      "state": "focused",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        10,
+        38,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_checkbox_disabled.png",
+      "family": "checkbox",
+      "state": "disabled",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        10,
+        38,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_radio_off.png",
+      "family": "radio",
+      "state": "off",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        40,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_radio_off_hover.png",
+      "family": "radio",
+      "state": "off_hover",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        40,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_radio_on.png",
+      "family": "radio",
+      "state": "on",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        40,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_radio_on_hover.png",
+      "family": "radio",
+      "state": "on_hover",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        40,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_radio_focused.png",
+      "family": "radio",
+      "state": "focused",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        40,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_radio_disabled.png",
+      "family": "radio",
+      "state": "disabled",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        40,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_toggle_off.png",
+      "family": "toggle",
+      "state": "off",
+      "size_px": [
+        104,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        48,
+        9,
+        56,
+        39
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_toggle_off_hover.png",
+      "family": "toggle",
+      "state": "off_hover",
+      "size_px": [
+        104,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        48,
+        9,
+        56,
+        39
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_toggle_on.png",
+      "family": "toggle",
+      "state": "on",
+      "size_px": [
+        104,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        48,
+        9,
+        56,
+        39
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_toggle_on_hover.png",
+      "family": "toggle",
+      "state": "on_hover",
+      "size_px": [
+        104,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        48,
+        9,
+        56,
+        39
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_toggle_focused.png",
+      "family": "toggle",
+      "state": "focused",
+      "size_px": [
+        104,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        48,
+        9,
+        56,
+        39
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_toggle_disabled.png",
+      "family": "toggle",
+      "state": "disabled",
+      "size_px": [
+        104,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        48,
+        9,
+        56,
+        39
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_slider_track_default.png",
+      "family": "slider_track",
+      "state": "default",
+      "size_px": [
+        360,
+        28
+      ],
+      "transparent": true,
+      "slice_margin_px": 8,
+      "safe_region_px": [
+        12,
+        4,
+        348,
+        24
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_slider_track_disabled.png",
+      "family": "slider_track",
+      "state": "disabled",
+      "size_px": [
+        360,
+        28
+      ],
+      "transparent": true,
+      "slice_margin_px": 8,
+      "safe_region_px": [
+        12,
+        4,
+        348,
+        24
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_progress_track_default.png",
+      "family": "progress_track",
+      "state": "default",
+      "size_px": [
+        480,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        16,
+        4,
+        464,
+        44
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_progress_track_disabled.png",
+      "family": "progress_track",
+      "state": "disabled",
+      "size_px": [
+        480,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        16,
+        4,
+        464,
+        44
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_resource_track_default.png",
+      "family": "resource_track",
+      "state": "default",
+      "size_px": [
+        320,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        16,
+        4,
+        304,
+        44
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_resource_track_disabled.png",
+      "family": "resource_track",
+      "state": "disabled",
+      "size_px": [
+        320,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        16,
+        4,
+        304,
+        44
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_histogram_track_default.png",
+      "family": "histogram_track",
+      "state": "default",
+      "size_px": [
+        32,
+        148
+      ],
+      "transparent": true,
+      "slice_margin_px": 8,
+      "safe_region_px": [
+        12,
+        4,
+        20,
+        144
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_histogram_track_disabled.png",
+      "family": "histogram_track",
+      "state": "disabled",
+      "size_px": [
+        32,
+        148
+      ],
+      "transparent": true,
+      "slice_margin_px": 8,
+      "safe_region_px": [
+        12,
+        4,
+        20,
+        144
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_slider_fill_ash.png",
+      "family": "slider_fill",
+      "state": "ash",
+      "size_px": [
+        360,
+        28
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        352,
+        20
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_slider_fill_parallax.png",
+      "family": "slider_fill",
+      "state": "parallax",
+      "size_px": [
+        360,
+        28
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        352,
+        20
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_slider_fill_strain.png",
+      "family": "slider_fill",
+      "state": "strain",
+      "size_px": [
+        360,
+        28
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        352,
+        20
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_slider_fill_covenant.png",
+      "family": "slider_fill",
+      "state": "covenant",
+      "size_px": [
+        360,
+        28
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        352,
+        20
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_slider_fill_aegis.png",
+      "family": "slider_fill",
+      "state": "aegis",
+      "size_px": [
+        360,
+        28
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        352,
+        20
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_progress_fill_success.png",
+      "family": "progress_fill",
+      "state": "success",
+      "size_px": [
+        480,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        472,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_progress_fill_warning.png",
+      "family": "progress_fill",
+      "state": "warning",
+      "size_px": [
+        480,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        472,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_progress_fill_error.png",
+      "family": "progress_fill",
+      "state": "error",
+      "size_px": [
+        480,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        472,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_resource_fill_ash.png",
+      "family": "resource_fill",
+      "state": "ash",
+      "size_px": [
+        320,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        312,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_resource_fill_parallax.png",
+      "family": "resource_fill",
+      "state": "parallax",
+      "size_px": [
+        320,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        312,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_resource_fill_strain.png",
+      "family": "resource_fill",
+      "state": "strain",
+      "size_px": [
+        320,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        312,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_resource_fill_covenant.png",
+      "family": "resource_fill",
+      "state": "covenant",
+      "size_px": [
+        320,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        312,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_resource_fill_aegis.png",
+      "family": "resource_fill",
+      "state": "aegis",
+      "size_px": [
+        320,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        312,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_histogram_fill_ash.png",
+      "family": "histogram_fill",
+      "state": "ash",
+      "size_px": [
+        32,
+        148
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        24,
+        140
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_histogram_fill_parallax.png",
+      "family": "histogram_fill",
+      "state": "parallax",
+      "size_px": [
+        32,
+        148
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        24,
+        140
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_histogram_fill_strain.png",
+      "family": "histogram_fill",
+      "state": "strain",
+      "size_px": [
+        32,
+        148
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        24,
+        140
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_histogram_fill_covenant.png",
+      "family": "histogram_fill",
+      "state": "covenant",
+      "size_px": [
+        32,
+        148
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        24,
+        140
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_histogram_fill_aegis.png",
+      "family": "histogram_fill",
+      "state": "aegis",
+      "size_px": [
+        32,
+        148
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        8,
+        8,
+        24,
+        140
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_slider_thumb_default.png",
+      "family": "slider_thumb",
+      "state": "default",
+      "size_px": [
+        38,
+        44
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        8,
+        30,
+        36
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_slider_thumb_hover.png",
+      "family": "slider_thumb",
+      "state": "hover",
+      "size_px": [
+        38,
+        44
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        8,
+        30,
+        36
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_slider_thumb_pressed.png",
+      "family": "slider_thumb",
+      "state": "pressed",
+      "size_px": [
+        38,
+        44
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        8,
+        30,
+        36
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_slider_thumb_disabled.png",
+      "family": "slider_thumb",
+      "state": "disabled",
+      "size_px": [
+        38,
+        44
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        8,
+        30,
+        36
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_scrollbar_vertical_track_default.png",
+      "family": "scrollbar_vertical_track",
+      "state": "default",
+      "size_px": [
+        24,
+        192
+      ],
+      "transparent": true,
+      "slice_margin_px": 6,
+      "safe_region_px": [
+        5,
+        5,
+        19,
+        187
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_scrollbar_vertical_thumb_default.png",
+      "family": "scrollbar_vertical_thumb",
+      "state": "default",
+      "size_px": [
+        24,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 6,
+      "safe_region_px": [
+        5,
+        5,
+        19,
+        59
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_scrollbar_vertical_thumb_hover.png",
+      "family": "scrollbar_vertical_thumb",
+      "state": "hover",
+      "size_px": [
+        24,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 6,
+      "safe_region_px": [
+        5,
+        5,
+        19,
+        59
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_scrollbar_vertical_thumb_pressed.png",
+      "family": "scrollbar_vertical_thumb",
+      "state": "pressed",
+      "size_px": [
+        24,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 6,
+      "safe_region_px": [
+        5,
+        5,
+        19,
+        59
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_scrollbar_horizontal_track_default.png",
+      "family": "scrollbar_horizontal_track",
+      "state": "default",
+      "size_px": [
+        192,
+        24
+      ],
+      "transparent": true,
+      "slice_margin_px": 6,
+      "safe_region_px": [
+        5,
+        5,
+        187,
+        19
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_scrollbar_horizontal_thumb_default.png",
+      "family": "scrollbar_horizontal_thumb",
+      "state": "default",
+      "size_px": [
+        64,
+        24
+      ],
+      "transparent": true,
+      "slice_margin_px": 6,
+      "safe_region_px": [
+        5,
+        5,
+        59,
+        19
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_scrollbar_horizontal_thumb_hover.png",
+      "family": "scrollbar_horizontal_thumb",
+      "state": "hover",
+      "size_px": [
+        64,
+        24
+      ],
+      "transparent": true,
+      "slice_margin_px": 6,
+      "safe_region_px": [
+        5,
+        5,
+        59,
+        19
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_scrollbar_horizontal_thumb_pressed.png",
+      "family": "scrollbar_horizontal_thumb",
+      "state": "pressed",
+      "size_px": [
+        64,
+        24
+      ],
+      "transparent": true,
+      "slice_margin_px": 6,
+      "safe_region_px": [
+        5,
+        5,
+        59,
+        19
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_tab_default.png",
+      "family": "tab",
+      "state": "default",
+      "size_px": [
+        240,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        24,
+        8,
+        216,
+        56
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_tab_hover.png",
+      "family": "tab",
+      "state": "hover",
+      "size_px": [
+        240,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        24,
+        8,
+        216,
+        56
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_tab_selected.png",
+      "family": "tab",
+      "state": "selected",
+      "size_px": [
+        240,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        24,
+        8,
+        216,
+        56
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_tab_disabled.png",
+      "family": "tab",
+      "state": "disabled",
+      "size_px": [
+        240,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        24,
+        8,
+        216,
+        56
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_filter_chip_default.png",
+      "family": "filter_chip",
+      "state": "default",
+      "size_px": [
+        160,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        20,
+        8,
+        140,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_filter_chip_hover.png",
+      "family": "filter_chip",
+      "state": "hover",
+      "size_px": [
+        160,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        20,
+        8,
+        140,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_filter_chip_selected.png",
+      "family": "filter_chip",
+      "state": "selected",
+      "size_px": [
+        160,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        20,
+        8,
+        140,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_filter_chip_disabled.png",
+      "family": "filter_chip",
+      "state": "disabled",
+      "size_px": [
+        160,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        20,
+        8,
+        140,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_segmented_option_default.png",
+      "family": "segmented_option",
+      "state": "default",
+      "size_px": [
+        160,
+        52
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        20,
+        8,
+        140,
+        44
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_segmented_option_hover.png",
+      "family": "segmented_option",
+      "state": "hover",
+      "size_px": [
+        160,
+        52
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        20,
+        8,
+        140,
+        44
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_segmented_option_selected.png",
+      "family": "segmented_option",
+      "state": "selected",
+      "size_px": [
+        160,
+        52
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        20,
+        8,
+        140,
+        44
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_segmented_option_disabled.png",
+      "family": "segmented_option",
+      "state": "disabled",
+      "size_px": [
+        160,
+        52
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        20,
+        8,
+        140,
+        44
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_pagination_button_default.png",
+      "family": "pagination_button",
+      "state": "default",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 8,
+      "safe_region_px": [
+        16,
+        8,
+        32,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_pagination_button_hover.png",
+      "family": "pagination_button",
+      "state": "hover",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 8,
+      "safe_region_px": [
+        16,
+        8,
+        32,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_pagination_button_selected.png",
+      "family": "pagination_button",
+      "state": "selected",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 8,
+      "safe_region_px": [
+        16,
+        8,
+        32,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_pagination_button_disabled.png",
+      "family": "pagination_button",
+      "state": "disabled",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 8,
+      "safe_region_px": [
+        16,
+        8,
+        32,
+        40
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_portrait_frame_default.png",
+      "family": "hud_portrait_frame",
+      "state": "default",
+      "size_px": [
+        128,
+        128
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        16,
+        16,
+        112,
+        112
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_portrait_frame_targeted.png",
+      "family": "hud_portrait_frame",
+      "state": "targeted",
+      "size_px": [
+        128,
+        128
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        16,
+        16,
+        112,
+        112
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_portrait_frame_damaged.png",
+      "family": "hud_portrait_frame",
+      "state": "damaged",
+      "size_px": [
+        128,
+        128
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        16,
+        16,
+        112,
+        112
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_health_default.png",
+      "family": "hud_health",
+      "state": "default",
+      "size_px": [
+        160,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        136,
+        52
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_health_active.png",
+      "family": "hud_health",
+      "state": "active",
+      "size_px": [
+        160,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        136,
+        52
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_health_disabled.png",
+      "family": "hud_health",
+      "state": "disabled",
+      "size_px": [
+        160,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        136,
+        52
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_resource_default.png",
+      "family": "hud_resource",
+      "state": "default",
+      "size_px": [
+        160,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        136,
+        52
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_resource_active.png",
+      "family": "hud_resource",
+      "state": "active",
+      "size_px": [
+        160,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        136,
+        52
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_resource_disabled.png",
+      "family": "hud_resource",
+      "state": "disabled",
+      "size_px": [
+        160,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        136,
+        52
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_counter_default.png",
+      "family": "hud_counter",
+      "state": "default",
+      "size_px": [
+        96,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        72,
+        36
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_counter_active.png",
+      "family": "hud_counter",
+      "state": "active",
+      "size_px": [
+        96,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        72,
+        36
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_counter_disabled.png",
+      "family": "hud_counter",
+      "state": "disabled",
+      "size_px": [
+        96,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        72,
+        36
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_timer_default.png",
+      "family": "hud_timer",
+      "state": "default",
+      "size_px": [
+        160,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        136,
+        52
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_timer_active.png",
+      "family": "hud_timer",
+      "state": "active",
+      "size_px": [
+        160,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        136,
+        52
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_timer_disabled.png",
+      "family": "hud_timer",
+      "state": "disabled",
+      "size_px": [
+        160,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        136,
+        52
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_phase_default.png",
+      "family": "hud_phase",
+      "state": "default",
+      "size_px": [
+        228,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        204,
+        52
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_phase_active.png",
+      "family": "hud_phase",
+      "state": "active",
+      "size_px": [
+        228,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        204,
+        52
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_phase_disabled.png",
+      "family": "hud_phase",
+      "state": "disabled",
+      "size_px": [
+        228,
+        64
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        204,
+        52
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_action_default.png",
+      "family": "hud_action",
+      "state": "default",
+      "size_px": [
+        320,
+        72
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        296,
+        60
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_action_active.png",
+      "family": "hud_action",
+      "state": "active",
+      "size_px": [
+        320,
+        72
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        296,
+        60
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_action_disabled.png",
+      "family": "hud_action",
+      "state": "disabled",
+      "size_px": [
+        320,
+        72
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        28,
+        12,
+        296,
+        60
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_turn_marker_default.png",
+      "family": "hud_turn_marker",
+      "state": "default",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        10,
+        38,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_turn_marker_active.png",
+      "family": "hud_turn_marker",
+      "state": "active",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        10,
+        38,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_hud_turn_marker_complete.png",
+      "family": "hud_turn_marker",
+      "state": "complete",
+      "size_px": [
+        48,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        10,
+        10,
+        38,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_deck_row_default.png",
+      "family": "deck_row",
+      "state": "default",
+      "size_px": [
+        640,
+        72
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        110,
+        10,
+        617,
+        62
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_deck_row_hover.png",
+      "family": "deck_row",
+      "state": "hover",
+      "size_px": [
+        640,
+        72
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        110,
+        10,
+        617,
+        62
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_deck_row_selected.png",
+      "family": "deck_row",
+      "state": "selected",
+      "size_px": [
+        640,
+        72
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        110,
+        10,
+        617,
+        62
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_deck_row_disabled.png",
+      "family": "deck_row",
+      "state": "disabled",
+      "size_px": [
+        640,
+        72
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        110,
+        10,
+        617,
+        62
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_card_thumbnail_slot_default.png",
+      "family": "card_thumbnail_slot",
+      "state": "default",
+      "size_px": [
+        128,
+        160
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        14,
+        14,
+        114,
+        146
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_card_thumbnail_slot_hover.png",
+      "family": "card_thumbnail_slot",
+      "state": "hover",
+      "size_px": [
+        128,
+        160
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        14,
+        14,
+        114,
+        146
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_card_thumbnail_slot_selected.png",
+      "family": "card_thumbnail_slot",
+      "state": "selected",
+      "size_px": [
+        128,
+        160
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        14,
+        14,
+        114,
+        146
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_quantity_chip_default.png",
+      "family": "quantity_chip",
+      "state": "default",
+      "size_px": [
+        80,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        19,
+        10,
+        61,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_quantity_chip_selected.png",
+      "family": "quantity_chip",
+      "state": "selected",
+      "size_px": [
+        80,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        19,
+        10,
+        61,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_status_chip_neutral.png",
+      "family": "status_chip",
+      "state": "neutral",
+      "size_px": [
+        180,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        19,
+        10,
+        161,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_status_chip_buff.png",
+      "family": "status_chip",
+      "state": "buff",
+      "size_px": [
+        180,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        19,
+        10,
+        161,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_status_chip_debuff.png",
+      "family": "status_chip",
+      "state": "debuff",
+      "size_px": [
+        180,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        19,
+        10,
+        161,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_inventory_slot_default.png",
+      "family": "inventory_slot",
+      "state": "default",
+      "size_px": [
+        144,
+        144
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        14,
+        14,
+        130,
+        130
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_inventory_slot_hover.png",
+      "family": "inventory_slot",
+      "state": "hover",
+      "size_px": [
+        144,
+        144
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        14,
+        14,
+        130,
+        130
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_inventory_slot_selected.png",
+      "family": "inventory_slot",
+      "state": "selected",
+      "size_px": [
+        144,
+        144
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        14,
+        14,
+        130,
+        130
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_inventory_slot_locked.png",
+      "family": "inventory_slot",
+      "state": "locked",
+      "size_px": [
+        144,
+        144
+      ],
+      "transparent": true,
+      "slice_margin_px": 0,
+      "safe_region_px": [
+        14,
+        14,
+        130,
+        130
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_quest_row_active.png",
+      "family": "quest_row",
+      "state": "active",
+      "size_px": [
+        400,
+        72
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        78,
+        10,
+        377,
+        62
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_quest_row_complete.png",
+      "family": "quest_row",
+      "state": "complete",
+      "size_px": [
+        400,
+        72
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        78,
+        10,
+        377,
+        62
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_quest_row_locked.png",
+      "family": "quest_row",
+      "state": "locked",
+      "size_px": [
+        400,
+        72
+      ],
+      "transparent": true,
+      "slice_margin_px": 16,
+      "safe_region_px": [
+        78,
+        10,
+        377,
+        62
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_objective_chip_active.png",
+      "family": "objective_chip",
+      "state": "active",
+      "size_px": [
+        240,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        19,
+        10,
+        221,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_objective_chip_complete.png",
+      "family": "objective_chip",
+      "state": "complete",
+      "size_px": [
+        240,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        19,
+        10,
+        221,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_objective_chip_locked.png",
+      "family": "objective_chip",
+      "state": "locked",
+      "size_px": [
+        240,
+        48
+      ],
+      "transparent": true,
+      "slice_margin_px": 12,
+      "safe_region_px": [
+        19,
+        10,
+        221,
+        38
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_toast_indicator_success.png",
+      "family": "toast_indicator",
+      "state": "success",
+      "size_px": [
+        24,
+        128
+      ],
+      "transparent": true,
+      "slice_margin_px": 6,
+      "safe_region_px": [
+        5,
+        8,
+        19,
+        120
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_toast_indicator_warning.png",
+      "family": "toast_indicator",
+      "state": "warning",
+      "size_px": [
+        24,
+        128
+      ],
+      "transparent": true,
+      "slice_margin_px": 6,
+      "safe_region_px": [
+        5,
+        8,
+        19,
+        120
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_toast_indicator_error.png",
+      "family": "toast_indicator",
+      "state": "error",
+      "size_px": [
+        24,
+        128
+      ],
+      "transparent": true,
+      "slice_margin_px": 6,
+      "safe_region_px": [
+        5,
+        8,
+        19,
+        120
+      ],
+      "purpose": "functional"
+    },
+    {
+      "file": "ui_toast_indicator_info.png",
+      "family": "toast_indicator",
+      "state": "info",
+      "size_px": [
+        24,
+        128
+      ],
+      "transparent": true,
+      "slice_margin_px": 6,
+      "safe_region_px": [
+        5,
+        8,
+        19,
+        120
+      ],
+      "purpose": "functional"
+    }
+  ]
+}

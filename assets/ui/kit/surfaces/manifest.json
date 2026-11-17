@@ -1,0 +1,2157 @@
+{
+  "version": 1,
+  "palette_reference": "assets/ui/STYLE_TOKENS.md",
+  "godot": "4.x StyleBoxTexture resources alongside PNGs",
+  "assets": [
+    {
+      "file": "buttons/ui_button_primary_default.png",
+      "family": "button",
+      "purpose": "primary",
+      "state": "default",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "ash",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_primary_hover.png",
+      "family": "button",
+      "purpose": "primary",
+      "state": "hover",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "ash",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_primary_pressed.png",
+      "family": "button",
+      "purpose": "primary",
+      "state": "pressed",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "ash",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_primary_disabled.png",
+      "family": "button",
+      "purpose": "primary",
+      "state": "disabled",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "ash",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_primary_focused.png",
+      "family": "button",
+      "purpose": "primary",
+      "state": "focused",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "ash",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_primary_selected.png",
+      "family": "button",
+      "purpose": "primary",
+      "state": "selected",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "ash",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_secondary_default.png",
+      "family": "button",
+      "purpose": "secondary",
+      "state": "default",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_secondary_hover.png",
+      "family": "button",
+      "purpose": "secondary",
+      "state": "hover",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_secondary_pressed.png",
+      "family": "button",
+      "purpose": "secondary",
+      "state": "pressed",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_secondary_disabled.png",
+      "family": "button",
+      "purpose": "secondary",
+      "state": "disabled",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_secondary_focused.png",
+      "family": "button",
+      "purpose": "secondary",
+      "state": "focused",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_secondary_selected.png",
+      "family": "button",
+      "purpose": "secondary",
+      "state": "selected",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_danger_default.png",
+      "family": "button",
+      "purpose": "danger",
+      "state": "default",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "error",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_danger_hover.png",
+      "family": "button",
+      "purpose": "danger",
+      "state": "hover",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "error",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_danger_pressed.png",
+      "family": "button",
+      "purpose": "danger",
+      "state": "pressed",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "error",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_danger_disabled.png",
+      "family": "button",
+      "purpose": "danger",
+      "state": "disabled",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "error",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_danger_focused.png",
+      "family": "button",
+      "purpose": "danger",
+      "state": "focused",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "error",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_danger_selected.png",
+      "family": "button",
+      "purpose": "danger",
+      "state": "selected",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "error",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_ghost_default.png",
+      "family": "button",
+      "purpose": "ghost",
+      "state": "default",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_ghost_hover.png",
+      "family": "button",
+      "purpose": "ghost",
+      "state": "hover",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_ghost_pressed.png",
+      "family": "button",
+      "purpose": "ghost",
+      "state": "pressed",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_ghost_disabled.png",
+      "family": "button",
+      "purpose": "ghost",
+      "state": "disabled",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_ghost_focused.png",
+      "family": "button",
+      "purpose": "ghost",
+      "state": "focused",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_ghost_selected.png",
+      "family": "button",
+      "purpose": "ghost",
+      "state": "selected",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_icon_default.png",
+      "family": "button",
+      "purpose": "icon",
+      "state": "default",
+      "size": [
+        96,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        27,
+        21,
+        69,
+        75
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_icon_hover.png",
+      "family": "button",
+      "purpose": "icon",
+      "state": "hover",
+      "size": [
+        96,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        27,
+        21,
+        69,
+        75
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_icon_pressed.png",
+      "family": "button",
+      "purpose": "icon",
+      "state": "pressed",
+      "size": [
+        96,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        27,
+        21,
+        69,
+        75
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_icon_disabled.png",
+      "family": "button",
+      "purpose": "icon",
+      "state": "disabled",
+      "size": [
+        96,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        27,
+        21,
+        69,
+        75
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_icon_focused.png",
+      "family": "button",
+      "purpose": "icon",
+      "state": "focused",
+      "size": [
+        96,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        27,
+        21,
+        69,
+        75
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_icon_selected.png",
+      "family": "button",
+      "purpose": "icon",
+      "state": "selected",
+      "size": [
+        96,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        27,
+        21,
+        69,
+        75
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_ash_default.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "default",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.ash",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_ash_hover.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "hover",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.ash",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_ash_pressed.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "pressed",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.ash",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_ash_disabled.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "disabled",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.ash",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_ash_focused.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "focused",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.ash",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_ash_selected.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "selected",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.ash",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_parallax_default.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "default",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.parallax",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_parallax_hover.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "hover",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.parallax",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_parallax_pressed.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "pressed",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.parallax",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_parallax_disabled.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "disabled",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.parallax",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_parallax_focused.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "focused",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.parallax",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_parallax_selected.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "selected",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.parallax",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_strain_default.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "default",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.strain",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_strain_hover.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "hover",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.strain",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_strain_pressed.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "pressed",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.strain",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_strain_disabled.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "disabled",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.strain",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_strain_focused.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "focused",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.strain",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_strain_selected.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "selected",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.strain",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_covenant_default.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "default",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.covenant",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_covenant_hover.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "hover",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.covenant",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_covenant_pressed.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "pressed",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.covenant",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_covenant_disabled.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "disabled",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.covenant",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_covenant_focused.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "focused",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.covenant",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_covenant_selected.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "selected",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.covenant",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_aegis_default.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "default",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.aegis",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_aegis_hover.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "hover",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.aegis",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_aegis_pressed.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "pressed",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.aegis",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_aegis_disabled.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "disabled",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.aegis",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_aegis_focused.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "focused",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.aegis",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "buttons/ui_button_faction_aegis_selected.png",
+      "family": "button",
+      "purpose": "faction",
+      "state": "selected",
+      "size": [
+        320,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        44,
+        18,
+        276,
+        78
+      ],
+      "accent_token": "accent.aegis",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "panels/ui_panel_standard.png",
+      "family": "panel",
+      "purpose": "standard",
+      "state": "default",
+      "size": [
+        1024,
+        768
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 32,
+        "top": 32,
+        "right": 32,
+        "bottom": 32
+      },
+      "safe_content_rect": [
+        40,
+        40,
+        984,
+        728
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "panels/ui_panel_inset.png",
+      "family": "panel",
+      "purpose": "inset",
+      "state": "default",
+      "size": [
+        512,
+        384
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        32,
+        32,
+        480,
+        352
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "panels/ui_panel_modal.png",
+      "family": "panel",
+      "purpose": "modal",
+      "state": "default",
+      "size": [
+        1024,
+        768
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 40,
+        "top": 40,
+        "right": 40,
+        "bottom": 40
+      },
+      "safe_content_rect": [
+        48,
+        48,
+        976,
+        720
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "panels/ui_panel_tooltip.png",
+      "family": "panel",
+      "purpose": "tooltip",
+      "state": "default",
+      "size": [
+        480,
+        240
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        32,
+        32,
+        448,
+        208
+      ],
+      "accent_token": "aegis",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "panels/ui_panel_navigation.png",
+      "family": "panel",
+      "purpose": "navigation",
+      "state": "default",
+      "size": [
+        1024,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        32,
+        18,
+        992,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "panels/ui_panel_header.png",
+      "family": "panel",
+      "purpose": "header",
+      "state": "default",
+      "size": [
+        512,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        32,
+        18,
+        480,
+        78
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "panels/ui_panel_inventory_slot.png",
+      "family": "panel",
+      "purpose": "inventory_slot",
+      "state": "default",
+      "size": [
+        160,
+        160
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        32,
+        32,
+        128,
+        128
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "panels/ui_panel_card_slot.png",
+      "family": "panel",
+      "purpose": "card_slot",
+      "state": "default",
+      "size": [
+        300,
+        420
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        32,
+        32,
+        268,
+        388
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "panels/ui_panel_toast_success.png",
+      "family": "panel",
+      "purpose": "toast",
+      "state": "success",
+      "size": [
+        640,
+        160
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        32,
+        32,
+        608,
+        128
+      ],
+      "accent_token": "state.success",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "panels/ui_panel_toast_warning.png",
+      "family": "panel",
+      "purpose": "toast",
+      "state": "warning",
+      "size": [
+        640,
+        160
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        32,
+        32,
+        608,
+        128
+      ],
+      "accent_token": "state.warning",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "panels/ui_panel_toast_error.png",
+      "family": "panel",
+      "purpose": "toast",
+      "state": "error",
+      "size": [
+        640,
+        160
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        32,
+        32,
+        608,
+        128
+      ],
+      "accent_token": "state.error",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "fields/ui_field_default.png",
+      "family": "field",
+      "purpose": "text/search/dropdown",
+      "state": "default",
+      "size": [
+        480,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        26,
+        15,
+        438,
+        81
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "fields/ui_field_hover.png",
+      "family": "field",
+      "purpose": "text/search/dropdown",
+      "state": "hover",
+      "size": [
+        480,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        26,
+        15,
+        438,
+        81
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "fields/ui_field_focused.png",
+      "family": "field",
+      "purpose": "text/search/dropdown",
+      "state": "focused",
+      "size": [
+        480,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        26,
+        15,
+        438,
+        81
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "fields/ui_field_disabled.png",
+      "family": "field",
+      "purpose": "text/search/dropdown",
+      "state": "disabled",
+      "size": [
+        480,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        26,
+        15,
+        438,
+        81
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "fields/ui_field_error.png",
+      "family": "field",
+      "purpose": "text/search/dropdown",
+      "state": "error",
+      "size": [
+        480,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        26,
+        15,
+        438,
+        81
+      ],
+      "accent_token": "state.error",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "fields/ui_field_warning.png",
+      "family": "field",
+      "purpose": "text/search/dropdown",
+      "state": "warning",
+      "size": [
+        480,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        26,
+        15,
+        438,
+        81
+      ],
+      "accent_token": "state.warning",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "fields/ui_field_success.png",
+      "family": "field",
+      "purpose": "text/search/dropdown",
+      "state": "success",
+      "size": [
+        480,
+        96
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        26,
+        15,
+        438,
+        81
+      ],
+      "accent_token": "state.success",
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "tabs/ui_tab_default.png",
+      "family": "tab",
+      "purpose": "navigation/filter tab",
+      "state": "default",
+      "size": [
+        320,
+        80
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 20,
+        "right": 24,
+        "bottom": 20
+      },
+      "safe_content_rect": [
+        30,
+        14,
+        296,
+        65
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "tabs/ui_tab_hover.png",
+      "family": "tab",
+      "purpose": "navigation/filter tab",
+      "state": "hover",
+      "size": [
+        320,
+        80
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 20,
+        "right": 24,
+        "bottom": 20
+      },
+      "safe_content_rect": [
+        30,
+        14,
+        296,
+        65
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "tabs/ui_tab_pressed.png",
+      "family": "tab",
+      "purpose": "navigation/filter tab",
+      "state": "pressed",
+      "size": [
+        320,
+        80
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 20,
+        "right": 24,
+        "bottom": 20
+      },
+      "safe_content_rect": [
+        30,
+        14,
+        296,
+        65
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "tabs/ui_tab_disabled.png",
+      "family": "tab",
+      "purpose": "navigation/filter tab",
+      "state": "disabled",
+      "size": [
+        320,
+        80
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 20,
+        "right": 24,
+        "bottom": 20
+      },
+      "safe_content_rect": [
+        30,
+        14,
+        296,
+        65
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "tabs/ui_tab_focused.png",
+      "family": "tab",
+      "purpose": "navigation/filter tab",
+      "state": "focused",
+      "size": [
+        320,
+        80
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 20,
+        "right": 24,
+        "bottom": 20
+      },
+      "safe_content_rect": [
+        30,
+        14,
+        296,
+        65
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "tabs/ui_tab_selected.png",
+      "family": "tab",
+      "purpose": "navigation/filter tab",
+      "state": "selected",
+      "size": [
+        320,
+        80
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 20,
+        "right": 24,
+        "bottom": 20
+      },
+      "safe_content_rect": [
+        30,
+        14,
+        296,
+        65
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "separators/ui_separator_horizontal.png",
+      "family": "separator",
+      "purpose": "horizontal",
+      "state": "default",
+      "size": [
+        512,
+        12
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 24,
+        "top": 0,
+        "right": 24,
+        "bottom": 0
+      },
+      "safe_content_rect": [
+        0,
+        0,
+        512,
+        12
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    },
+    {
+      "file": "separators/ui_separator_vertical.png",
+      "family": "separator",
+      "purpose": "vertical",
+      "state": "default",
+      "size": [
+        12,
+        512
+      ],
+      "transparent": true,
+      "nine_slice": {
+        "left": 0,
+        "top": 24,
+        "right": 0,
+        "bottom": 24
+      },
+      "safe_content_rect": [
+        0,
+        0,
+        12,
+        512
+      ],
+      "accent_token": null,
+      "source": "assets/ui/kit/scripts/build_surfaces.py"
+    }
+  ]
+}

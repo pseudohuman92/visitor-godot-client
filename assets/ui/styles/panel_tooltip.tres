@@ -1,21 +1,15 @@
-[gd_resource type="StyleBoxFlat" format=3]
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/library/panels/red_panel_transparent.png" id="1_texture"]
 
 [resource]
+texture = ExtResource("1_texture")
+texture_margin_left = 19.0
+texture_margin_top = 20.0
+texture_margin_right = 19.0
+texture_margin_bottom = 20.0
 content_margin_left = 12.0
 content_margin_top = 9.0
 content_margin_right = 12.0
 content_margin_bottom = 9.0
-bg_color = Color(0.078431, 0.090196, 0.098039, 1)
-draw_center = true
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.776471, 0.643137, 0.317647, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-shadow_color = Color(0, 0, 0, 1)
-shadow_size = 6
-shadow_offset = Vector2(0, 2)
+modulate_color = Color(0.76, 0.76, 0.76, 1)

@@ -1,10 +1,39 @@
 extends PanelContainer
 
+const POPUP_BANNER = preload("res://assets/ui/library/banners/dark_transparent.png")
+
 var popup_setup = false
 var displayed_cards = []
 var displayed_message = ""
 
 func _ready():
+	var backdrop := StyleBoxFlat.new()
+	backdrop.bg_color = Color(0.02, 0.025, 0.03, 0.88)
+	backdrop.content_margin_left = 12.0
+	backdrop.content_margin_right = 12.0
+	backdrop.content_margin_top = 12.0
+	backdrop.content_margin_bottom = 12.0
+	add_theme_stylebox_override("panel", backdrop)
+	var title := find_child("PopupText", true, false) as Label
+	if title:
+		if title.label_settings:
+			var title_settings := title.label_settings.duplicate() as LabelSettings
+			title_settings.font_size = 22
+			title.label_settings = title_settings
+		var banner := StyleBoxTexture.new()
+		banner.texture = POPUP_BANNER
+		banner.texture_margin_left = 30.0
+		banner.texture_margin_right = 30.0
+		banner.texture_margin_top = 12.0
+		banner.texture_margin_bottom = 12.0
+		banner.content_margin_left = 26.0
+		banner.content_margin_right = 26.0
+		banner.content_margin_top = 12.0
+		banner.content_margin_bottom = 12.0
+		title.add_theme_stylebox_override("normal", banner)
+		title.custom_minimum_size = Vector2(800.0, 72.0)
+		title.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	set_size(get_viewport_rect().size)
 	hide()
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dxt4uxlm1lr2i"]
+[gd_scene load_steps=34 format=3 uid="uid://dxt4uxlm1lr2i"]
 
 [ext_resource type="Script" path="res://src/DeckBuilder/DeckBuilder.gd" id="1_dlswc"]
 [ext_resource type="Script" path="res://src/GameBoard/MainContainer.gd" id="2_eb0sf"]
@@ -31,10 +31,26 @@
 [ext_resource type="StyleBox" path="res://assets/ui/styles/button_secondary_disabled.tres" id="26_secondary_disabled"]
 [ext_resource type="StyleBox" path="res://assets/ui/styles/button_ghost_pressed.tres" id="27_ghost_pressed"]
 [ext_resource type="StyleBox" path="res://assets/ui/styles/button_ghost_disabled.tres" id="28_ghost_disabled"]
+[ext_resource type="Texture2D" path="res://assets/ui/library/banners/dark_transparent.png" id="29_deck_banner"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5uif8"]
 texture = ExtResource("2_wy6y3")
 modulate_color = Color(0.14, 0.16, 0.17, 1)
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_deck_header"]
+texture = ExtResource("29_deck_banner")
+texture_margin_left = 42.0
+texture_margin_top = 18.0
+texture_margin_right = 42.0
+texture_margin_bottom = 18.0
+content_margin_left = 24.0
+content_margin_top = 10.0
+content_margin_right = 24.0
+content_margin_bottom = 10.0
 
 [node name="DeckBuilder" type="Node2D"]
 script = ExtResource("1_dlswc")
@@ -53,6 +69,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("2_ymqcs")
+theme_override_constants/separation = 18
 
 [node name="CollectionContainer" type="HBoxContainer" parent="MainContainer/HBoxContainer"]
 layout_mode = 2
@@ -87,11 +104,15 @@ script = ExtResource("5_1uxfn")
 [node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 12
 
 [node name="DeckName" type="LineEdit" parent="MainContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
 layout_direction = 2
 layout_mode = 2
 mouse_filter = 1
+theme_override_font_sizes/font_size = 23
+theme_override_styles/normal = SubResource("StyleBoxTexture_deck_header")
 text = "New Deck"
 placeholder_text = "Deck Name"
 alignment = 1
@@ -109,17 +130,18 @@ script = ExtResource("4_2vord")
 
 [node name="Buttons" type="VBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+theme_override_constants/separation = 6
 
 [node name="Search" type="LineEdit" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
 placeholder_text = "Search"
 alignment = 1
 script = ExtResource("9_bivu5")
 
 [node name="ColorFilter" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="C" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/ColorFilter"]
 layout_mode = 2
@@ -242,8 +264,8 @@ theme_override_styles/panel = ExtResource("24_focus")
 grow_vertical = 2
 
 [node name="TypeFilter" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="Unit" type="TextureButton" parent="MainContainer/HBoxContainer/VBoxContainer/Buttons/TypeFilter"]
 layout_mode = 2

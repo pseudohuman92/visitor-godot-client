@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="750" height="1050"
+  viewBox="0 0 750 1050">
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="0.95" y2="1">
+      <stop offset="0" stop-color="#353B3E"/>
+      <stop offset="0.5" stop-color="#1C2022"/>
+      <stop offset="1" stop-color="#0B0D0E"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#282D2F"/>
+      <stop offset="1" stop-color="#1C2022"/>
+    </linearGradient>
+  </defs>
+
+          <path d="M50 173 H700 L704 177 V681 L700 685 H50 L46 681 V177 Z" fill="#0B0D0E" fill-opacity="0.58"/>
+          <path d="M104 181 L317 675 M265 181 L478 675 M426 181 L639 675"
+            stroke="#838A8A" stroke-width="11" stroke-opacity="0.32"/>
+          <path d="M52 698 H698" stroke="#838A8A" stroke-width="6"/>
+
+</svg>

@@ -8,6 +8,9 @@
 [ext_resource type="FontVariation" path="res://assets/fonts/BarlowCondensed-SemiBold-Navigation.tres" id="5_nav_font"]
 [ext_resource type="Texture2D" path="res://assets/ui/omen_components/logo/omen_nav_logo.png" id="6_omen_logo"]
 [ext_resource type="StyleBox" path="res://assets/ui/styles/panel_standard.tres" id="7_menu_panel"]
+[ext_resource type="Texture2D" path="res://assets/ui/library/banners/dark_transparent.png" id="8_menu_banner"]
+[ext_resource type="Texture2D" path="res://assets/ui/library/panels/city_wide_transparent.png" id="9_city_panel"]
+[ext_resource type="Texture2D" path="res://assets/ui/library/panels/radar_transparent.png" id="10_radar_panel"]
 
 [node name="MainMenu" type="Control" unique_id=1811934586]
 clip_contents = true
@@ -74,6 +77,36 @@ texture = ExtResource("6_omen_logo")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="CityDossier" type="TextureRect" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -710.0
+offset_top = 380.0
+offset_right = -300.0
+offset_bottom = 617.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("9_city_panel")
+modulate = Color(0.8, 0.82, 0.84, 0.7)
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RadarDossier" type="TextureRect" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 320.0
+offset_top = 455.0
+offset_right = 560.0
+offset_bottom = 600.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("10_radar_panel")
+modulate = Color(0.78, 0.81, 0.84, 0.72)
+expand_mode = 1
+stretch_mode = 5
+
 [node name="MenuFrame" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 8
@@ -89,6 +122,20 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("7_menu_panel")
+
+[node name="MenuBanner" type="TextureRect" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -232.5
+offset_top = 288.0
+offset_right = 232.5
+offset_bottom = 340.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("8_menu_banner")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1577083467]
 layout_mode = 1

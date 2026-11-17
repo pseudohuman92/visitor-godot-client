@@ -1,5 +1,7 @@
 extends HBoxContainer
 
+const CHIP_FRAME = preload("res://src/Themes/PanelBorder.tres")
+
 var _pool = {}
 var _selection = []
 var _initialized = false
@@ -15,9 +17,7 @@ func update_pool(knowledge):
 			container.visible = desired.has(code)
 			if desired.has(code):
 				find_child(code + "Label").text = str(desired[code])
-				var border = container.get_theme_stylebox("panel").duplicate()
-				border.border_color = Color.TRANSPARENT
-				container.add_theme_stylebox_override("panel", border)
+				_set_chip_highlight(container, false)
 	_pool = desired
 	_initialized = true
 
@@ -37,9 +37,15 @@ func _process(_delta):
 		container.visible = selecting and desired.has(CS.to_knowledge_type(code))
 		if container.visible:
 			find_child(code + "Label").text = ""
-			var border = container.get_theme_stylebox("panel").duplicate()
-			border.border_color = Color.GREEN_YELLOW
-			container.add_theme_stylebox_override("panel", border)
+			_set_chip_highlight(container, true)
 	_selection = desired
 	_selecting = selecting
 	_initialized = true
+
+func _set_chip_highlight(container: Control, highlighted: bool) -> void:
+	var frame = CHIP_FRAME.duplicate() as StyleBox
+	if frame is StyleBoxFlat:
+		(frame as StyleBoxFlat).border_color = Color.GREEN_YELLOW if highlighted else Color.TRANSPARENT
+	elif frame is StyleBoxTexture and highlighted:
+		(frame as StyleBoxTexture).modulate_color = (CHIP_FRAME as StyleBoxTexture).modulate_color.lerp(Color.GREEN_YELLOW, 0.7)
+	container.add_theme_stylebox_override("panel", frame)
