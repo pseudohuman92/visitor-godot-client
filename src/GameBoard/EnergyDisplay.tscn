@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cjpwowr0mt3cg"]
 
 [ext_resource type="Script" uid="uid://831q6rhfong3" path="res://src/GameBoard/EnergyDisplay.gd" id="1_n5fa2"]
-[ext_resource type="Texture2D" uid="uid://p7ilkena5y4i" path="res://assets/card-components/numbers/Colorless/X.png" id="2_1ngy7"]
-[ext_resource type="Texture2D" uid="uid://dsg574qdnumdc" path="res://assets/card-components/health-red.png" id="3_hho88"]
+[ext_resource type="Texture2D" uid="uid://p7ilkena5y4i" path="res://assets/card-components/Icons/Numbers/Colorless/X.png" id="2_1ngy7"]
+[ext_resource type="Texture2D" uid="uid://nlt2wfqgcx01" path="res://assets/card-components/Icons/Combat/Health.png" id="3_hho88"]
 [ext_resource type="LabelSettings" uid="uid://bx7tppt0u01gu" path="res://src/Themes/KnowledgeDisplayNumbers.tres" id="3_uhjq1"]
 [ext_resource type="StyleBox" uid="uid://by0rvqvrgari" path="res://src/Themes/PanelBorder.tres" id="4_djh1v"]
 [ext_resource type="Texture2D" uid="uid://wxlj4o3qv3ky" path="res://icon.svg" id="4_qragl"]
