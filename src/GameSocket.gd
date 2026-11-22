@@ -12,11 +12,46 @@ signal game_ended(win)
 signal decision_requested(kind, request)
 signal connection_failed(reason)
 
-func play_card(id):
+func play_card(id, use_free_play = null):
+	if use_free_play == null:
+		var player = GS.gameState.get_player() if GS.gameState else null
+		if player and player.get_freePlayCredits() > 0:
+			var card_name = "this card"
+			var can_pay_energy = true
+			for card in player.get_hand():
+				if card.get_id() == id:
+					card_name = card.get_name()
+					if card.get_cost().is_valid_int():
+						can_pay_energy = player.get_energy() >= int(card.get_cost())
+					break
+			var dialog = ConfirmationDialog.new()
+			dialog.title = "Play card"
+			dialog.dialog_text = "Use one free play for %s?" % card_name
+			dialog.ok_button_text = "Play for free"
+			if can_pay_energy:
+				dialog.add_button("Pay energy", true, "pay_energy")
+			(Engine.get_main_loop() as SceneTree).current_scene.add_child(dialog)
+			dialog.confirmed.connect(func():
+				play_card(id, true)
+				dialog.queue_free()
+			)
+			dialog.custom_action.connect(func(action):
+				if action == "pay_energy":
+					play_card(id, false)
+					dialog.queue_free()
+			)
+			dialog.canceled.connect(func():
+				SS.clear_selection_data()
+				dialog.queue_free()
+			)
+			dialog.popup_centered()
+			return
+		use_free_play = false
 	print("Sending Play Card: ", id)
 	var cm = GS.ClientGameMessages.ClientGameMessage.new()
 	var jq = cm.new_playCard()
 	jq.set_cardId(id)
+	jq.set_useFreePlay(use_free_play)
 	for c in SS.selected.values():
 		var ts = jq.add_targets()
 		ts.set_id(c["selection_id"])

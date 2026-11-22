@@ -33,6 +33,7 @@ enum GameType {
     P2_DRAFT = 2;
     P2_DRAFT_GAME = 3;
     AI_BO1_CONSTRUCTED = 4;
+    AI_VS_AI = 5;
 }
  
 message Table
@@ -148,6 +149,8 @@ message CardP {
     repeated TargetingAbility activateTargets = 23;
     string Zone = 24;
     string controller = 25;
+    int32 researchProgress = 26;
+    int32 researchRequirement = 27;
 }
 
 message Player {
@@ -165,6 +168,7 @@ message Player {
     int32 health = 12;
     int32 time = 13;
     repeated KnowledgeGroup deckColors = 14;
+    int32 freePlayCredits = 15;
 }
 
 message GameStateP {

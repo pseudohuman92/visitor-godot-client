@@ -1686,6 +1686,16 @@ class CardP:
 		service.field = __controller
 		data[__controller.tag] = service
 		
+		__researchProgress = PBField.new("researchProgress", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 26, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
+		service = PBServiceField.new()
+		service.field = __researchProgress
+		data[__researchProgress.tag] = service
+
+		__researchRequirement = PBField.new("researchRequirement", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 27, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
+		service = PBServiceField.new()
+		service.field = __researchRequirement
+		data[__researchRequirement.tag] = service
+
 	var data = {}
 	
 	var __id: PBField
@@ -1922,6 +1932,24 @@ class CardP:
 	func set_controller(value : String) -> void:
 		__controller.value = value
 	
+	var __researchProgress: PBField
+	func get_researchProgress() -> int:
+		return __researchProgress.value
+	func clear_researchProgress() -> void:
+		data[26].state = PB_SERVICE_STATE.UNFILLED
+		__researchProgress.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT32]
+	func set_researchProgress(value : int) -> void:
+		__researchProgress.value = value
+
+	var __researchRequirement: PBField
+	func get_researchRequirement() -> int:
+		return __researchRequirement.value
+	func clear_researchRequirement() -> void:
+		data[27].state = PB_SERVICE_STATE.UNFILLED
+		__researchRequirement.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT32]
+	func set_researchRequirement(value : int) -> void:
+		__researchRequirement.value = value
+
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)
 		
@@ -2027,6 +2055,11 @@ class Player:
 		service.func_ref = Callable(self, "add_deckColors")
 		data[__deckColors.tag] = service
 		
+		__freePlayCredits = PBField.new("freePlayCredits", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 15, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
+		service = PBServiceField.new()
+		service.field = __freePlayCredits
+		data[__freePlayCredits.tag] = service
+
 	var data = {}
 	
 	var __id: PBField
@@ -2165,6 +2198,15 @@ class Player:
 		__deckColors.value.append(element)
 		return element
 	
+	var __freePlayCredits: PBField
+	func get_freePlayCredits() -> int:
+		return __freePlayCredits.value
+	func clear_freePlayCredits() -> void:
+		data[15].state = PB_SERVICE_STATE.UNFILLED
+		__freePlayCredits.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT32]
+	func set_freePlayCredits(value : int) -> void:
+		__freePlayCredits.value = value
+
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)
 		

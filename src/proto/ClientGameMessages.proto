@@ -10,6 +10,7 @@ option java_package = "com.visitor.protocol";
 message PlayCard {
     string cardId = 1;
     repeated TargetSelection targets = 2;
+    bool useFreePlay = 3;
 }
 
 //This will be send when player activates a card in play
