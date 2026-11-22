@@ -3,9 +3,8 @@
 [ext_resource type="Script" uid="uid://da1pumt73wva7" path="res://src/Cards/DecklistCard.gd" id="1_eguco"]
 [ext_resource type="StyleBox" uid="uid://nrrp32xv522l" path="res://src/Themes/Border.tres" id="2_yfim8"]
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="3_wxp6q"]
-[ext_resource type="Texture2D" uid="uid://bpda81cblqkcb" path="res://assets/card-components/numbers/Colorless/1.png" id="5_3kh0f"]
-[ext_resource type="Texture2D" uid="uid://oqqgesnsg3n0" path="res://assets/buttons/grunge-highlight-white.png" id="13_r006i"]
-
+[ext_resource type="Texture2D" uid="uid://bpda81cblqkcb" path="res://assets/card-components/Icons/Numbers/Colorless/1.png" id="5_3kh0f"]
+[ext_resource type="Texture2D" uid="uid://ck0ag35bsi17e" path="res://assets/ui/library/buttons/dark_transparent.png" id="13_r006i"]
 [ext_resource type="FontVariation" path="res://assets/fonts/BarlowCondensed-SemiBold-Tracked.tres" id="12_card_name"]
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qjmgv"]
 

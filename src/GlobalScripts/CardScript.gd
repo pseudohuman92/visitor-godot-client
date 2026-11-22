@@ -1,29 +1,29 @@
 extends Node
 
 const text_icons = {
-	"{B}": "res://assets/card-components/Factions/Blue.png",
-	"{G}": "res://assets/card-components/Factions/Green.png",
-	"{P}": "res://assets/card-components/Factions/Purple.png",
-	"{R}": "res://assets/card-components/Factions/Red.png",
-	"{Y}": "res://assets/card-components/Factions/Yellow.png",
+	"{B}": "res://assets/card-components/Icons/Factions/Blue.png",
+	"{G}": "res://assets/card-components/Icons/Factions/Green.png",
+	"{P}": "res://assets/card-components/Icons/Factions/Purple.png",
+	"{R}": "res://assets/card-components/Icons/Factions/Red.png",
+	"{Y}": "res://assets/card-components/Icons/Factions/Yellow.png",
 #	"{Use}": "res://assets/card-components/use-icon-black.png",
-	"{damage}": "res://assets/card-components/attack-white.png",
-	"{shield}": "res://assets/card-components/shield-white.png",
-	"{0}": "res://assets/card-components/numbers/Colorless/0.png",
-	"{1}": "res://assets/card-components/numbers/Colorless/1.png",
-	"{2}": "res://assets/card-components/numbers/Colorless/2.png",
-	"{3}": "res://assets/card-components/numbers/Colorless/3.png",
-	"{4}": "res://assets/card-components/numbers/Colorless/4.png",
-	"{5}": "res://assets/card-components/numbers/Colorless/5.png",
-	"{6}": "res://assets/card-components/numbers/Colorless/6.png",
-	"{7}": "res://assets/card-components/numbers/Colorless/7.png",
-	"{8}": "res://assets/card-components/numbers/Colorless/8.png",
-	"{9}": "res://assets/card-components/numbers/Colorless/9.png",
-	"{X}": "res://assets/card-components/numbers/Colorless/X.png",
+	"{damage}": "res://assets/card-components/Icons/Combat/Attack.png",
+	"{shield}": "res://assets/card-components/Icons/Combat/Shield.png",
+	"{0}": "res://assets/card-components/Icons/Numbers/Colorless/0.png",
+	"{1}": "res://assets/card-components/Icons/Numbers/Colorless/1.png",
+	"{2}": "res://assets/card-components/Icons/Numbers/Colorless/2.png",
+	"{3}": "res://assets/card-components/Icons/Numbers/Colorless/3.png",
+	"{4}": "res://assets/card-components/Icons/Numbers/Colorless/4.png",
+	"{5}": "res://assets/card-components/Icons/Numbers/Colorless/5.png",
+	"{6}": "res://assets/card-components/Icons/Numbers/Colorless/6.png",
+	"{7}": "res://assets/card-components/Icons/Numbers/Colorless/7.png",
+	"{8}": "res://assets/card-components/Icons/Numbers/Colorless/8.png",
+	"{9}": "res://assets/card-components/Icons/Numbers/Colorless/9.png",
+	"{X}": "res://assets/card-components/Icons/Numbers/Colorless/X.png",
 }
 
-const DEPLOYING_ICON_PATH = "res://assets/icons/properties/deploying.png"
-const KEYWORD_ICON_DIR = "res://assets/icons/keywords/png_64/"
+const DEPLOYING_ICON_PATH = "res://assets/Icons/properties/deploying.png"
+const KEYWORD_ICON_DIR = "res://assets/Icons/"
 const KEYWORD_ICON_ORDER = [
 	"Deadly", "Defender", "FirstStrike", "Trample", "Evasive",
 	"Vigilance", "Lifelink", "Reach", "Drain", "Unblockable",
@@ -38,7 +38,7 @@ func get_card_image(set_name, card_name):
 	return load(path) if ResourceLoader.exists(path, "Texture2D") else null
 
 func get_type_icon(type):
-	return load ("res://assets/card-components/Types/"+type+".png")
+	return load ("res://assets/card-components/Icons/Types/"+type+".png")
 
 func get_placeholder_image(type):
 	return load("res://assets/card-images/placeholders/"+type+".png")
@@ -342,7 +342,7 @@ func set_cost_texture(background: TextureRect, cost):
 		background.texture = null
 		background.hide()
 		return
-	var path = "res://assets/card-components/numbers/Colorless/" + value + ".png"
+	var path = "res://assets/card-components/Icons/Numbers/Colorless/" + value + ".png"
 	if not ResourceLoader.exists(path, "Texture2D"):
 		background.texture = null
 		background.hide()

@@ -3,14 +3,13 @@
 [ext_resource type="Theme" uid="uid://y7aot7vogdr6" path="res://src/Themes/MainTheme.tres" id="1_4xrcx"]
 [ext_resource type="Script" uid="uid://ch5woy3an4pea" path="res://src/MainMenu/MenuButton.gd" id="1_ctsd2"]
 [ext_resource type="Script" uid="uid://cd5ac2npxbq7u" path="res://src/GameBoard/MainContainer.gd" id="2_xnhqe"]
-[ext_resource type="Texture2D" uid="uid://cyr52u5hc7dai" path="res://assets/backgrounds/wp10493985-grunge-texture-wallpapers.jpg" id="3_rk3ij"]
-
+[ext_resource type="Texture2D" uid="uid://bij2elpga8pt3" path="res://assets/backgrounds/omen_board_background.png" id="3_rk3ij"]
 [ext_resource type="FontVariation" path="res://assets/fonts/BarlowCondensed-SemiBold-Navigation.tres" id="5_nav_font"]
-[ext_resource type="Texture2D" path="res://assets/ui/omen_components/logo/omen_nav_logo.png" id="6_omen_logo"]
+[ext_resource type="Texture2D" uid="uid://yiewfd1uc166" path="res://assets/ui/omen_components/logo/omen_nav_logo.png" id="6_omen_logo"]
 [ext_resource type="StyleBox" path="res://assets/ui/styles/panel_standard.tres" id="7_menu_panel"]
-[ext_resource type="Texture2D" path="res://assets/ui/library/banners/dark_transparent.png" id="8_menu_banner"]
-[ext_resource type="Texture2D" path="res://assets/ui/library/panels/city_wide_transparent.png" id="9_city_panel"]
-[ext_resource type="Texture2D" path="res://assets/ui/library/panels/radar_transparent.png" id="10_radar_panel"]
+[ext_resource type="Texture2D" uid="uid://chwd1y2db0yns" path="res://assets/ui/library/banners/dark_transparent.png" id="8_menu_banner"]
+[ext_resource type="Texture2D" uid="uid://dai0sjaxwek1k" path="res://assets/ui/library/panels/city_wide_transparent.png" id="9_city_panel"]
+[ext_resource type="Texture2D" uid="uid://b62dq5k31mdlo" path="res://assets/ui/library/panels/radar_transparent.png" id="10_radar_panel"]
 
 [node name="MainMenu" type="Control" unique_id=1811934586]
 clip_contents = true
