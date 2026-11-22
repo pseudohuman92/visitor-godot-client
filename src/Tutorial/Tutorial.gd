@@ -94,31 +94,33 @@ const CARD_LIBRARY := {
 
 const LESSONS := [
 	{
-		"nav": "BOARD BASICS", "title": "Read the board at a glance", "setup": {"player_hand": ["rooftop_scout"], "opponent_hand": 3},
+		"nav": "BOARD BASICS", "title": "Read the board at a glance", "setup": {"player_hand": ["rooftop_scout"], "opponent_hand": 3, "opponent_health": 8},
 		"steps": [
 			{"target": "opponent_info", "prompt": "Start with the opponent's status.", "body": "This panel shows the rival's health, energy, knowledge, and match clock. Bring their health to zero to win.", "hint": "Click the opponent's information panel.", "effect": "explain", "success": "Health is the match goal: protect yours and reduce theirs."},
 			{"target": "opponent_hand", "prompt": "The opponent's hand is hidden.", "body": "You can see how many cards the rival holds, but their card faces stay private. Your own hand is visible at the bottom.", "hint": "Click a card back in the opponent's hand.", "effect": "explain", "success": "Hidden information keeps both players making decisions with incomplete knowledge."},
 			{"target": "opponent_deck", "prompt": "Track the rival's deck and discard pile.", "body": "Deck and discard counts are public. Opponent cards in hand stay hidden, while their discarded cards are open information.", "hint": "Click the opponent deck counter.", "effect": "explain", "success": "You can track how many cards remain in the rival's deck."},
 			{"target": "opponent_discard", "prompt": "The opponent's discard pile is public too.", "body": "Cards that resolve or leave play may end up here. Check the visible top card and count when planning around the rival's options.", "hint": "Click the opponent discard counter.", "effect": "explain", "success": "Discard piles can reveal which answers have already been used."},
 			{"target": "opponent_zone", "prompt": "This is the opponent's battlefield.", "body": "Their units and assets appear on their side of the combat line. You can inspect public cards and follow their combat arrows.", "hint": "Click the opponent's battlefield area.", "effect": "explain", "success": "Cards above the divider belong to the opponent."},
-			{"target": "player_zone", "prompt": "Your battlefield is below the divider.", "body": "Units and assets you control stay here. Units can attack or block when the current phase and their card text allow it.", "hint": "Click your battlefield area.", "effect": "explain", "success": "The red separator makes both sides of combat easy to read."},
+			{"target": "player_zone", "prompt": "Your battlefield is below the center seam.", "body": "Units and assets you control stay here. Units can attack or block when the current phase and their card text allow it.", "hint": "Click your battlefield area.", "effect": "explain", "success": "The center seam separates the two sides of combat."},
 			{"target": "player_info", "prompt": "Check your resources before acting.", "body": "Energy pays the numeric cost. Knowledge icons are separate requirements. This simulated match also shows your health and remaining time.", "hint": "Click your information panel.", "effect": "explain", "success": "Plan around both the energy number and the knowledge symbols."},
-			{"target": "player_deck", "prompt": "Cards drawn leave your deck.", "body": "The deck count changes as you draw. Studying sends a card from your hand back into the deck.", "hint": "Click your deck counter.", "effect": "explain", "success": "You can track how many cards remain to draw."},
+			{"target": "player_deck", "prompt": "Cards drawn leave your deck.", "body": "The deck count changes as you draw. Hover over the deck to see how many cards remain.", "hint": "Click your deck.", "effect": "explain", "success": "You can track how many cards remain to draw."},
 			{"target": "player_discard", "prompt": "Your discard pile keeps used cards visible.", "body": "Resolved spells and defeated units commonly go here. Their top card and total count help you track what has happened.", "hint": "Click your discard counter.", "effect": "explain", "success": "You now know the main places cards move during a match."},
 			{"target": "player_hand_area", "prompt": "Your hand is where decisions begin.", "body": "Select a card to inspect it. Depending on its type, you may play it, study it, or keep it for a later turn.", "hint": "Click Rooftop Scout in your hand.", "effect": "explain", "success": "Board tour complete. Next, trade a card for lasting resources."}
 		]
 	},
 	{
-		"nav": "STUDY A CARD", "title": "Study to build your resources", "setup": {"energy": 1, "max_energy": 1, "deck_count": 23, "player_hand": ["field_notes", "rooftop_scout"]},
+		"nav": "STUDY A CARD", "title": "Study to build your resources", "setup": {"player_hand": ["field_notes"]},
+		"bridge": "Field Notes is drawn into your hand. Keep playing in this same match.",
 		"steps": [
-			{"target": "card:field_notes", "prompt": "Choose the card you want to study.", "body": "Studying is a slow action in a main phase. Select Field Notes in your hand; its preview explains the exchange.", "hint": "Select Field Notes in your hand.", "effect": "select_card", "card_id": "field_notes", "success": "The card is selected. The deck is the study destination."},
-			{"target": "player_deck", "prompt": "Send the selected card to your deck.", "body": "A regular study shuffles the selected card back into your deck and increases both current and maximum energy by one.", "hint": "Click your deck to study Field Notes.", "effect": "study_card", "success": "Study resolved: your energy grew and Field Notes returned to the deck."},
+			{"target": "card:field_notes", "prompt": "Choose the card you want to study.", "body": "Studying is a slow action in a main phase. Select Field Notes in your hand; its preview explains the exchange.", "hint": "Select Field Notes in your hand.", "effect": "select_card", "card_id": "field_notes", "success": "The Tome is selected. Drag it to the study area."},
+			{"target": "player_deck", "prompt": "Study Field Notes.", "body": "Studying this Tome increases current and maximum energy by one. Tomes leave your hand when studied; other studied cards remain in hand until the turn ends.", "hint": "Drag Field Notes onto your study area.", "effect": "study_card", "success": "Your energy grew and Field Notes left your hand."},
 			{"target": "knowledge_red", "prompt": "Choose the knowledge to gain.", "body": "This card offers red knowledge. Knowledge stays in your pool and helps satisfy colored card requirements.", "hint": "Choose the red knowledge icon.", "effect": "gain_red_knowledge", "success": "You now have one red knowledge for cards that require it."},
 			{"target": "card:rooftop_scout", "prompt": "Use the new resources to read another card.", "body": "The Scout needs one energy and one red knowledge. Select it to inspect its cost and unit stats before playing.", "hint": "Select Rooftop Scout in your hand.", "effect": "select_card", "card_id": "rooftop_scout", "success": "Good. The number is its energy cost; the red mark is a separate requirement."}
 		]
 	},
 	{
-		"nav": "PLAY A CARD", "title": "Play a unit to the battlefield", "setup": {"energy": 3, "max_energy": 3, "red_knowledge": 1, "player_hand": ["field_recruit"]},
+		"nav": "PLAY A CARD", "title": "Play a unit to the battlefield", "setup": {"player_hand": ["field_recruit"]},
+		"bridge": "A new turn begins. Field Recruit is drawn and your energy refills.",
 		"steps": [
 			{"target": "card:field_recruit", "prompt": "Select the Field Recruit.", "body": "The Recruit costs 2 energy and one red knowledge. You have enough of both, so this play is legal.", "hint": "Select Field Recruit in your hand.", "effect": "select_card", "card_id": "field_recruit", "success": "Card selected. Play it from your hand."},
 			{"target": "play_zone", "prompt": "Play the selected unit.", "body": "Playing a unit spends its cost and moves it from your hand to your battlefield. Units remain in play unless an effect removes them.", "hint": "Drag Field Recruit from your hand onto the central play area.", "effect": "play_unit", "success": "The Recruit is in play. Its attack and health are shown on the card."},
@@ -126,7 +128,8 @@ const LESSONS := [
 		]
 	},
 	{
-		"nav": "ATTACK", "title": "Declare attackers and deal damage", "setup": {"opponent_health": 6, "player_units": ["field_recruit"]},
+		"nav": "ATTACK", "title": "Declare attackers and deal damage", "setup": {"player_units": ["field_recruit"]},
+		"bridge": "Another turn begins. Field Recruit is ready to attack.",
 		"steps": [
 			{"target": "unit:field_recruit", "prompt": "Choose a unit to attack.", "body": "Only units allowed to attack in the current phase are selectable. Select the Recruit to mark it as an attacker.", "hint": "Select Field Recruit on your battlefield.", "effect": "select_attacker", "card_id": "field_recruit", "success": "Attacker selected. Confirm the attack to send it at the opponent."},
 			{"target": "submit_button", "prompt": "Declare the attack.", "body": "With no blocker in this exercise, the Recruit deals its 2 attack directly to the opponent.", "hint": "Press DECLARE ATTACK on the board.", "effect": "attack_opponent", "success": "The attack dealt 2 damage. Follow the health total on the rival's panel."},
@@ -135,6 +138,7 @@ const LESSONS := [
 	},
 	{
 		"nav": "BLOCK", "title": "Block to protect your health", "setup": {"opponent_units": ["raider"], "player_units": ["rook_guard"], "attacking_unit": "raider"},
+		"bridge": "The rival attacks with Ash Raider. Rook Guard is ready to defend you.",
 		"steps": [
 			{"target": "unit:rook_guard", "prompt": "Choose your blocker.", "body": "The Ash Raider is attacking. Select Rook Guard; blockers must be ready and allowed by the rules.", "hint": "Select Rook Guard on your battlefield.", "effect": "select_blocker", "card_id": "rook_guard", "success": "Blocker selected. Now choose which attacker it will stop."},
 			{"target": "unit:raider", "prompt": "Assign the blocker to the Raider.", "body": "The defending player chooses which of their units blocks each attacker. The arrow will show your assignment.", "hint": "Click the attacking Ash Raider.", "effect": "assign_block", "success": "Block assigned. Both units will deal combat damage to each other."},
@@ -143,7 +147,8 @@ const LESSONS := [
 		]
 	},
 	{
-		"nav": "SPELLS & STACK", "title": "Cast a spell, then resolve it", "setup": {"energy": 2, "max_energy": 2, "red_knowledge": 1, "opponent_health": 6, "player_hand": ["ember_bolt"]},
+		"nav": "SPELLS & STACK", "title": "Cast a spell, then resolve it", "setup": {"player_hand": ["ember_bolt"]},
+		"bridge": "A new turn begins. Ember Bolt is drawn and your energy refills.",
 		"steps": [
 			{"target": "card:ember_bolt", "prompt": "Select Ember Bolt.", "body": "This spell costs 2 energy and one red knowledge. Unlike a unit, a resolved spell goes to the discard pile.", "hint": "Select Ember Bolt in your hand.", "effect": "select_card", "card_id": "ember_bolt", "success": "Spell selected. Choose its target."},
 			{"target": "opponent_info", "prompt": "Choose the opponent as the target.", "body": "Targeted effects ask for a legal target before they are placed on the stack.", "hint": "Click the opponent's information panel.", "effect": "target_opponent", "success": "Target chosen. Now cast the spell."},
@@ -153,7 +158,8 @@ const LESSONS := [
 		]
 	},
 	{
-		"nav": "TRIGGERED ABILITIES", "title": "A card can trigger an ability", "setup": {"energy": 2, "max_energy": 2, "red_knowledge": 1, "opponent_health": 8, "player_hand": ["ash_warden"]},
+		"nav": "TRIGGERED ABILITIES", "title": "A card can trigger an ability", "setup": {"player_hand": ["ash_warden"]},
+		"bridge": "Ash Warden is drawn on the next turn. Your energy refills.",
 		"steps": [
 			{"target": "card:ash_warden", "prompt": "Select Ash Warden.", "body": "Its text begins with “When this enters play”. That wording describes a triggered ability, which happens automatically when its event occurs.", "hint": "Select Ash Warden in your hand.", "effect": "select_card", "card_id": "ash_warden", "success": "The Warden is selected. Playing it will cause its ability to trigger."},
 			{"target": "play_zone", "prompt": "Play the Warden and create its trigger.", "body": "The unit enters play. Its triggered ability is then put on the stack as a separate effect.", "hint": "Drag Ash Warden onto the central play area.", "effect": "play_trigger", "success": "Ash Whispers triggered automatically and is waiting on the stack."},
@@ -162,7 +168,8 @@ const LESSONS := [
 		]
 	},
 	{
-		"nav": "COMBAT TRICKS", "title": "Respond in combat with a trick", "setup": {"energy": 1, "max_energy": 1, "red_knowledge": 1, "player_hand": ["rally"], "player_units": ["duelist"], "opponent_units": ["bulwark"]},
+		"nav": "COMBAT TRICKS", "title": "Respond in combat with a trick", "setup": {"player_hand": ["rally"], "player_units": ["duelist"], "opponent_units": ["bulwark"]},
+		"bridge": "Later in the same match, Street Duelist faces Iron Bulwark. Rallying Cry is in hand.",
 		"steps": [
 			{"target": "unit:duelist", "prompt": "Select Street Duelist as your attacker.", "body": "The combat trick is useful after blockers are assigned. Start by declaring an attack with your unit.", "hint": "Select Street Duelist.", "effect": "select_trick_attacker", "card_id": "duelist", "success": "Attacker selected. Declare the attack."},
 			{"target": "submit_button", "prompt": "Declare attackers.", "body": "Iron Bulwark blocks the Duelist. The game now gives you a combat response window before damage.", "hint": "Press DECLARE ATTACK on the board.", "effect": "declare_trick_attack", "success": "The Bulwark is blocking. You can respond before combat damage."},
@@ -175,7 +182,8 @@ const LESSONS := [
 		]
 	},
 	{
-		"nav": "WIN THE GAME", "title": "Put the lessons together", "setup": {"opponent_health": 2, "player_units": ["finisher"]},
+		"nav": "WIN THE GAME", "title": "Put the lessons together", "setup": {"player_units": ["finisher"]},
+		"bridge": "The rival has 2 health left. Last Vanguard is ready for the final attack.",
 		"steps": [
 			{"target": "unit:finisher", "prompt": "Choose your ready attacker.", "body": "The opponent has 2 health and no blocker. Your Last Vanguard can deal 2 damage, exactly enough to win.", "hint": "Select Last Vanguard.", "effect": "select_attacker", "card_id": "finisher", "success": "The attack is ready. Declare it to end the match."},
 			{"target": "submit_button", "prompt": "Declare the final attack.", "body": "The unblocked unit deals its attack directly to the rival. The client simulation will show the match ending at zero health.", "hint": "Press DECLARE ATTACK on the board.", "effect": "final_attack", "success": "Lethal damage! The opponent has been defeated."},
@@ -188,7 +196,6 @@ var _lesson_index := 0
 var _step_index := 0
 var _lesson_complete := false
 var _game_won := false
-var _completed_lessons: Array[bool] = []
 var _setup_data: Dictionary = {}
 var _player_hand: Array = []
 var _player_units: Array = []
@@ -221,10 +228,8 @@ var _game_board: Variant
 var _tutorial_layer: CanvasLayer
 var _arrow_overlay
 var _coach_panel: Control
-var _course_list: VBoxContainer
-var _course_buttons: Array[Button] = []
-var _lesson_selector: OptionButton
 var _chapter_label: Label
+var _chapter_title_label: Label
 var _coach_step: Label
 var _coach_title: Label
 var _coach_body: Label
@@ -234,7 +239,6 @@ var _selected_card_panel: PanelContainer
 var _selected_card_title: Label
 var _selected_card_details: Label
 var _restart_button: Button
-var _next_button: Button
 var _progress_label: Label
 
 var _opponent_info_button: Button
@@ -261,10 +265,8 @@ var _board_initialized := false
 
 func _ready() -> void:
 	theme = MAIN_THEME
-	_completed_lessons.resize(LESSONS.size())
-	_completed_lessons.fill(false)
 	_build_interface()
-	_start_lesson(0)
+	_start_tutorial()
 	get_viewport().size_changed.connect(_on_viewport_resized)
 
 
@@ -326,7 +328,7 @@ func _build_header(parent: VBoxContainer) -> void:
 	header.add_child(brand)
 	brand.add_child(_make_label("LEARN TO PLAY", 24, TITLE_FONT, PAPER))
 	brand.add_child(_make_label("LOCAL PRACTICE MATCH", 13, NAV_FONT, MUTED))
-	_chapter_label = _make_label("PART 01 / 09", 20, NAV_FONT, BRASS)
+	_chapter_label = _make_label("CHAPTER 01 / 09", 20, NAV_FONT, BRASS)
 	_chapter_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	brand.add_child(_chapter_label)
 	var exit_button := _make_button("MAIN MENU", false)
@@ -334,51 +336,8 @@ func _build_header(parent: VBoxContainer) -> void:
 	exit_button.pressed.connect(_return_to_menu)
 	header.add_child(exit_button)
 
-	_lesson_selector = OptionButton.new()
-	_lesson_selector.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_lesson_selector.theme = MAIN_THEME
-	_lesson_selector.add_theme_font_override("font", NAV_FONT)
-	_lesson_selector.add_theme_font_size_override("font_size", 16)
-	for lesson in LESSONS:
-		_lesson_selector.add_item(str(lesson.nav))
-	_lesson_selector.item_selected.connect(_select_lesson)
-	parent.add_child(_lesson_selector)
-
-
-func _build_course_panel(parent: HBoxContainer) -> void:
-	var panel := _make_panel()
-	panel.custom_minimum_size.x = 256
-	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	parent.add_child(panel)
-
-	var content := VBoxContainer.new()
-	content.add_theme_constant_override("separation", 10)
-	panel.add_child(content)
-	content.add_child(_make_label("COURSE", 22, TITLE_FONT, PAPER))
-	var intro := _make_label("Nine short parts, from board basics to a lethal finish.", 15, BODY_FONT, MUTED)
-	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	content.add_child(intro)
-
-	_course_list = VBoxContainer.new()
-	_course_list.add_theme_constant_override("separation", 5)
-	content.add_child(_course_list)
-	for index in range(LESSONS.size()):
-		var button := _make_button("%02d   %s" % [index + 1, LESSONS[index]["nav"]], false)
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.custom_minimum_size.y = 43
-		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		button.pressed.connect(_select_lesson.bind(index))
-		_course_list.add_child(button)
-		_course_buttons.append(button)
-
-	var spacer := Control.new()
-	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	content.add_child(spacer)
-	_progress_label = _make_label("0 / 9 PARTS COMPLETE", 15, NAV_FONT, GREEN)
-	content.add_child(_progress_label)
-	var local_note := _make_label("All effects in this course run locally in the client.", 14, BODY_FONT, MUTED)
-	local_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	content.add_child(local_note)
+	_chapter_title_label = _make_label("BOARD BASICS", 17, NAV_FONT, BRASS)
+	parent.add_child(_chapter_title_label)
 
 
 func _build_board_panel(parent: HBoxContainer) -> void:
@@ -548,16 +507,12 @@ func _build_coach_panel(content: VBoxContainer) -> void:
 	_coach_feedback_label = _make_label("", 15, BODY_FONT, GREEN)
 	_coach_feedback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content.add_child(_coach_feedback_label)
-	_progress_label = _make_label("0 / 9 PARTS COMPLETE", 13, NAV_FONT, GREEN)
+	_progress_label = _make_label("0 STEPS COMPLETE", 13, NAV_FONT, GREEN)
 	content.add_child(_progress_label)
-	_restart_button = _make_button("RESTART THIS PART", false)
+	_restart_button = _make_button("RESTART TUTORIAL", false)
 	_restart_button.custom_minimum_size.y = 36
-	_restart_button.pressed.connect(_restart_lesson)
+	_restart_button.pressed.connect(_start_tutorial)
 	content.add_child(_restart_button)
-	_next_button = _make_button("NEXT PART", true)
-	_next_button.custom_minimum_size.y = 40
-	_next_button.pressed.connect(_next_lesson)
-	content.add_child(_next_button)
 	_action_button = _make_button("RESOLVE TOP", true)
 	_action_button.custom_minimum_size.y = 40
 	_action_button.pressed.connect(_on_action_button_pressed)
@@ -594,9 +549,8 @@ func _add_rule(parent: HBoxContainer) -> void:
 	parent.add_child(line)
 
 
-func _start_lesson(index: int) -> void:
-	_lesson_index = clampi(index, 0, LESSONS.size() - 1)
-	_lesson_selector.select(_lesson_index)
+func _start_tutorial() -> void:
+	_lesson_index = 0
 	_step_index = 0
 	SS.clear_selection_data()
 	_lesson_complete = false
@@ -609,26 +563,54 @@ func _start_lesson(index: int) -> void:
 	_combat_routes.clear()
 	_nudge_text = ""
 	_coach_feedback = ""
-	_setup_data = LESSONS[_lesson_index].get("setup", {})
-	_player_hand = _instantiate_cards(_setup_data.get("player_hand", []))
-	_player_units = _instantiate_cards(_setup_data.get("player_units", []))
+	_player_hand.clear()
+	_player_units.clear()
 	_player_discard.clear()
-	_opponent_units = _instantiate_cards(_setup_data.get("opponent_units", []))
+	_opponent_units.clear()
 	_opponent_discard.clear()
 	_stack.clear()
-	_energy = _setup_data.get("energy", 1)
-	_max_energy = _setup_data.get("max_energy", 1)
-	_red_knowledge = _setup_data.get("red_knowledge", 0)
-	_blue_knowledge = _setup_data.get("blue_knowledge", 0)
-	_player_health = _setup_data.get("player_health", 20)
-	_opponent_health = _setup_data.get("opponent_health", 20)
-	_deck_count = _setup_data.get("deck_count", 24)
-	_opponent_deck_count = _setup_data.get("opponent_deck_count", 24)
-	_opponent_hand_count = _setup_data.get("opponent_hand", 3)
+	var opening: Dictionary = LESSONS[0].get("setup", {})
+	_energy = int(opening.get("energy", 1))
+	_max_energy = int(opening.get("max_energy", 1))
+	_red_knowledge = 0
+	_blue_knowledge = 0
+	_player_health = 20
+	_opponent_health = int(opening.get("opponent_health", 8))
+	_deck_count = 24
+	_opponent_deck_count = 24
+	_opponent_hand_count = int(opening.get("opponent_hand", 3))
+	_enter_chapter(0)
+	_refresh_view()
+
+
+func _enter_chapter(index: int) -> void:
+	_lesson_index = index
+	_step_index = 0
+	_setup_data = LESSONS[index].get("setup", {})
+	SS.clear_selection_data()
+	_selected_card_id = ""
+	_selected_target_id = ""
+	_attacking_unit_id = ""
+	_blocking_unit_id = ""
+	_assigned_blocker_id = ""
+	_combat_routes.clear()
+	_nudge_text = ""
+	_coach_feedback = str(LESSONS[index].get("bridge", ""))
+	if index > 0:
+		# Scripted turns add teaching cards while keeping the match's board and health.
+		_energy = _max_energy
+		for card in _player_hand:
+			card["studied"] = false
+		for unit in _player_units:
+			unit["ready"] = true
+			unit["exhausted"] = false
+	_add_chapter_cards(_setup_data.get("player_hand", []), _player_hand, index > 0)
+	_add_chapter_cards(_setup_data.get("player_units", []), _player_units, index > 0)
+	_add_chapter_cards(_setup_data.get("opponent_units", []), _opponent_units, index > 0, false)
 	_phase_value = GS.Types.Phase.MAIN_BEFORE
 	if not str(_setup_data.get("attacking_unit", "")).is_empty():
 		_phase_value = GS.Types.Phase.BLOCK
-	elif _lesson_index in [3, 7, 8]:
+	elif index in [3, 7, 8]:
 		_phase_value = GS.Types.Phase.ATTACK
 	if not str(_setup_data.get("attacking_unit", "")).is_empty():
 		var attacker := _find_card(_setup_data.attacking_unit)
@@ -636,7 +618,21 @@ func _start_lesson(index: int) -> void:
 			attacker["is_attacking"] = true
 			_attacking_unit_id = _setup_data.attacking_unit
 			_combat_routes.append({"from": "unit:" + _setup_data.attacking_unit, "to": "player_info"})
-	_refresh_view()
+
+
+func _add_chapter_cards(ids: Array, zone: Array, from_deck: bool, player_cards: bool = true) -> void:
+	for card_id in ids:
+		if not _find_card(str(card_id)).is_empty():
+			continue
+		var cards := _instantiate_cards([card_id])
+		if cards.is_empty():
+			continue
+		zone.append(cards[0])
+		if from_deck:
+			if player_cards:
+				_deck_count = maxi(0, _deck_count - 1)
+			else:
+				_opponent_deck_count = maxi(0, _opponent_deck_count - 1)
 
 
 func _instantiate_cards(ids: Array) -> Array:
@@ -674,11 +670,8 @@ func _refresh_view() -> void:
 
 	_refresh_coach()
 	_refresh_highlight()
-	_refresh_course_nav()
+	_refresh_progress()
 	_refresh_arrow_positions()
-	_lesson_selector.select(_lesson_index)
-	if _progress_label:
-		_progress_label.text = "%d / %d PARTS COMPLETE" % [_completed_count(), LESSONS.size()]
 	if _action_button:
 		_action_button.visible = is_action_step and not _lesson_complete
 	call_deferred("_fit_coach_panel")
@@ -763,13 +756,14 @@ func _fill_card_model(model: GS.ServerGameMessages.CardP, card: Dictionary, zone
 		cost_group.set_knowledge(knowledge)
 		cost_group.set_count(1)
 	var in_hand: bool = zone == "Hand"
-	var can_play: bool = in_hand and card_type != "TOME" and _energy >= int(card.get("cost", 0))
+	var can_play: bool = in_hand and card_type != "TOME" and not bool(card.get("studied", false)) \
+		and _energy >= int(card.get("cost", 0))
 	if knowledge == GS.Types.Knowledge.RED:
 		can_play = can_play and _red_knowledge > 0
 	elif knowledge == GS.Types.Knowledge.BLUE:
 		can_play = can_play and _blue_knowledge > 0
 	model.set_canPlay(can_play)
-	model.set_canStudy(in_hand and card_type == "TOME")
+	model.set_canStudy(in_hand and card_type == "TOME" and not bool(card.get("studied", false)))
 	model.set_canAttack(zone == "Play" and owner_id == "tutorial-player" and card_type == "UNIT" \
 		and _phase_value == GS.Types.Phase.ATTACK and bool(card.get("ready", true)) \
 		and not bool(card.get("exhausted", false)))
@@ -932,7 +926,8 @@ func _card_style(focused: bool, selected: bool) -> StyleBoxFlat:
 
 func _refresh_coach() -> void:
 	var lesson: Dictionary = LESSONS[_lesson_index]
-	_chapter_label.text = "PART %02d / %02d" % [_lesson_index + 1, LESSONS.size()]
+	_chapter_label.text = "CHAPTER %02d / %02d" % [_lesson_index + 1, LESSONS.size()]
+	_chapter_title_label.text = str(lesson["nav"])
 	_selected_card_panel.visible = not _selected_card_id.is_empty()
 	var selected := _find_card(_selected_card_id)
 	if selected.is_empty():
@@ -945,24 +940,23 @@ func _refresh_coach() -> void:
 		_selected_card_details.text = "Cost: %d energy + %s knowledge\n%s%s" % [selected.get("cost", 0), str(selected.get("knowledge", "none")).to_lower(), selected.get("text", ""), stats]
 
 	if _lesson_complete:
-		_coach_step.text = "PART %02d COMPLETE" % (_lesson_index + 1)
-		_coach_title.text = "Lesson complete"
-		_coach_body.text = "You finished %s. " % lesson["title"] + str(lesson.get("recap", "The next part builds on these skills. Use Restart This Part to practice again."))
-		_coach_hint.text = "Continue to the next part or replay this one."
-		_coach_feedback_label.text = "Course progress: %d of %d parts complete." % [_completed_count(), LESSONS.size()]
-		_next_button.visible = true
-		_next_button.text = "RESTART COURSE" if _lesson_index == LESSONS.size() - 1 else "NEXT PART"
+		_coach_step.text = "TUTORIAL COMPLETE"
+		_coach_title.text = "Victory"
+		_coach_body.text = "You studied, played units and spells, attacked, blocked, resolved a trigger, and used a combat trick in one match."
+		_coach_hint.text = "Try a real match, or play this tutorial again."
+		_coach_feedback_label.text = _coach_feedback
+		_restart_button.text = "PLAY AGAIN"
 		return
 
 	var steps: Array = lesson.steps
 	var step: Dictionary = steps[_step_index]
-	_coach_step.text = "STEP %02d / %02d" % [_step_index + 1, steps.size()]
+	_coach_step.text = "STEP %02d / %02d" % [_completed_steps() + 1, _total_steps()]
 	_coach_title.text = step.prompt
 	_coach_body.text = step.body
 	_coach_hint.text = step.hint
 	_coach_feedback_label.text = _nudge_text if not _nudge_text.is_empty() else _coach_feedback
 	_coach_feedback_label.add_theme_color_override("font_color", Color("#e5a09a") if not _nudge_text.is_empty() else GREEN)
-	_next_button.visible = false
+	_restart_button.text = "RESTART TUTORIAL"
 
 
 func _refresh_highlight() -> void:
@@ -979,14 +973,8 @@ func _refresh_highlight() -> void:
 			control.modulate = Color(1.18, 1.11, 0.87, 1.0) if target_id == expected else Color.WHITE
 
 
-func _refresh_course_nav() -> void:
-	var complete_count := _completed_count()
-	_progress_label.text = "%d / %d PARTS COMPLETE" % [complete_count, LESSONS.size()]
-	for index in range(_course_buttons.size()):
-		var button := _course_buttons[index]
-		var mark := "  ✓" if _completed_lessons[index] else ""
-		button.text = "%02d   %s%s" % [index + 1, LESSONS[index]["nav"], mark]
-		button.modulate = Color(1.15, 1.08, 0.85, 1.0) if index == _lesson_index else (Color(0.92, 1.0, 0.83, 1.0) if _completed_lessons[index] else Color.WHITE)
+func _refresh_progress() -> void:
+	_progress_label.text = "%d / %d STEPS COMPLETE" % [_completed_steps(), _total_steps()]
 
 
 func _refresh_arrow_positions() -> void:
@@ -1034,7 +1022,10 @@ func _on_target_pressed(target_id: String) -> void:
 	_coach_feedback = str(step.get("success", "Good move."))
 	_step_index += 1
 	if _step_index >= LESSONS[_lesson_index].steps.size():
-		_finish_lesson()
+		if _lesson_index == LESSONS.size() - 1:
+			_finish_lesson()
+		else:
+			_enter_chapter(_lesson_index + 1)
 	_refresh_view()
 
 
@@ -1119,10 +1110,12 @@ func _apply_effect(effect: String, step: Dictionary, target_id: String) -> void:
 		"select_card":
 			_selected_card_id = str(step.get("card_id", ""))
 		"study_card":
-			var studied := _take_from(_player_hand, _selected_card_id)
-			if not studied.is_empty():
-				_player_hand.erase(studied)
-				_deck_count += 1
+			var studied := _find_card(_selected_card_id)
+			if not studied.is_empty() and _player_hand.has(studied):
+				if studied.get("type", "") == "TOME":
+					_player_hand.erase(studied)
+				else:
+					studied["studied"] = true
 				_max_energy += 1
 				_energy += 1
 				_selected_card_id = ""
@@ -1311,8 +1304,8 @@ func _resolve_trick_combat() -> void:
 
 func _finish_lesson() -> void:
 	_lesson_complete = true
-	_completed_lessons[_lesson_index] = true
-	if _lesson_index == LESSONS.size() - 1 and _game_won:
+	_selected_card_id = ""
+	if _game_won:
 		_coach_feedback = "Victory recorded in this local tutorial simulation."
 
 
@@ -1380,27 +1373,18 @@ func _stack_display_text() -> String:
 	return "ON THE STACK  •  %s" % str(top.get("effect_name", top.get("name", "Pending effect")))
 
 
-func _completed_count() -> int:
-	var result := 0
-	for completed in _completed_lessons:
-		if completed:
-			result += 1
-	return result
+func _completed_steps() -> int:
+	var count := _step_index
+	for index in range(_lesson_index):
+		count += LESSONS[index].steps.size()
+	return count
 
 
-func _restart_lesson() -> void:
-	_start_lesson(_lesson_index)
-
-
-func _select_lesson(index: int) -> void:
-	_start_lesson(index)
-
-
-func _next_lesson() -> void:
-	if _lesson_index == LESSONS.size() - 1:
-		_start_lesson(0)
-	else:
-		_start_lesson(_lesson_index + 1)
+func _total_steps() -> int:
+	var count := 0
+	for lesson in LESSONS:
+		count += lesson.steps.size()
+	return count
 
 
 func _return_to_menu() -> void:
