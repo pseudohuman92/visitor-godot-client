@@ -22,8 +22,9 @@ const text_icons = {
 	"{X}": "res://assets/card-components/Icons/Numbers/Colorless/X.png",
 }
 
-const DEPLOYING_ICON_PATH = "res://assets/Icons/properties/deploying.png"
-const KEYWORD_ICON_DIR = "res://assets/Icons/"
+const CARD_PROPERTY_ICON_DIR = "res://assets/card-components/Icons/"
+const DEPLOYING_ICON_PATH = CARD_PROPERTY_ICON_DIR + "deploying.png"
+const KEYWORD_ICON_DIR = CARD_PROPERTY_ICON_DIR
 const KEYWORD_ICON_ORDER = [
 	"Deadly", "Defender", "FirstStrike", "Trample", "Evasive",
 	"Vigilance", "Lifelink", "Reach", "Drain", "Unblockable",
@@ -32,6 +33,62 @@ const KEYWORD_ICON_ORDER = [
 const EDGE_ICON_SIZE = 28.0
 const EDGE_ICON_STEP = 30.0
 const EDGE_ICON_TOP = 42.0
+const CARD_FRAME_DIR = "res://assets/card-components/Borders/"
+const CARD_FRAME_BY_COLOR = {
+	"B": "Parallax",
+	"G": "Strain",
+	"P": "Covenant",
+	"R": "Ash",
+	"Y": "Aegis",
+}
+const CARD_FRAME_OPENING_BY_NAME = {
+	"Aegis": Rect2(0.061, 0.072, 0.879, 0.873),
+	"Ash": Rect2(0.064, 0.096, 0.873, 0.843),
+	"Covenant": Rect2(0.062, 0.110, 0.876, 0.790),
+	"Factionless": Rect2(0.082, 0.096, 0.837, 0.827),
+	"Parallax": Rect2(0.065, 0.081, 0.870, 0.843),
+	"Strain": Rect2(0.084, 0.082, 0.831, 0.841),
+}
+
+func set_card_frame(card_view, card):
+	if card_view == null or card_view.find_child("CardImage") == null:
+		return
+	var card_image = card_view.find_child("CardImage") as Control
+	var artwork = card_image.get_node_or_null("Artwork") as Control
+	var frame = card_image.get_node_or_null("FactionFrame") as TextureRect
+	if frame == null:
+		frame = TextureRect.new()
+		frame.name = "FactionFrame"
+		frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		frame.stretch_mode = TextureRect.STRETCH_SCALE
+		card_image.add_child(frame)
+		var contents = card_image.get_node_or_null("Contents")
+		if contents:
+			card_image.move_child(frame, contents.get_index())
+	if card == null:
+		frame.hide()
+		if artwork:
+			artwork.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		return
+	var frame_name = "Factionless"
+	var knowledge_cost = card.get_knowledgeCost()
+	if not knowledge_cost.is_empty():
+		var color = to_knowledge_string(knowledge_cost[0].get_knowledge())
+		frame_name = CARD_FRAME_BY_COLOR.get(color, frame_name)
+	var opening: Rect2 = CARD_FRAME_OPENING_BY_NAME[frame_name]
+	if artwork:
+		artwork.anchor_left = opening.position.x
+		artwork.anchor_top = opening.position.y
+		artwork.anchor_right = opening.position.x + opening.size.x
+		artwork.anchor_bottom = opening.position.y + opening.size.y
+		artwork.offset_left = 0.0
+		artwork.offset_top = 0.0
+		artwork.offset_right = 0.0
+		artwork.offset_bottom = 0.0
+	frame.texture = load(CARD_FRAME_DIR + frame_name + ".png")
+	frame.show()
 
 func get_card_image(set_name, card_name):
 	var path = "res://assets/card-images/" + set_name + "/" + card_name + ".png"
@@ -238,6 +295,7 @@ func set_card_property_icons(card_view, combat):
 
 
 func setup_card(n, card=null):
+	CS.set_card_frame(n, card)
 	if card:
 		n.card = card
 		n.find_child("Contents").show()
