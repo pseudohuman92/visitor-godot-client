@@ -34,6 +34,7 @@ const EDGE_ICON_SIZE = 28.0
 const EDGE_ICON_STEP = 30.0
 const EDGE_ICON_TOP = 42.0
 const CARD_FRAME_DIR = "res://assets/card-components/Borders/"
+const SHOW_CARD_BORDERS := false
 const CARD_FRAME_BY_COLOR = {
 	"B": "Parallax",
 	"G": "Strain",
@@ -54,6 +55,11 @@ func set_card_frame(card_view, card):
 	if card_view == null or card_view.find_child("CardImage") == null:
 		return
 	var card_image = card_view.find_child("CardImage") as Control
+	var internal = card_view.find_child("InternalContainer") as Control
+	if card_view.name == "InternalContainer":
+		internal = card_view as Control
+	_set_card_border_visibility(internal, SHOW_CARD_BORDERS)
+	_set_card_border_visibility(card_image, SHOW_CARD_BORDERS)
 	var artwork = card_image.get_node_or_null("Artwork") as Control
 	var frame = card_image.get_node_or_null("FactionFrame") as TextureRect
 	if frame == null:
@@ -79,16 +85,33 @@ func set_card_frame(card_view, card):
 		frame_name = CARD_FRAME_BY_COLOR.get(color, frame_name)
 	var opening: Rect2 = CARD_FRAME_OPENING_BY_NAME[frame_name]
 	if artwork:
-		artwork.anchor_left = opening.position.x
-		artwork.anchor_top = opening.position.y
-		artwork.anchor_right = opening.position.x + opening.size.x
-		artwork.anchor_bottom = opening.position.y + opening.size.y
-		artwork.offset_left = 0.0
-		artwork.offset_top = 0.0
-		artwork.offset_right = 0.0
-		artwork.offset_bottom = 0.0
+		if SHOW_CARD_BORDERS:
+			artwork.anchor_left = opening.position.x
+			artwork.anchor_top = opening.position.y
+			artwork.anchor_right = opening.position.x + opening.size.x
+			artwork.anchor_bottom = opening.position.y + opening.size.y
+			artwork.offset_left = 0.0
+			artwork.offset_top = 0.0
+			artwork.offset_right = 0.0
+			artwork.offset_bottom = 0.0
+		else:
+			artwork.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	frame.texture = load(CARD_FRAME_DIR + frame_name + ".png")
-	frame.show()
+	frame.visible = SHOW_CARD_BORDERS
+
+func _set_card_border_visibility(panel: Control, visible: bool):
+	if panel == null:
+		return
+	var source_style
+	if panel.has_meta("source_card_border_style"):
+		source_style = panel.get_meta("source_card_border_style")
+	else:
+		source_style = panel.get_theme_stylebox("panel")
+		panel.set_meta("source_card_border_style", source_style)
+	if visible:
+		panel.add_theme_stylebox_override("panel", source_style)
+	else:
+		panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 
 func get_card_image(set_name, card_name):
 	var path = "res://assets/card-images/" + set_name + "/" + card_name + ".png"

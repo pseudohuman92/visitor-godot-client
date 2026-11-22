@@ -16,19 +16,40 @@ axis_stretch_vertical = 2
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rt85k"]
 texture = ExtResource("3_hho88")
 
-[node name="EnergyDisplay" type="HBoxContainer"]
+[node name="EnergyDisplay" type="VBoxContainer"]
 offset_right = 200.0
 offset_bottom = 100.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-alignment = 1
 script = ExtResource("1_n5fa2")
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+[node name="HealthRow" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="EnergyLabel" type="Label" parent="AspectRatioContainer"]
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="HealthRow"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="HealthLabel" type="Label" parent="HealthRow/AspectRatioContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxTexture_rt85k")
+text = "30"
+label_settings = ExtResource("3_uhjq1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnergyRow" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+alignment = 1
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="EnergyRow"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="EnergyLabel" type="Label" parent="EnergyRow/AspectRatioContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_styles/normal = SubResource("StyleBoxTexture_e1o3c")
@@ -38,6 +59,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AvatarContainer" type="PanelContainer" parent="."]
+visible = false
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = ExtResource("4_djh1v")
@@ -47,19 +69,6 @@ script = ExtResource("5_gfaja")
 layout_mode = 2
 texture = ExtResource("4_qragl")
 expand_mode = 3
-
-[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HealthLabel" type="Label" parent="AspectRatioContainer2"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_styles/normal = SubResource("StyleBoxTexture_rt85k")
-text = "30"
-label_settings = ExtResource("3_uhjq1")
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [connection signal="gui_input" from="AvatarContainer" to="AvatarContainer" method="_on_gui_input"]
 [connection signal="mouse_entered" from="AvatarContainer" to="AvatarContainer" method="_on_mouse_entered"]

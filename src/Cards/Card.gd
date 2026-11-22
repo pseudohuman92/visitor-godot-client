@@ -89,6 +89,8 @@ func get_border_color():
 	return Color.WHITE_SMOKE
 
 func set_border_color(color):
+		if not CS.SHOW_CARD_BORDERS:
+			return
 		var current = get_theme_stylebox("panel")
 		if current is StyleBoxFlat and current.border_color == color:
 			return

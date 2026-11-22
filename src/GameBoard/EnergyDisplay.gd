@@ -1,4 +1,4 @@
-extends HBoxContainer
+extends VBoxContainer
 
 # Called only when the displayed player's energy/max-energy/health changes.
 func update_player(player):

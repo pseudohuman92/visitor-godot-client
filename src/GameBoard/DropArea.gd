@@ -43,6 +43,10 @@ func _drop_data(at_position, data):
 func _process(delta):
 	if GS.gameState:
 		var border = get_theme_stylebox("panel").duplicate()
+		if border is StyleBoxFlat:
+			border.set_border_width_all(2)
+			border.shadow_size = 0
+			border.shadow_color = Color.TRANSPARENT
 		if name.contains("PlayerDeck"):
 			var can_study = false
 			var player = GS.gameState.get_player()
@@ -65,14 +69,18 @@ func _process(delta):
 				border.set_border_color(Color.TRANSPARENT)
 
 		elif name.contains("PlayerDisplayFront"):
-			if GS.gameState.get_turnPlayer() == GS.playerId:
-				border.set_border_color(Color.GOLD)
+			var player = GS.gameState.get_player()
+			if player and player.get_id() == GS.gameState.get_activePlayer():
+				border.set_border_color(Color("#67DDF5"))
+				border.set_border_width_all(5)
 			else:
 				border.set_border_color(Color.TRANSPARENT)
 
 		elif name.contains("OpponentDisplayFront"):
-			if GS.gameState.get_turnPlayer() != GS.playerId:
-				border.set_border_color(Color.GOLD)
+			var opponent = GS.gameState.get_opponent()
+			if opponent and opponent.get_id() == GS.gameState.get_activePlayer():
+				border.set_border_color(Color("#67DDF5"))
+				border.set_border_width_all(5)
 			else:
 				border.set_border_color(Color.TRANSPARENT)
 

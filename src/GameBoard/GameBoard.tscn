@@ -30,6 +30,7 @@
 [ext_resource type="Texture2D" path="res://assets/ui/library/panels/red_panel_transparent.png" id="28_red_panel"]
 [ext_resource type="Texture2D" path="res://assets/ui/library/banners/dark_transparent.png" id="29_dark_banner"]
 [ext_resource type="Texture2D" path="res://assets/ui/library/geometry/diamond_transparent.png" id="30_separator_mark"]
+[ext_resource type="Texture2D" path="res://assets/card-backs/Discard Pile.png" id="31_discard_pile_asset"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqqf3"]
 bg_color = Color(0.043137, 0.05098, 0.054902, 0)
@@ -37,6 +38,19 @@ bg_color = Color(0.043137, 0.05098, 0.054902, 0)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xdiac"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kh7s4"]
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_discard_pile"]
+texture = ExtResource("31_discard_pile_asset")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
 axis_stretch_horizontal = 2
 axis_stretch_vertical = 2
 
@@ -154,7 +168,7 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxEmpty_xdiac")
+theme_override_styles/panel = SubResource("StyleBoxTexture_discard_pile")
 script = ExtResource("5_ccn7t")
 
 [node name="OpponentDiscard" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea/OpponentDiscardClick"]
@@ -172,6 +186,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_0shin")
 
 [node name="OpponentDeckSize" type="Label" parent="MainContainer/HBoxContainer/DisplayArea/OpponentDisplay/OpponentDisplayArea/OpponentDeckArea/OpponentDeck"]
+visible = false
 layout_mode = 2
 text = "123"
 label_settings = ExtResource("12_tjvsi")
@@ -259,7 +274,7 @@ custom_minimum_size = Vector2(200, 280)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxEmpty_3tse0")
+theme_override_styles/panel = SubResource("StyleBoxTexture_discard_pile")
 script = ExtResource("5_ccn7t")
 
 [node name="PlayerDiscard" type="PanelContainer" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDiscardClick"]
@@ -293,6 +308,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_bsd8o")
 
 [node name="PlayerDeckSize" type="Label" parent="MainContainer/HBoxContainer/DisplayArea/PlayerDisplay/PlayerDisplayArea/PlayerDeckArea/PlayerDeckContainer/PlayerDeckBorder/PlayerDeck"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_font_sizes/font_size = 14
@@ -371,6 +387,7 @@ vertical_alignment = 1
 script = ExtResource("14_er1e3")
 
 [node name="PlayAreaSeparator" type="ColorRect" parent="MainContainer/HBoxContainer/PlayArea/PlayContainer/VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 size_flags_horizontal = 3

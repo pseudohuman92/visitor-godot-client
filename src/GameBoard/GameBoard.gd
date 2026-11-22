@@ -12,6 +12,12 @@ var _display_values = {}
 var _board_hud_root: Control
 var _opponent_hud: Control
 var _player_hud: Control
+var _opponent_active_frame: Panel
+var _player_active_frame: Panel
+var _phase_indicator: PanelContainer
+var _phase_step_chips: Array[PanelContainer] = []
+var _phase_step_labels: Array[Label] = []
+var _phase_steps: Array = []
 var _opponent_front: Control
 var _opponent_deck_area: Control
 var _opponent_hand: Control
@@ -139,9 +145,203 @@ func _apply_reference_board_composition():
 	_player_deck_area.reparent(_player_hud)
 	_player_hand.reparent(_player_hud)
 	old_display_area.queue_free()
+	_prepare_information_panels()
+	_setup_deck_count_hover()
+	_create_active_player_frames()
+	_create_phase_indicator()
+	var divider = _find_board_node("PlayAreaSeparator")
+	if divider:
+		divider.hide()
+	var old_phase_label = _find_board_node("Phase")
+	if old_phase_label:
+		old_phase_label.hide()
 
 	get_viewport().size_changed.connect(_layout_board_hud)
 	_layout_board_hud()
+
+func _prepare_information_panels():
+	for prefix in ["Opponent", "Player"]:
+		var energy_display = _find_board_node(prefix + "EnergyDisplay")
+		if not energy_display:
+			continue
+		var avatar = energy_display.find_child("AvatarContainer", true, false)
+		if avatar:
+			avatar.hide()
+		var clock = _find_board_node(prefix + "Clock")
+		var health_row = energy_display.find_child("HealthRow", true, false)
+		if clock and health_row:
+			clock.reparent(health_row, false)
+			clock.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			clock.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			clock.custom_minimum_size = Vector2(0, 28)
+			clock.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+			clock.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		var energy_row = energy_display.find_child("EnergyRow", true, false)
+		var knowledge = _find_board_node(prefix + "KnowledgeDisplay")
+		if energy_row and knowledge:
+			knowledge.reparent(energy_row, false)
+			knowledge.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			energy_row.alignment = BoxContainer.ALIGNMENT_BEGIN
+		if prefix == "Opponent" and energy_row:
+			energy_display.move_child(energy_row, 0)
+
+func _setup_deck_count_hover():
+	for prefix in ["Opponent", "Player"]:
+		var deck = _find_board_node(prefix + "Deck") as Control
+		var count = _find_board_node(prefix + "DeckSize") as Control
+		if not deck or not count:
+			continue
+		count.visible = false
+		count.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		deck.mouse_entered.connect(_set_deck_count_visibility.bind(count, true))
+		deck.mouse_exited.connect(_set_deck_count_visibility.bind(count, false))
+
+func _set_deck_count_visibility(count: Control, visible: bool):
+	if is_instance_valid(count):
+		count.visible = visible
+
+func _create_active_player_frames():
+	if not is_instance_valid(_board_hud_root):
+		return
+	_opponent_active_frame = _new_active_player_frame("OpponentActiveFrame")
+	_player_active_frame = _new_active_player_frame("PlayerActiveFrame")
+	_board_hud_root.add_child(_opponent_active_frame)
+	_board_hud_root.add_child(_player_active_frame)
+
+func _new_active_player_frame(frame_name: String) -> Panel:
+	var frame = Panel.new()
+	frame.name = frame_name
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	frame.visible = false
+	frame.z_index = 15
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color.TRANSPARENT
+	style.draw_center = false
+	style.border_color = Color("#67DDF5")
+	style.set_border_width_all(4)
+	style.corner_radius_top_left = 6
+	style.corner_radius_top_right = 6
+	style.corner_radius_bottom_left = 6
+	style.corner_radius_bottom_right = 6
+	frame.add_theme_stylebox_override("panel", style)
+	return frame
+
+func _update_active_player_indicator(state):
+	if not state or not is_instance_valid(_player_active_frame) or not is_instance_valid(_opponent_active_frame):
+		return
+	var active_player_id = state.get_activePlayer()
+	if active_player_id.is_empty():
+		active_player_id = state.get_turnPlayer()
+	var player = state.get_player()
+	var opponent = state.get_opponent()
+	var player_is_active = player and player.get_id() == active_player_id
+	var opponent_is_active = opponent and opponent.get_id() == active_player_id
+	if not player_is_active and not opponent_is_active:
+		player_is_active = player and player.get_id() == GS.playerId
+		if not player_is_active:
+			opponent_is_active = opponent != null
+	_player_active_frame.visible = player_is_active
+	_opponent_active_frame.visible = opponent_is_active
+
+func _create_phase_indicator():
+	if not is_instance_valid(_board_hud_root) or is_instance_valid(_phase_indicator):
+		return
+	_phase_steps = [
+		{"phase": GS.Types.Phase.REDRAW, "label": "REDRAW", "name": "Redraw"},
+		{"phase": GS.Types.Phase.BEGIN, "label": "BEGIN", "name": "Begin"},
+		{"phase": GS.Types.Phase.MAIN_BEFORE, "label": "MAIN 1", "name": "Main Before"},
+		{"phase": GS.Types.Phase.ATTACK, "label": "ATTACK", "name": "Attack"},
+		{"phase": GS.Types.Phase.ATTACK_PLAY, "label": "ATK PLAY", "name": "Attack Play"},
+		{"phase": GS.Types.Phase.BLOCK, "label": "BLOCK", "name": "Block"},
+		{"phase": GS.Types.Phase.BLOCK_PLAY, "label": "BLK PLAY", "name": "Block Play"},
+		{"phase": GS.Types.Phase.MAIN_AFTER, "label": "MAIN 2", "name": "Main After"},
+		{"phase": GS.Types.Phase.END, "label": "END", "name": "End"},
+	]
+	_phase_indicator = PanelContainer.new()
+	_phase_indicator.name = "GamePhaseIndicator"
+	_phase_indicator.custom_minimum_size = Vector2(0, 80)
+	_phase_indicator.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_phase_indicator.z_index = 10
+	var shell = StyleBoxFlat.new()
+	shell.bg_color = Color("#111416")
+	shell.border_color = Color("#72685B")
+	shell.set_border_width_all(1)
+	shell.corner_radius_top_left = 5
+	shell.corner_radius_top_right = 5
+	shell.corner_radius_bottom_left = 5
+	shell.corner_radius_bottom_right = 5
+	shell.shadow_color = Color(0, 0, 0, 0.65)
+	shell.shadow_size = 8
+	shell.shadow_offset = Vector2(0, 3)
+	_phase_indicator.add_theme_stylebox_override("panel", shell)
+	_board_hud_root.add_child(_phase_indicator)
+	var margins = MarginContainer.new()
+	margins.add_theme_constant_override("margin_left", 6)
+	margins.add_theme_constant_override("margin_top", 4)
+	margins.add_theme_constant_override("margin_right", 6)
+	margins.add_theme_constant_override("margin_bottom", 4)
+	_phase_indicator.add_child(margins)
+	var rows = VBoxContainer.new()
+	rows.add_theme_constant_override("separation", 2)
+	margins.add_child(rows)
+	var row: HBoxContainer
+	for index in range(_phase_steps.size()):
+		if index % 3 == 0:
+			row = HBoxContainer.new()
+			row.add_theme_constant_override("separation", 2)
+			row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			rows.add_child(row)
+		var step = _phase_steps[index]
+		var chip = PanelContainer.new()
+		chip.custom_minimum_size = Vector2(0, 20)
+		chip.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		chip.tooltip_text = step["name"]
+		var label = Label.new()
+		label.text = step["label"]
+		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		label.add_theme_font_override("font", preload("res://assets/fonts/BarlowCondensed-SemiBold-Tracked.tres"))
+		label.add_theme_font_size_override("font_size", 14)
+		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		chip.add_child(label)
+		row.add_child(chip)
+		_phase_step_chips.append(chip)
+		_phase_step_labels.append(label)
+
+func _update_phase_indicator(state):
+	if not is_instance_valid(_phase_indicator) or state == null:
+		return
+	var current_index = -1
+	for index in range(_phase_steps.size()):
+		if _phase_steps[index]["phase"] == state.get_phase():
+			current_index = index
+			break
+	for index in range(_phase_step_chips.size()):
+		var chip_style = StyleBoxFlat.new()
+		chip_style.set_border_width_all(1)
+		chip_style.corner_radius_top_left = 3
+		chip_style.corner_radius_top_right = 3
+		chip_style.corner_radius_bottom_left = 3
+		chip_style.corner_radius_bottom_right = 3
+		var label_color = Color("#8D8880")
+		if index == current_index:
+			chip_style.bg_color = Color("#18333B")
+			chip_style.border_color = Color("#67DDF5")
+			chip_style.set_border_width_all(2)
+			chip_style.shadow_color = Color(0.18, 0.78, 0.94, 0.65)
+			chip_style.shadow_size = 6
+			label_color = Color("#F3F1E9")
+		elif index < current_index:
+			chip_style.bg_color = Color("#28231E")
+			chip_style.border_color = Color("#796448")
+			label_color = Color("#D1C0A3")
+		else:
+			chip_style.bg_color = Color("#17191A")
+			chip_style.border_color = Color("#45433F")
+		_phase_step_chips[index].add_theme_stylebox_override("panel", chip_style)
+		_phase_step_labels[index].add_theme_color_override("font_color", label_color)
 
 func _prepare_tutorial_client():
 	GS.gameType = GS.Types.GameType.BO1_CONSTRUCTED
@@ -268,6 +468,15 @@ func _layout_board_hud():
 		Vector2(front_x, opponent_info_y), Vector2(front_width, front_height), front_scale)
 	_place_board_hud_control(_player_front,
 		Vector2(front_x, player_info_y), Vector2(front_width, front_height), front_scale)
+	var info_frame_size = Vector2(front_width, front_height) * front_scale
+	_place_board_hud_control(_opponent_active_frame,
+		Vector2(front_x, opponent_info_y), info_frame_size)
+	_place_board_hud_control(_player_active_frame,
+		Vector2(front_x, player_info_y), info_frame_size)
+	if is_instance_valid(_phase_indicator):
+		_place_board_hud_control(_phase_indicator,
+			Vector2(front_x, maxf(8.0, player_info_y - info_frame_size.y - 8.0)),
+			info_frame_size)
 	var opponent_hand_width = viewport_size.x * 0.76
 	var opponent_card_height = viewport_size.y * O.card_height
 	var opponent_visible_height = opponent_card_height * 0.5
@@ -338,6 +547,8 @@ func update_game_state(new_state):
 	# has no previous visible positions and intentionally does not animate.
 	var origins = _capture_card_origins() if not _zone_bytes.is_empty() else {}
 	GS.gameState = new_state
+	_update_phase_indicator(new_state)
+	_update_active_player_indicator(new_state)
 	_snapshot_game_clocks(new_state)
 	_state_revision += 1
 	if new_state.get_activePlayer() != GS.playerId:
