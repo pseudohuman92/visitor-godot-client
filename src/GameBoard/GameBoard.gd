@@ -18,6 +18,7 @@ var _phase_indicator: PanelContainer
 var _phase_step_chips: Array[PanelContainer] = []
 var _phase_step_labels: Array[Label] = []
 var _phase_steps: Array = []
+var _information_panels := {}
 var _opponent_front: Control
 var _opponent_deck_area: Control
 var _opponent_hand: Control
@@ -161,29 +162,15 @@ func _apply_reference_board_composition():
 
 func _prepare_information_panels():
 	for prefix in ["Opponent", "Player"]:
-		var energy_display = _find_board_node(prefix + "EnergyDisplay")
-		if not energy_display:
+		var front = _opponent_front if prefix == "Opponent" else _player_front
+		if not front:
 			continue
-		var avatar = energy_display.find_child("AvatarContainer", true, false)
-		if avatar:
-			avatar.hide()
-		var clock = _find_board_node(prefix + "Clock")
-		var health_row = energy_display.find_child("HealthRow", true, false)
-		if clock and health_row:
-			clock.reparent(health_row, false)
-			clock.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			clock.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-			clock.custom_minimum_size = Vector2(0, 28)
-			clock.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-			clock.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		var energy_row = energy_display.find_child("EnergyRow", true, false)
-		var knowledge = _find_board_node(prefix + "KnowledgeDisplay")
-		if energy_row and knowledge:
-			knowledge.reparent(energy_row, false)
-			knowledge.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			energy_row.alignment = BoxContainer.ALIGNMENT_BEGIN
-		if prefix == "Opponent" and energy_row:
-			energy_display.move_child(energy_row, 0)
+		front.get_node("VBoxContainer").hide()
+		var panel = preload("res://src/GameBoard/InformationPanel.gd").new()
+		panel.name = prefix + "InformationPanel"
+		front.add_child(panel)
+		panel.configure(prefix == "Opponent")
+		_information_panels[prefix] = panel
 
 func _setup_deck_count_hover():
 	for prefix in ["Opponent", "Player"]:
@@ -451,15 +438,15 @@ func _layout_board_hud():
 	if not is_instance_valid(_board_hud_root):
 		return
 	var viewport_size = get_viewport_rect().size
-	var front_width = min(430.0, viewport_size.x * 0.42)
-	var front_height = 160.0
-	var front_scale = 0.5
+	var front_width = 372.0
+	var front_height = 120.0
+	var front_scale = minf(1.0, viewport_size.x / 1920.0)
 	var deck_scale = 0.4
 	var deck_size = Vector2(400, 280)
 	var deck_width = deck_size.x * deck_scale
 	var deck_height = deck_size.y * deck_scale
 	var deck_x = viewport_size.x - deck_width - 32
-	var front_x = deck_x + (deck_width - front_width * front_scale) * 0.5
+	var front_x = viewport_size.x - front_width * front_scale - 8.0
 	var opponent_deck_y = 4.0
 	var opponent_info_y = opponent_deck_y + deck_height + 8
 	var player_deck_y = viewport_size.y - deck_height - 4
@@ -474,9 +461,10 @@ func _layout_board_hud():
 	_place_board_hud_control(_player_active_frame,
 		Vector2(front_x, player_info_y), info_frame_size)
 	if is_instance_valid(_phase_indicator):
+		var phase_size = Vector2(front_width * front_scale, 80.0 * front_scale)
 		_place_board_hud_control(_phase_indicator,
-			Vector2(front_x, maxf(8.0, player_info_y - info_frame_size.y - 8.0)),
-			info_frame_size)
+			Vector2(front_x, maxf(8.0, player_info_y - phase_size.y - 8.0)),
+			phase_size)
 	var opponent_hand_width = viewport_size.x * 0.76
 	var opponent_card_height = viewport_size.y * O.card_height
 	var opponent_visible_height = opponent_card_height * 0.5
@@ -629,10 +617,13 @@ func _card_center(id, view):
 
 func _sync_player(player, prefix):
 	_set_text_if_changed(prefix + "DeckSize", str(player.get_deckSize()) if player else "0")
+	var panel = _information_panels.get(prefix)
 	var energy = [player.get_energy(), player.get_maxEnergy(), player.get_health()] if player else []
 	if _display_values.get(prefix + "Energy") != energy:
 		_find_board_node(prefix + "EnergyDisplay").update_player(player)
 		_display_values[prefix + "Energy"] = energy
+	if is_instance_valid(panel):
+		panel.update_player(player)
 	var knowledge = []
 	if player:
 		for group in player.get_knowledgePool():
@@ -640,6 +631,8 @@ func _sync_player(player, prefix):
 	if _display_values.get(prefix + "Knowledge") != knowledge:
 		_find_board_node(prefix + "KnowledgeDisplay").update_pool(player.get_knowledgePool() if player else [])
 		_display_values[prefix + "Knowledge"] = knowledge
+		if is_instance_valid(panel):
+			panel.update_pool(player.get_knowledgePool() if player else [])
 
 	if prefix == "Opponent":
 		var hand = []
@@ -863,7 +856,7 @@ func _update_game_clocks():
 
 func _format_clock(time_msec: int) -> String:
 	var total_seconds = ceili(float(maxi(0, time_msec)) / 1000.0)
-	return "⌚ %02d:%02d" % [floori(float(total_seconds) / 60.0), total_seconds % 60]
+	return "%02d:%02d" % [floori(float(total_seconds) / 60.0), total_seconds % 60]
 
 func _exit_tree():
 	_state_revision += 1
