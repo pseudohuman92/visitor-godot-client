@@ -577,6 +577,7 @@ stretch_mode = 5
 
 [node name="AbilityPanel" type="PanelContainer" parent="InternalContainer/CardImage/Contents" unique_id=1769974267]
 layout_mode = 2
+size_flags_vertical = 0
 mouse_filter = 1
 theme_override_styles/panel = ExtResource("15_6peft")
 
@@ -586,8 +587,8 @@ mouse_filter = 1
 theme = ExtResource("6_w0tcg")
 bbcode_enabled = true
 text = "[center]Ability {U} - -  1  2 [/center]"
-fit_content = true
-threaded = true
+fit_content = false
+threaded = false
 script = ExtResource("17_wypdb")
 
 [node name="StatsPanel" type="PanelContainer" parent="InternalContainer/CardImage/Contents" unique_id=576462152]

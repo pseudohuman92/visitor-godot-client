@@ -10,8 +10,11 @@ var _state_revision = 0
 var _zone_bytes = {}
 var _display_values = {}
 var _board_hud_root: Control
+var _phase_backdrop: Control
 var _opponent_hud: Control
 var _player_hud: Control
+var _action_buttons: HBoxContainer
+var _selection_text: Label
 var _phase_indicator: PanelContainer
 var _phase_step_chips: Array[PanelContainer] = []
 var _phase_step_labels: Array[Label] = []
@@ -65,10 +68,12 @@ func _apply_reference_board_composition():
 	var old_player_display = _find_board_node("PlayerDisplay")
 	var play_area = _find_board_node("PlayArea")
 	var stack_container = _find_board_node("StackContainer")
+	_action_buttons = stack_container.get_node_or_null("Buttons") as HBoxContainer if stack_container else null
 	var opponent_hand_zone = _find_board_node("OpponentHand")
 	_player_hand = _find_board_node("ScrollContainer4")
 	if not main_container or not old_layout or not old_display_area or not old_opponent_display \
-			or not old_player_display or not play_area or not stack_container or not opponent_hand_zone or not _player_hand:
+			or not old_player_display or not play_area or not stack_container or not _action_buttons \
+			or not opponent_hand_zone or not _player_hand:
 		return
 
 	_opponent_hand = opponent_hand_zone.get_parent()
@@ -101,7 +106,7 @@ func _apply_reference_board_composition():
 	board_layout.add_child(battle_row)
 	var player_row = Control.new()
 	player_row.name = "PlayerHudRow"
-	player_row.custom_minimum_size = Vector2(0, 300)
+	player_row.custom_minimum_size = Vector2(0, 260)
 	board_layout.add_child(player_row)
 
 	old_layout.remove_child(play_area)
@@ -110,16 +115,16 @@ func _apply_reference_board_composition():
 	battle_row.add_child(stack_container)
 	play_area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	play_area.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	play_area.clip_contents = true
 	stack_container.custom_minimum_size.x = 180
 	stack_container.size_flags_horizontal = Control.SIZE_FILL
 	stack_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	var selection_text = _find_board_node("SelectionText") as Label
-	if selection_text:
-		selection_text.reparent(stack_container)
-		stack_container.move_child(selection_text, stack_container.get_node("Buttons").get_index())
-		selection_text.custom_minimum_size.y = 64
-		selection_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		selection_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stack_container.clip_contents = true
+	_selection_text = _find_board_node("SelectionText") as Label
+	if _selection_text:
+		_selection_text.custom_minimum_size.y = 64
+		_selection_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_selection_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var message_style = StyleBoxFlat.new()
 		message_style.bg_color = Color("#111416e8")
 		message_style.border_color = Color("#72685b")
@@ -129,8 +134,15 @@ func _apply_reference_board_composition():
 		message_style.content_margin_right = 8
 		message_style.content_margin_top = 6
 		message_style.content_margin_bottom = 6
-		selection_text.add_theme_stylebox_override("normal", message_style)
+		_selection_text.add_theme_stylebox_override("normal", message_style)
 	old_layout.queue_free()
+
+	_phase_backdrop = Control.new()
+	_phase_backdrop.name = "BoardPhaseBackdrop"
+	_phase_backdrop.size = get_viewport_rect().size
+	_phase_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_phase_backdrop)
+	move_child(_phase_backdrop, main_container.get_index())
 
 	var hud_layer = CanvasLayer.new()
 	hud_layer.name = "BoardHudLayer"
@@ -164,19 +176,35 @@ func _apply_reference_board_composition():
 	_player_front.reparent(_player_hud)
 	_player_deck_area.reparent(_player_hud)
 	_player_hand.reparent(_player_hud)
+	_action_buttons.reparent(_player_hud)
+	if _selection_text:
+		_selection_text.reparent(_player_hud)
 	old_display_area.queue_free()
 	_prepare_information_panels()
 	_setup_deck_count_hover()
 	_create_phase_indicator()
 	_create_turn_direction_indicator()
 	var divider = _find_board_node("PlayAreaSeparator")
-	if divider:
-		divider.hide()
+	if divider is ColorRect:
+		divider.show()
+		divider.color = Color.TRANSPARENT
+		divider.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		divider.custom_minimum_size.y = 84.0
+		var mark = divider.get_node_or_null("SeparatorMark")
+		if mark:
+			mark.hide()
+	for area_name in ["OpponentAssetArea", "PlayerAssetArea"]:
+		var asset_area = _find_board_node(area_name)
+		var asset_scroll = asset_area.get_parent() as ScrollContainer if asset_area else null
+		if asset_scroll:
+			asset_scroll.custom_minimum_size.y = 80.0
+			asset_scroll.size_flags_vertical = Control.SIZE_FILL
 	var old_phase_label = _find_board_node("Phase")
 	if old_phase_label:
 		old_phase_label.hide()
 
 	get_viewport().size_changed.connect(_layout_board_hud)
+	_action_buttons.minimum_size_changed.connect(_layout_board_hud)
 	_layout_board_hud()
 
 func _prepare_information_panels():
@@ -223,7 +251,7 @@ func _create_phase_indicator():
 	_phase_indicator.name = "GamePhaseIndicator"
 	_phase_indicator.custom_minimum_size = Vector2(0, 46)
 	_phase_indicator.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_phase_indicator.z_index = 10
+	_phase_indicator.z_index = 0
 	var shell = StyleBoxFlat.new()
 	shell.bg_color = Color("#111416")
 	shell.border_color = Color("#72685B")
@@ -236,7 +264,7 @@ func _create_phase_indicator():
 	shell.shadow_size = 8
 	shell.shadow_offset = Vector2(0, 3)
 	_phase_indicator.add_theme_stylebox_override("panel", shell)
-	_board_hud_root.add_child(_phase_indicator)
+	_phase_backdrop.add_child(_phase_indicator)
 	var margins = MarginContainer.new()
 	margins.add_theme_constant_override("margin_left", 6)
 	margins.add_theme_constant_override("margin_top", 4)
@@ -270,9 +298,9 @@ func _create_turn_direction_indicator() -> void:
 	_turn_direction_frame = PanelContainer.new()
 	_turn_direction_frame.name = "TurnDirectionIndicator"
 	_turn_direction_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_turn_direction_frame.z_index = 10
+	_turn_direction_frame.z_index = 0
 	_turn_direction_frame.add_theme_stylebox_override("panel", _phase_indicator.get_theme_stylebox("panel").duplicate())
-	_board_hud_root.add_child(_turn_direction_frame)
+	_phase_backdrop.add_child(_turn_direction_frame)
 	_turn_direction_arrow = Node2D.new()
 	_turn_direction_arrow.name = "ActivePlayerTriangle"
 	_turn_direction_arrow.position = Vector2(23, 23)
@@ -353,6 +381,8 @@ func _prepare_tutorial_client():
 	GS.connection_error = ""
 	GS.pending_decision = ""
 	GS.clear_popup()
+	if is_instance_valid(_action_buttons):
+		_action_buttons.hide()
 	var socket = preload("res://src/Tutorial/TutorialGameSocket.gd").new()
 	socket.name = "TutorialGameSocket"
 	socket.action_requested.connect(_on_tutorial_socket_action)
@@ -424,10 +454,14 @@ func _create_tutorial_submit_button():
 
 func _layout_tutorial_submit_button():
 	var submit = _find_board_node("TutorialSubmit")
-	if not submit:
+	if not submit or not is_instance_valid(_player_front):
 		return
 	submit.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	submit.position = Vector2(maxf(12.0, get_viewport_rect().size.x - 500.0), get_viewport_rect().size.y - 260.0)
+	var info_rect = _player_front.get_global_rect()
+	var hud_scale = _player_front.scale.x
+	submit.scale = Vector2.ONE * hud_scale
+	submit.position = Vector2(info_rect.end.x - submit.size.x * hud_scale,
+		info_rect.position.y - (submit.size.y + 8.0) * hud_scale)
 
 func _on_tutorial_submit_pressed():
 	if not tutorial_mode or not GS.gameState or not GS.gameSocket:
@@ -453,6 +487,7 @@ func _layout_board_hud():
 	if not is_instance_valid(_board_hud_root):
 		return
 	var viewport_size = get_viewport_rect().size
+	_phase_backdrop.size = viewport_size
 	var front_width = 372.0
 	var front_height = 120.0
 	var front_scale = minf(1.0, viewport_size.x / 1920.0)
@@ -470,6 +505,14 @@ func _layout_board_hud():
 		Vector2(front_x, opponent_info_y), Vector2(front_width, front_height), front_scale)
 	_place_board_hud_control(_player_front,
 		Vector2(front_x, player_info_y), Vector2(front_width, front_height), front_scale)
+	var action_height = 48.0
+	var action_y = player_info_y - (action_height + 8.0) * front_scale
+	_place_board_hud_control(_action_buttons,
+		Vector2(front_x, action_y), Vector2(front_width, action_height), front_scale)
+	if is_instance_valid(_selection_text):
+		_place_board_hud_control(_selection_text,
+			Vector2(front_x, action_y - (64.0 + 8.0) * front_scale),
+			Vector2(front_width, 64.0), front_scale)
 	if is_instance_valid(_phase_indicator):
 		var phase_width = minf(1080.0, maxf(0.0, front_x - 86.0))
 		var phase_size = Vector2(phase_width, 46.0)

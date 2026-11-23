@@ -113,7 +113,7 @@ const LESSONS := [
 		"bridge": "Field Notes is drawn into your hand. Keep playing in this same match.",
 		"steps": [
 			{"target": "card:field_notes", "prompt": "Choose the card you want to study.", "body": "Studying is a slow action in a main phase. Select Field Notes in your hand; its preview explains the exchange.", "hint": "Select Field Notes in your hand.", "effect": "select_card", "card_id": "field_notes", "success": "The Tome is selected. Drag it to the study area."},
-			{"target": "player_deck", "prompt": "Study Field Notes.", "body": "Studying this Tome increases current and maximum energy by one. Tomes leave your hand when studied; other studied cards remain in hand until the turn ends.", "hint": "Drag Field Notes onto your study area.", "effect": "study_card", "success": "Your energy grew and Field Notes left your hand."},
+			{"target": "player_info", "prompt": "Study Field Notes.", "body": "Studying this Tome increases current and maximum energy by one. Tomes leave your hand when studied; other studied cards remain in hand until the turn ends.", "hint": "Drag Field Notes onto your information panel.", "effect": "study_card", "success": "Your energy grew and Field Notes left your hand."},
 			{"target": "knowledge_red", "prompt": "Choose the knowledge to gain.", "body": "This card offers red knowledge. Knowledge stays in your pool and helps satisfy colored card requirements.", "hint": "Choose the red knowledge icon.", "effect": "gain_red_knowledge", "success": "You now have one red knowledge for cards that require it."},
 			{"target": "card:rooftop_scout", "prompt": "Use the new resources to read another card.", "body": "The Scout needs one energy and one red knowledge. Select it to inspect its cost and unit stats before playing.", "hint": "Select Rooftop Scout in your hand.", "effect": "select_card", "card_id": "rooftop_scout", "success": "Good. The number is its energy cost; the red mark is a separate requirement."}
 		]
@@ -205,6 +205,7 @@ var _opponent_discard: Array = []
 var _stack: Array = []
 var _energy := 0
 var _max_energy := 0
+var _studies_left := 1
 var _red_knowledge := 0
 var _blue_knowledge := 0
 var _player_health := 20
@@ -599,6 +600,7 @@ func _enter_chapter(index: int) -> void:
 	if index > 0:
 		# Scripted turns add teaching cards while keeping the match's board and health.
 		_energy = _max_energy
+		_studies_left = 1
 		for card in _player_hand:
 			card["studied"] = false
 		for unit in _player_units:
@@ -715,6 +717,7 @@ func _fill_player_model(player: GS.ServerGameMessages.Player, player_id: String,
 	player.set_health(health)
 	player.set_handSize(hidden_hand_size if player_id == "tutorial-opponent" else hand.size())
 	player.set_time(1200000)
+	player.set_studiesLeft(_studies_left if player_id == "tutorial-player" else 1)
 	for card in hand:
 		_fill_card_model(player.add_hand(), card, "Hand", player_id)
 	for card in units:
@@ -763,7 +766,7 @@ func _fill_card_model(model: GS.ServerGameMessages.CardP, card: Dictionary, zone
 	elif knowledge == GS.Types.Knowledge.BLUE:
 		can_play = can_play and _blue_knowledge > 0
 	model.set_canPlay(can_play)
-	model.set_canStudy(in_hand and card_type == "TOME" and not bool(card.get("studied", false)))
+	model.set_canStudy(in_hand and _studies_left > 0 and card_type == "TOME" and not bool(card.get("studied", false)))
 	model.set_canAttack(zone == "Play" and owner_id == "tutorial-player" and card_type == "UNIT" \
 		and _phase_value == GS.Types.Phase.ATTACK and bool(card.get("ready", true)) \
 		and not bool(card.get("exhausted", false)))
@@ -821,12 +824,12 @@ func _register_board_targets() -> void:
 		var control: Control = _game_board.find_child(mappings[target_id], true, false) as Control
 		if is_instance_valid(control):
 			_target_controls[target_id] = control
-	var opponent_avatar: Control = _game_board.find_child("OpponentEnergyDisplay", true, false).find_child("tutorial-opponent", true, false) as Control
-	var player_avatar: Control = _game_board.find_child("PlayerEnergyDisplay", true, false).find_child("tutorial-player", true, false) as Control
-	if is_instance_valid(opponent_avatar):
-		_target_controls["opponent_info"] = opponent_avatar
-	if is_instance_valid(player_avatar):
-		_target_controls["player_info"] = player_avatar
+	var opponent_panel: Control = _game_board.find_child("OpponentInformationPanel", true, false) as Control
+	var player_panel: Control = _game_board.find_child("PlayerInformationPanel", true, false) as Control
+	if is_instance_valid(opponent_panel):
+		_target_controls["opponent_info"] = opponent_panel
+	if is_instance_valid(player_panel):
+		_target_controls["player_info"] = player_panel
 	var knowledge_panel = _game_board.find_child("PlayerInformationPanel", true, false)
 	if knowledge_panel:
 		var red = knowledge_panel.find_child("RKnowledgeHitArea", true, false)
@@ -1038,8 +1041,8 @@ func _on_game_board_action(action: String, payload: Variant) -> void:
 		"target_click":
 			target_id = str(payload)
 			var step: Dictionary = _current_step()
-			if target_id == "player_deck" and str(step.get("effect", "")) == "study_card":
-				_nudge_text = "Drag the selected study card onto your deck."
+			if target_id == "player_info" and str(step.get("effect", "")) == "study_card":
+				_nudge_text = "Drag the selected study card onto your information panel."
 				_refresh_coach()
 				return
 		"avatar_click":
@@ -1076,7 +1079,7 @@ func _on_game_board_action(action: String, payload: Variant) -> void:
 			var drop: Dictionary = payload if payload is Dictionary else {"card_id": str(payload)}
 			card_id = str(drop.get("card_id", ""))
 			if action == "study_card":
-				target_id = "player_deck"
+				target_id = "player_info"
 			else:
 				target_id = str(drop.get("target", "play_zone"))
 			if not card_id.is_empty():
@@ -1118,6 +1121,7 @@ func _apply_effect(effect: String, step: Dictionary, target_id: String) -> void:
 					studied["studied"] = true
 				_max_energy += 1
 				_energy += 1
+				_studies_left = maxi(0, _studies_left - 1)
 				_selected_card_id = ""
 				SS.clear_selection_data()
 				SS.selecting_for = SS.selection_type.KNOWLEDGE

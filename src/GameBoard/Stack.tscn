@@ -60,12 +60,16 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("5_0smbc")
 
-[node name="Buttons" type="VBoxContainer" parent="."]
+[node name="Buttons" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-size_flags_vertical = 8
+theme_override_constants/separation = 6
+alignment = 2
 
 [node name="XSelector" type="HBoxContainer" parent="Buttons"]
 layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 4
 script = ExtResource("6_20bhx")
 
 [node name="MinusButton" type="Button" parent="Buttons/XSelector"]
@@ -109,12 +113,15 @@ theme_override_styles/pressed = ExtResource("14_ghost_pressed")
 theme_override_styles/disabled = ExtResource("15_ghost_disabled")
 text = "MAX"
 
-[node name="ButtonContainer" type="VBoxContainer" parent="Buttons"]
+[node name="ButtonContainer" type="HBoxContainer" parent="Buttons"]
 layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 6
 
 [node name="Pass" type="Button" parent="Buttons/ButtonContainer"]
+custom_minimum_size = Vector2(100, 42)
 layout_mode = 2
-size_flags_vertical = 2
+size_flags_vertical = 4
 mouse_filter = 1
 theme = ExtResource("2_b1f2l")
 theme_override_styles/normal = ExtResource("8_secondary")
@@ -126,8 +133,9 @@ expand_icon = true
 script = ExtResource("7_jjq3l")
 
 [node name="Keep" type="Button" parent="Buttons/ButtonContainer"]
+custom_minimum_size = Vector2(100, 42)
 layout_mode = 2
-size_flags_vertical = 2
+size_flags_vertical = 4
 mouse_filter = 1
 theme = ExtResource("2_b1f2l")
 theme_override_styles/normal = ExtResource("8_secondary")
@@ -139,8 +147,9 @@ expand_icon = true
 script = ExtResource("7_jjq3l")
 
 [node name="Redraw" type="Button" parent="Buttons/ButtonContainer"]
+custom_minimum_size = Vector2(100, 42)
 layout_mode = 2
-size_flags_vertical = 2
+size_flags_vertical = 4
 mouse_filter = 1
 theme = ExtResource("2_b1f2l")
 theme_override_styles/normal = ExtResource("8_secondary")
@@ -152,22 +161,25 @@ expand_icon = true
 script = ExtResource("7_jjq3l")
 
 [node name="Submit" type="Button" parent="Buttons/ButtonContainer"]
+custom_minimum_size = Vector2(100, 42)
 layout_mode = 2
-size_flags_vertical = 2
+size_flags_vertical = 4
 theme = ExtResource("2_b1f2l")
 text = "Submit"
 script = ExtResource("7_jjq3l")
 
 [node name="All Attack" type="Button" parent="Buttons/ButtonContainer"]
+custom_minimum_size = Vector2(114, 42)
 layout_mode = 2
-size_flags_vertical = 2
+size_flags_vertical = 4
 theme = ExtResource("2_b1f2l")
 text = "All Attack"
 script = ExtResource("7_jjq3l")
 
 [node name="Cancel" type="Button" parent="Buttons/ButtonContainer"]
+custom_minimum_size = Vector2(100, 42)
 layout_mode = 2
-size_flags_vertical = 0
+size_flags_vertical = 4
 theme = ExtResource("2_b1f2l")
 theme_override_styles/normal = ExtResource("8_secondary")
 theme_override_styles/hover = ExtResource("9_secondary_hover")

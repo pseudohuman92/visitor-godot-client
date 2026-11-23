@@ -7,18 +7,37 @@ const MIN_FONT_SIZE := 9
 const INLINE_ICON_SCALE := 1.5
 const LABEL_BASE_SIZE_META := "card_base_label_font_size"
 const LAST_SCALE_META := "card_last_font_scale"
+const ABILITY_AREA_RATIO := 0.30
+const MIN_ABILITY_FONT_SIZE := 5
 var _title_label: Label
+var _ability_panel: PanelContainer
+var _ability_label: RichTextLabel
+var _ability_fit_queued := false
 
 func _ready():
 	resized.connect(_apply_card_font_scale)
 	_title_label = find_child("Name", true, false) as Label
 	if _title_label:
 		_title_label.resized.connect(_queue_title_fit)
+	_ability_panel = find_child("AbilityPanel", true, false) as PanelContainer
+	_ability_label = _ability_panel.find_child("Ability", true, false) as RichTextLabel if _ability_panel else null
+	if _ability_panel and _ability_label:
+		_ability_panel.size_flags_vertical = Control.SIZE_FILL
+		_ability_panel.resized.connect(_queue_ability_fit)
+		_ability_label.fit_content = false
+		_ability_label.threaded = false
+		_ability_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_ability_label.clip_contents = true
+		if _ability_label.has_signal("content_changed"):
+			_ability_label.connect("content_changed", _queue_ability_fit)
 	call_deferred("_apply_card_font_scale")
 
 func _apply_card_font_scale():
 	if size.x <= 0.0:
 		return
+	if _ability_panel:
+		_ability_panel.custom_minimum_size.y = roundf(size.y * ABILITY_AREA_RATIO)
+		_queue_ability_fit()
 	var scale_factor = clampf(size.x / BASE_CARD_WIDTH, MIN_FONT_SCALE, MAX_FONT_SCALE)
 	if has_meta(LAST_SCALE_META) and is_equal_approx(get_meta(LAST_SCALE_META), scale_factor):
 		_fit_title_to_line(scale_factor)
@@ -26,6 +45,28 @@ func _apply_card_font_scale():
 	set_meta(LAST_SCALE_META, scale_factor)
 	_scale_descendant_text(self, scale_factor)
 	_fit_title_to_line(scale_factor)
+
+func _queue_ability_fit() -> void:
+	if _ability_fit_queued:
+		return
+	_ability_fit_queued = true
+	call_deferred("_fit_ability_to_box")
+
+func _fit_ability_to_box() -> void:
+	_ability_fit_queued = false
+	if not is_instance_valid(_ability_label) or _ability_label.size.x <= 0.0 or _ability_label.size.y <= 0.0:
+		return
+	var scale_factor = clampf(size.x / BASE_CARD_WIDTH, MIN_FONT_SCALE, MAX_FONT_SCALE)
+	var base_size: int = _ability_label.get_meta("card_base_normal_font_size", 16)
+	var font_size = maxi(MIN_ABILITY_FONT_SIZE, roundi(base_size * scale_factor))
+	while font_size >= MIN_ABILITY_FONT_SIZE:
+		for size_name in ["normal_font_size", "bold_font_size", "italics_font_size", "bold_italics_font_size", "mono_font_size"]:
+			_ability_label.add_theme_font_size_override(size_name, font_size)
+		if _ability_label.has_method("set_icon_size"):
+			_ability_label.set_icon_size(roundi(font_size * INLINE_ICON_SCALE))
+		if _ability_label.get_content_height() <= _ability_label.size.y - 2.0:
+			break
+		font_size -= 1
 
 func _queue_title_fit():
 	call_deferred("_fit_title_to_line", clampf(size.x / BASE_CARD_WIDTH, MIN_FONT_SCALE, MAX_FONT_SCALE))

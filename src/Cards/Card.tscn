@@ -295,6 +295,7 @@ stretch_mode = 5
 
 [node name="AbilityPanel" type="PanelContainer" parent="InternalContainer/CardImage/Contents" unique_id=852062910]
 layout_mode = 2
+size_flags_vertical = 0
 mouse_filter = 1
 theme_override_styles/panel = ExtResource("15_1npho")
 
@@ -304,7 +305,7 @@ mouse_filter = 1
 theme = ExtResource("6_fuui8")
 bbcode_enabled = true
 text = "Decay"
-fit_content = true
+fit_content = false
 script = ExtResource("17_q2idj")
 
 [node name="StatsPanel" type="PanelContainer" parent="InternalContainer/CardImage/Contents" unique_id=1215180627]

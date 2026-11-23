@@ -49,18 +49,19 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 10.0
 mouse_filter = 1
 
-[node name="_2" type="PanelContainer" parent="InternalContainer/CardImage/Contents"]
+[node name="AbilityPanel" type="PanelContainer" parent="InternalContainer/CardImage/Contents"]
 layout_mode = 2
+size_flags_vertical = 0
 mouse_filter = 1
 theme_override_styles/panel = ExtResource("3_jpyc6")
 
-[node name="Ability" type="RichTextLabel" parent="InternalContainer/CardImage/Contents/_2"]
+[node name="Ability" type="RichTextLabel" parent="InternalContainer/CardImage/Contents/AbilityPanel"]
 layout_mode = 2
 mouse_filter = 1
 theme = ExtResource("4_lffsn")
 bbcode_enabled = true
 text = "Ability {U}"
-fit_content = true
+fit_content = false
 script = ExtResource("6_hyt0v")
 
 [node name="_3" type="Control" parent="InternalContainer/CardImage/Contents"]

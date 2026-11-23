@@ -19,25 +19,30 @@ var mirrored := false
 var _name_label: Label
 var _health_label: Label
 var _energy_label: Label
+var _studies_label: Label
 var _knowledge_labels := {}
 var _knowledge_icons := {}
 var _knowledge_hit_areas := {}
 var _choosing_knowledge := false
 var _knowledge_choices := []
+var _can_study := false
 
 func configure(is_opponent: bool) -> void:
 	mirrored = is_opponent
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	var main_y := 60.0 if mirrored else 8.0
 	var lower_y := 8.0 if mirrored else 67.0
-	_name_label = _add_text("OPPONENT" if mirrored else "PLAYER", Vector2(17, main_y + 7), Vector2(106, 24), 19)
-	_add_text("OPPONENT" if mirrored else "PLAYER", Vector2(18, main_y + 31), Vector2(104, 14), 10, Color("#75c9e5"))
-	_add_icon("health", Vector2(134, main_y + 11), Vector2(31, 31), Color("#d45c5e"))
-	_add_text("HEALTH", Vector2(169, main_y + 5), Vector2(70, 14), 10, Color("#b5aaa5"))
-	_health_label = _add_text("20", Vector2(167, main_y + 16), Vector2(74, 34), 31)
-	_add_icon("energy", Vector2(250, main_y + 8), Vector2(26, 26), Color("#5dd6e8"))
-	_add_text("ENERGY", Vector2(281, main_y + 6), Vector2(76, 14), 10, Color("#91d5df"))
-	_energy_label = _add_text("0 / 0", Vector2(281, main_y + 20), Vector2(77, 28), 24)
+	_name_label = _add_text("OPPONENT" if mirrored else "PLAYER", Vector2(17, main_y + 7), Vector2(93, 24), 19)
+	_add_text("OPPONENT" if mirrored else "PLAYER", Vector2(18, main_y + 31), Vector2(92, 14), 10, Color("#75c9e5"))
+	_add_icon("health", Vector2(121, main_y + 13), Vector2(25, 25), Color("#d45c5e"))
+	_add_text("HEALTH", Vector2(150, main_y + 5), Vector2(52, 14), 10, Color("#b5aaa5"))
+	_health_label = _add_text("20", Vector2(149, main_y + 17), Vector2(53, 30), 28)
+	_add_icon("energy", Vector2(211, main_y + 13), Vector2(24, 24), Color("#5dd6e8"))
+	_add_text("ENERGY", Vector2(239, main_y + 5), Vector2(46, 14), 10, Color("#91d5df"))
+	_energy_label = _add_text("0/0", Vector2(239, main_y + 18), Vector2(47, 28), 20)
+	_add_icon("study", Vector2(294, main_y + 13), Vector2(24, 24), Color("#c9d479"))
+	_add_text("STUDY", Vector2(322, main_y + 5), Vector2(36, 14), 10, Color("#c9d479"))
+	_studies_label = _add_text("1", Vector2(321, main_y + 17), Vector2(37, 30), 25)
 	_add_text("KNOWLEDGE", Vector2(17, lower_y + 3), Vector2(104, 13), 11, Color("#b8aaa0"))
 	for index in range(CODES.size()):
 		var code: String = CODES[index]
@@ -74,7 +79,7 @@ func _draw() -> void:
 	draw_rect(Rect2(8, main_y, 3, 52), Color("#368fbb"))
 	draw_rect(Rect2(8, lower_y, 3, 45), Color("#368fbb"))
 	draw_line(Vector2(12, 57), Vector2(360, 57), Color("#6e7677"), 1)
-	for x in [127.0, 245.0]:
+	for x in [116.0, 205.0, 288.0]:
 		draw_line(Vector2(x, main_y + 6), Vector2(x, main_y + 46), Color("#657579"), 1)
 	for index in range(1, CODES.size()):
 		var x := 13.0 + 69.0 * index
@@ -87,6 +92,8 @@ func _draw() -> void:
 				var rect := Rect2(x, lower_y + 15, 65, 32)
 				draw_rect(rect, Color(0.37, 0.46, 0.20, 0.36))
 				draw_rect(rect, Color.GREEN_YELLOW, false, 2.0)
+	if _can_study and not mirrored:
+		draw_rect(Rect2(5, 5, size.x - 10, size.y - 10), Color.GREEN_YELLOW, false, 2.0)
 
 func update_player(player) -> void:
 	var username: String = player.get_username() if player else ""
@@ -95,7 +102,8 @@ func update_player(player) -> void:
 	_name_label.text = username.to_upper()
 	_name_label.add_theme_font_size_override("font_size", 14 if username.length() > 10 else 17 if username.length() > 7 else 19)
 	_health_label.text = str(player.get_health()) if player else "0"
-	_energy_label.text = "%d / %d" % [player.get_energy(), player.get_maxEnergy()] if player else "0 / 0"
+	_energy_label.text = "%d/%d" % [player.get_energy(), player.get_maxEnergy()] if player else "0/0"
+	_studies_label.text = str(player.get_studiesLeft()) if player else "0"
 
 func update_pool(pool) -> void:
 	var counts := {}
@@ -106,6 +114,15 @@ func update_pool(pool) -> void:
 
 func _process(_delta: float) -> void:
 	_update_knowledge_choices()
+	var can_study = false
+	if not mirrored and GS.gameState and not GS.is_waiting:
+		for card in GS.gameState.get_player().get_hand():
+			if card.get_canStudy():
+				can_study = true
+				break
+	if can_study != _can_study:
+		_can_study = can_study
+		queue_redraw()
 	if not GS.gameState:
 		return
 	var player = GS.gameState.get_opponent() if mirrored else GS.gameState.get_player()
@@ -113,6 +130,33 @@ func _process(_delta: float) -> void:
 	var tint = SS.INVALID_TARGET_MODULATE if SS.is_targeting_board_object() and not valid else Color.WHITE
 	if modulate != tint:
 		modulate = tint
+
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	return not mirrored and data is Card and is_instance_valid(data) and data.card \
+		and data.card.get_canStudy() and not GS.is_waiting
+
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	if not _can_drop_data(at_position, data):
+		return
+	var board = find_parent("GameBoard")
+	GS.clear_drag()
+	if is_instance_valid(board) and bool(board.get("tutorial_mode")):
+		GS.gameSocket.study_card(data.card.get_id())
+		return
+	var costs = data.card.get_knowledgeCost()
+	if costs.is_empty():
+		SS.selected_single.append(GS.Types.Knowledge.NONE)
+		GS.gameSocket.study_card(data.card.get_id())
+	elif costs.size() == 1:
+		SS.selected_single.append(costs[0].get_knowledge())
+		GS.gameSocket.study_card(data.card.get_id())
+	else:
+		SS.clear_selection_data()
+		SS.selecting_card = data.card
+		SS.selecting_for = SS.selection_type.KNOWLEDGE
+		SS.selection_message = "Select a knowledge to gain from your information panel."
+		for cost in costs:
+			SS.selection_targets.append(cost.get_knowledge())
 
 func _update_knowledge_choices() -> void:
 	var choosing = not mirrored and SS.selecting_for == SS.selection_type.KNOWLEDGE
