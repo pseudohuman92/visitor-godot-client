@@ -10,6 +10,7 @@ const SquareCardScene = preload("res://src/Cards/SquareCard.tscn")
 const AbilityCardScene = preload("res://src/Cards/AbilityCard.tscn")
 const CollectionCardScene = preload("res://src/Cards/CollectionCard.tscn")
 const DecklistCardScene = preload("res://src/Cards/DecklistCard.tscn")
+const CardPreview = preload("res://src/Cards/CardPreview.gd")
 #const server_name = "18.222.3.198:8080"
 const server_name = "localhost:8080"
 const websocket_url = "ws://"+server_name+"/profiles/"
@@ -77,6 +78,12 @@ var arrow_targets = []
 var block_arrow_targets = {}
 
 var bigger_popup
+
+func show_card_preview(card_data, collection_card := false):
+	close_bigger_popup()
+	bigger_popup = CardPreview.new()
+	get_tree().root.add_child(bigger_popup)
+	bigger_popup.setup(card_data, collection_card)
 
 func can_attack():
 	for c in gameState.get_player().get_play():
@@ -177,8 +184,7 @@ func clear_drag():
 
 func close_bigger_popup():
 	if is_instance_valid(bigger_popup):
-		if bigger_popup.get_parent():
-			bigger_popup.get_parent().remove_child(bigger_popup)
+		bigger_popup.visible = false
 		bigger_popup.queue_free()
 	bigger_popup = null
 

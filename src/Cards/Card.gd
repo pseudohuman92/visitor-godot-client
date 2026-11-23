@@ -242,20 +242,8 @@ func _on_gui_input(event):
 					board.call("notify_tutorial_action", "card_click", {"card_id": card.get_id() if card else "", "zone": zone})
 					accept_event()
 
-		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-			if card:
-				var parent = find_parent("GameBoard")
-				if is_instance_valid(GS.bigger_popup):
-					GS.close_bigger_popup()
-				GS.bigger_popup = GS.CardScene.instantiate()
-				GS.bigger_popup.setup(card)
-				GS.bigger_popup.z_index = z_index + 1
-				GS.bigger_popup.set_scale(Vector2(2,2))
-				GS.bigger_popup.set_global_position(Vector2(0,0))
-				GS.bigger_popup.find_child("InternalContainer").display=true
-				parent.add_child(GS.bigger_popup)
-
-		if event.is_released():
-			if is_instance_valid(GS.bigger_popup):
-				var parent = find_parent("GameBoard")
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			if event.pressed and card:
+				GS.show_card_preview(card)
+			elif not event.pressed:
 				GS.close_bigger_popup()

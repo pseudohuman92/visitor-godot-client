@@ -54,14 +54,6 @@ func _on_gui_input(event):
 			GS.decklist.sort_custom(CS.compare_cost_name_cardP)
 			GS.decklist_changed = true
 	elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and card:
-		var parent = find_parent("DeckBuilder")
-		if is_instance_valid(GS.bigger_popup):
-			GS.close_bigger_popup()
-		GS.bigger_popup = GS.CollectionCardScene.instantiate()
-		GS.bigger_popup.setup(card)
-		parent.add_child(GS.bigger_popup)
-		GS.bigger_popup.z_index = z_index + 1
-		GS.bigger_popup.set_scale(Vector2(2,2))
-		GS.bigger_popup.set_position(Vector2(0,0))
-	elif event.is_released() and is_instance_valid(GS.bigger_popup):
+		GS.show_card_preview(card, true)
+	elif event.button_index == MOUSE_BUTTON_RIGHT and not event.pressed:
 		GS.close_bigger_popup()
