@@ -35,6 +35,7 @@ const EDGE_ICON_STEP = 30.0
 const EDGE_ICON_TOP = 42.0
 const CARD_FRAME_DIR = "res://assets/card-components/Borders/"
 const SHOW_CARD_BORDERS := true
+const SHOW_CARD_IMAGE_BORDERS := false
 const CARD_FRAME_BY_COLOR = {
 	"B": "Parallax",
 	"G": "Strain",
@@ -85,7 +86,7 @@ func set_card_frame(card_view, card):
 		frame_name = CARD_FRAME_BY_COLOR.get(color, frame_name)
 	var opening: Rect2 = CARD_FRAME_OPENING_BY_NAME[frame_name]
 	if artwork:
-		if SHOW_CARD_BORDERS:
+		if SHOW_CARD_IMAGE_BORDERS:
 			artwork.anchor_left = opening.position.x
 			artwork.anchor_top = opening.position.y
 			artwork.anchor_right = opening.position.x + opening.size.x
@@ -97,7 +98,7 @@ func set_card_frame(card_view, card):
 		else:
 			artwork.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	frame.texture = load(CARD_FRAME_DIR + frame_name + ".png")
-	frame.visible = SHOW_CARD_BORDERS
+	frame.visible = SHOW_CARD_IMAGE_BORDERS
 
 func _set_card_border_visibility(panel: Control, visible: bool):
 	if panel == null:
