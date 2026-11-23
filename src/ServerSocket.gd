@@ -9,6 +9,7 @@ var _polling = false
 signal initialize_game_state(new_state)
 signal got_login_response()
 signal got_collection(collection)
+signal draft_started(draft_state)
 signal connection_failed(reason)
 
 func get_collection():
@@ -22,6 +23,8 @@ func joinQueue(type):
 	var jq = cm.new_joinQueue()
 	GS.gameType = type
 	jq.set_gameType(type)
+	if type == GS.Types.GameType.P2_DRAFT_GAME:
+		jq.set_draftId(GS.draft_id)
 	GS.game_decklist.map(func(c): jq.add_decklist(c))
 	send_message(cm)
 
@@ -50,7 +53,7 @@ func decode_proto_message(data):
 		GS.gameId = lr.get_game().get_id();
 		GS.playerId = lr.get_game().get_player().get_id();
 		GS.aiId = lr.get_aiId()
-		GS.gameType = lr.get_gameType()
+		GS.gameType = GS.Types.GameType.P2_DRAFT_GAME if lr.get_gameType() == GS.Types.GameType.NOGAME and GS.queue_type == GS.Types.GameType.P2_DRAFT_GAME else lr.get_gameType()
 		GS.is_spectating_ai_match = GS.gameType == GS.Types.GameType.AI_VS_AI
 		initialize_game_state.emit(lr.get_game())
 
@@ -62,10 +65,7 @@ func decode_proto_message(data):
 		# Create a new game here
 
 	elif message.has_newDraft():
-		print("New Draft: ", message.get_newDraft())
-		var lr = message.get_newDraft()
-		var draftState = lr.get_draft()
-		#Create new draft here
+		draft_started.emit(message.get_newDraft().get_draft())
 
 
 func connect_to_server():

@@ -1,0 +1,196 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/Draft/Draft.gd" id="1_draft"]
+[ext_resource type="Theme" path="res://src/Themes/MainTheme.tres" id="2_theme"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/omen_board_background.png" id="3_board"]
+[ext_resource type="StyleBox" path="res://assets/ui/styles/panel_standard.tres" id="4_panel"]
+[ext_resource type="FontVariation" path="res://assets/fonts/BarlowCondensed-SemiBold-Tracked.tres" id="5_heading"]
+[ext_resource type="FontFile" path="res://assets/fonts/Barlow-Regular.ttf" id="6_body"]
+
+[node name="Draft" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_draft")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_board")
+expand_mode = 3
+stretch_mode = 6
+modulate = Color(0.38, 0.4, 0.42, 1)
+
+[node name="Veil" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.035, 0.043, 0.05, 0.5)
+
+[node name="Margins" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = 38.0
+offset_right = -48.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Layout" type="VBoxContainer" parent="Margins"]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="Header" type="HBoxContainer" parent="Margins/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Margins/Layout/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("5_heading")
+theme_override_font_sizes/font_size = 42
+text = "DRAFT"
+
+[node name="Back" type="Button" parent="Margins/Layout/Header"]
+custom_minimum_size = Vector2(180, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "MAIN MENU"
+
+[node name="Body" type="HBoxContainer" parent="Margins/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 22
+
+[node name="ChoicesPanel" type="PanelContainer" parent="Margins/Layout/Body"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("4_panel")
+
+[node name="ChoicesMargin" type="MarginContainer" parent="Margins/Layout/Body/ChoicesPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="ChoicesLayout" type="VBoxContainer" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Status" type="Label" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_heading")
+theme_override_font_sizes/font_size = 30
+text = "Finding an opponent"
+
+[node name="Progress" type="Label" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "A draft has three rounds with two picks per round."
+
+[node name="Instructions" type="Label" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_body")
+theme_override_font_sizes/font_size = 17
+text = "The server will offer three cards for your first pick."
+autowrap_mode = 3
+
+[node name="Separator" type="HSeparator" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout"]
+layout_mode = 2
+
+[node name="ChoicesCenter" type="CenterContainer" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CandidateCards" type="HBoxContainer" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout/ChoicesCenter"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="CompletedCards" type="GridContainer" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout/ChoicesCenter"]
+visible = false
+layout_mode = 2
+theme_override_constants/h_separation = 18
+theme_override_constants/v_separation = 12
+columns = 3
+
+[node name="Error" type="Label" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.42, 1)
+theme_override_fonts/font = ExtResource("6_body")
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 3
+
+[node name="DeckPanel" type="PanelContainer" parent="Margins/Layout/Body"]
+custom_minimum_size = Vector2(330, 0)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("4_panel")
+
+[node name="DeckMargin" type="MarginContainer" parent="Margins/Layout/Body/DeckPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 24
+
+[node name="DeckLayout" type="VBoxContainer" parent="Margins/Layout/Body/DeckPanel/DeckMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="DeckHeading" type="Label" parent="Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_heading")
+theme_override_font_sizes/font_size = 25
+text = "YOUR PICKS"
+
+[node name="PickedCount" type="Label" parent="Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "0 / 6 cards"
+
+[node name="DeckSeparator" type="HSeparator" parent="Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout"]
+layout_mode = 2
+
+[node name="DeckScroll" type="ScrollContainer" parent="Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="DeckList" type="VBoxContainer" parent="Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout/DeckScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="PlayDraftMatch" type="Button" parent="Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout"]
+visible = false
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "PLAY DRAFT MATCH"
+
+[node name="Retry" type="Button" parent="Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout"]
+visible = false
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "RECONNECT"
+
+[connection signal="pressed" from="Margins/Layout/Header/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout/PlayDraftMatch" to="." method="_on_play_match_pressed"]
+[connection signal="pressed" from="Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout/Retry" to="." method="_on_retry_pressed"]

@@ -19,6 +19,8 @@ func _on_pressed():
 			get_tree().change_scene_to_file("res://src/DeckBuilder/DeckBuilder.tscn")
 		"LearnToPlay":
 			get_tree().change_scene_to_file("res://src/Tutorial/Tutorial.tscn")
+		"PlayDraft":
+			get_tree().change_scene_to_file("res://src/Draft/Draft.tscn")
 		"PlayMulti":
 			GS.queue_type = GS.Types.GameType.BO1_CONSTRUCTED
 			_show_deck_dialog()

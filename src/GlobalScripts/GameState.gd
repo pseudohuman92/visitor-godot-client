@@ -52,6 +52,7 @@ var gameSocket
 var userId : String
 var playerId : String
 var gameId : String
+var draft_id : String
 var aiId : String
 
 var queue_type
@@ -128,6 +129,8 @@ func get_game_URL():
 		Types.GameType.AI_VS_AI:
 			return base+"/ai-vs-ai/"+playerId+"/"+gameId+"/"+aiId
 		Types.GameType.BO1_CONSTRUCTED:
+			return base+"/games/"+playerId+"/"+gameId
+		Types.GameType.P2_DRAFT_GAME:
 			return base+"/games/"+playerId+"/"+gameId
 		Types.GameType.P2_DRAFT:
 			return base+"/drafts/"+playerId+"/"+gameId

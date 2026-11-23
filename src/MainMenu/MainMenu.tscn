@@ -113,9 +113,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -260.0
-offset_top = -272.0
+offset_top = -310.0
 offset_right = 260.0
-offset_bottom = 272.0
+offset_bottom = 310.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -129,9 +129,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -210.0
-offset_top = -204.0
+offset_top = -246.0
 offset_right = 210.0
-offset_bottom = 204.0
+offset_bottom = 246.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 12
@@ -150,6 +150,14 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 22
 theme_override_fonts/font = ExtResource("5_nav_font")
 text = "LEARN TO PLAY"
+script = ExtResource("1_ctsd2")
+
+[node name="PlayDraft" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(420, 58)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+theme_override_fonts/font = ExtResource("5_nav_font")
+text = "DRAFT"
 script = ExtResource("1_ctsd2")
 
 [node name="PlayMulti" type="Button" parent="VBoxContainer" unique_id=924503278]
@@ -194,6 +202,7 @@ access = 1
 
 [connection signal="pressed" from="VBoxContainer/DeckBuilder" to="VBoxContainer/DeckBuilder" method="_on_pressed"]
 [connection signal="pressed" from="VBoxContainer/LearnToPlay" to="VBoxContainer/LearnToPlay" method="_on_pressed"]
+[connection signal="pressed" from="VBoxContainer/PlayDraft" to="VBoxContainer/PlayDraft" method="_on_pressed"]
 [connection signal="pressed" from="VBoxContainer/PlayMulti" to="VBoxContainer/PlayMulti" method="_on_pressed"]
 [connection signal="pressed" from="VBoxContainer/PlayAI" to="VBoxContainer/PlayAI" method="_on_pressed"]
 [connection signal="pressed" from="VBoxContainer/PlayAIVsAI" to="VBoxContainer/PlayAIVsAI" method="_on_pressed"]
