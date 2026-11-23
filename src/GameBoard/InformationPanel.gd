@@ -13,12 +13,17 @@ const FACTIONS = {
 	"Y": {"name": "AEGIS", "icon": "Yellow", "color": Color("#e2c26f")},
 }
 const CODES = ["B", "G", "P", "R", "Y"]
+const UNAVAILABLE_KNOWLEDGE_TINT := Color(0.28, 0.28, 0.28)
 
 var mirrored := false
 var _name_label: Label
 var _health_label: Label
 var _energy_label: Label
 var _knowledge_labels := {}
+var _knowledge_icons := {}
+var _knowledge_hit_areas := {}
+var _choosing_knowledge := false
+var _knowledge_choices := []
 
 func configure(is_opponent: bool) -> void:
 	mirrored = is_opponent
@@ -47,6 +52,7 @@ func configure(is_opponent: bool) -> void:
 		icon.position = Vector2(x, lower_y + 19)
 		icon.size = Vector2(25, 25)
 		add_child(icon)
+		_knowledge_icons[code] = icon
 		_knowledge_labels[code] = _add_text("0", Vector2(x + 31, lower_y + 18), Vector2(29, 27), 21, faction["color"])
 		var hit_area := Control.new()
 		hit_area.name = code + "KnowledgeHitArea"
@@ -56,6 +62,7 @@ func configure(is_opponent: bool) -> void:
 		hit_area.tooltip_text = faction["name"] + " knowledge"
 		hit_area.gui_input.connect(_on_knowledge_input.bind(code))
 		add_child(hit_area)
+		_knowledge_hit_areas[code] = hit_area
 	queue_redraw()
 
 func _draw() -> void:
@@ -72,6 +79,14 @@ func _draw() -> void:
 	for index in range(1, CODES.size()):
 		var x := 13.0 + 69.0 * index
 		draw_line(Vector2(x, lower_y + 18), Vector2(x, lower_y + 43), Color("#455055"), 1)
+	if _choosing_knowledge:
+		for index in range(CODES.size()):
+			var code: String = CODES[index]
+			if _knowledge_choices.has(CS.to_knowledge_type(code)):
+				var x := 15.0 + 69.0 * index
+				var rect := Rect2(x, lower_y + 15, 65, 32)
+				draw_rect(rect, Color(0.37, 0.46, 0.20, 0.36))
+				draw_rect(rect, Color.GREEN_YELLOW, false, 2.0)
 
 func update_player(player) -> void:
 	var username: String = player.get_username() if player else ""
@@ -90,6 +105,7 @@ func update_pool(pool) -> void:
 		_knowledge_labels[code].text = str(counts.get(code, 0))
 
 func _process(_delta: float) -> void:
+	_update_knowledge_choices()
 	if not GS.gameState:
 		return
 	var player = GS.gameState.get_opponent() if mirrored else GS.gameState.get_player()
@@ -97,6 +113,22 @@ func _process(_delta: float) -> void:
 	var tint = SS.INVALID_TARGET_MODULATE if SS.is_targeting_board_object() and not valid else Color.WHITE
 	if modulate != tint:
 		modulate = tint
+
+func _update_knowledge_choices() -> void:
+	var choosing = not mirrored and SS.selecting_for == SS.selection_type.KNOWLEDGE
+	var choices = SS.selection_targets if choosing else []
+	if choosing == _choosing_knowledge and choices == _knowledge_choices:
+		return
+	_choosing_knowledge = choosing
+	_knowledge_choices = choices.duplicate()
+	for code in CODES:
+		var available = _knowledge_choices.has(CS.to_knowledge_type(code))
+		var tint = UNAVAILABLE_KNOWLEDGE_TINT if choosing and not available else Color.WHITE
+		_knowledge_icons[code].self_modulate = tint
+		_knowledge_labels[code].self_modulate = tint
+		_knowledge_hit_areas[code].mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if choosing and available else Control.CURSOR_ARROW
+		_knowledge_hit_areas[code].tooltip_text = "Choose %s knowledge" % FACTIONS[code]["name"] if choosing and available else FACTIONS[code]["name"] + " knowledge"
+	queue_redraw()
 
 func _gui_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT or not event.pressed:
@@ -116,12 +148,14 @@ func _gui_input(event: InputEvent) -> void:
 func _on_knowledge_input(event: InputEvent, code: String) -> void:
 	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT or not event.pressed:
 		return
+	if mirrored or SS.selecting_for != SS.selection_type.KNOWLEDGE \
+			or not SS.selection_targets.has(CS.to_knowledge_type(code)):
+		return
 	var board = find_parent("GameBoard")
 	if is_instance_valid(board) and bool(board.get("tutorial_mode")):
 		board.call("notify_tutorial_action", "knowledge_select", CS.to_knowledge_type(code))
 		get_viewport().set_input_as_handled()
-	elif not mirrored and SS.selecting_for == SS.selection_type.KNOWLEDGE \
-			and SS.selection_targets.has(CS.to_knowledge_type(code)):
+	else:
 		SS.selected_single.append(CS.to_knowledge_type(code))
 		SS.selection_targets = []
 		SS.selecting_for = SS.selection_type.NONE

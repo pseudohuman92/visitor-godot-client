@@ -34,6 +34,7 @@ func _drop_data(at_position, data):
 				SS.clear_selection_data()
 				SS.selecting_card = data.card
 				SS.selecting_for = SS.selection_type.KNOWLEDGE
+				SS.selection_message = "Select a knowledge to gain from your information panel."
 				for k in data.card.get_knowledgeCost():
 					SS.selection_targets.append(k.get_knowledge())
 

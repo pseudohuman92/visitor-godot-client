@@ -827,9 +827,9 @@ func _register_board_targets() -> void:
 		_target_controls["opponent_info"] = opponent_avatar
 	if is_instance_valid(player_avatar):
 		_target_controls["player_info"] = player_avatar
-	var knowledge = _game_board.find_child("KnowledgeSelection", true, false)
-	if knowledge:
-		var red = knowledge.find_child("RContainer", true, false)
+	var knowledge_panel = _game_board.find_child("PlayerInformationPanel", true, false)
+	if knowledge_panel:
+		var red = knowledge_panel.find_child("RKnowledgeHitArea", true, false)
 		if red:
 			_target_controls["knowledge_red"] = red
 	for zone_name in ["PlayerHand", "PlayerUnitArea", "OpponentUnitArea", "Stack"]:

@@ -10,7 +10,7 @@ func _process(_delta):
 		"Pass":
 			set_visible(GS.has_initiative() and not SS.is_selecting() and not GS.popup_cards)
 		"Submit":
-			set_visible(SS.is_selecting())
+			set_visible(SS.is_selecting() and SS.selecting_for != SS.selection_type.KNOWLEDGE)
 			set_disabled(GS.is_waiting or SS.selected_single.size() < SS.min_select \
 			or (SS.max_select > -1 and SS.selected_single.size() > SS.max_select))
 		"Cancel":
