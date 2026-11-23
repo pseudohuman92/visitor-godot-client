@@ -16,6 +16,10 @@ var selected_single = []
 var selected = {}
 
 var selectingX = false
+const INVALID_TARGET_MODULATE := Color(0.4, 0.4, 0.4)
+
+func is_targeting_board_object() -> bool:
+	return selecting_for != selection_type.KNOWLEDGE and not selection_targets.is_empty()
 
 func unpack_selection(selection_options):
 	selection_id = selection_options.get_id()

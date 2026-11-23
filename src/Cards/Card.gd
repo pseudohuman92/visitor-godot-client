@@ -151,8 +151,12 @@ func _on_mouse_exited():
 		hover = false
 
 func _process(delta):
-	if _in_player_hand and card:
+	if card and SS.is_targeting_board_object():
+		modulate = Color.WHITE if SS.selection_targets.has(card.get_id()) else SS.INVALID_TARGET_MODULATE
+	elif _in_player_hand and card:
 		modulate = Color.WHITE if card.get_canPlay() else UNPLAYABLE_HAND_MODULATE
+	elif modulate != Color.WHITE:
+		modulate = Color.WHITE
 	if _deferred_hover_exit and not get_parent().get_global_rect().has_point(get_global_mouse_position()) and not get_global_rect().has_point(get_global_mouse_position()):
 		_on_mouse_exited()
 	if _hover_lift != null:

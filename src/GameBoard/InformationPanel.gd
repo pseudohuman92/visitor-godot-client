@@ -89,6 +89,30 @@ func update_pool(pool) -> void:
 	for code in CODES:
 		_knowledge_labels[code].text = str(counts.get(code, 0))
 
+func _process(_delta: float) -> void:
+	if not GS.gameState:
+		return
+	var player = GS.gameState.get_opponent() if mirrored else GS.gameState.get_player()
+	var valid = SS.selection_targets.has(player.get_id())
+	var tint = SS.INVALID_TARGET_MODULATE if SS.is_targeting_board_object() and not valid else Color.WHITE
+	if modulate != tint:
+		modulate = tint
+
+func _gui_input(event: InputEvent) -> void:
+	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT or not event.pressed:
+		return
+	if not GS.gameState or not SS.is_targeting_board_object():
+		return
+	var player = GS.gameState.get_opponent() if mirrored else GS.gameState.get_player()
+	var id = player.get_id()
+	if SS.selection_targets.has(id):
+		if SS.selected_single.has(id):
+			SS.selected_single.erase(id)
+		else:
+			SS.selected_single.append(id)
+		SS.check_smart_select()
+		accept_event()
+
 func _on_knowledge_input(event: InputEvent, code: String) -> void:
 	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT or not event.pressed:
 		return
