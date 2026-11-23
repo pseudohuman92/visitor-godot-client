@@ -12,12 +12,14 @@ var _display_values = {}
 var _board_hud_root: Control
 var _opponent_hud: Control
 var _player_hud: Control
-var _opponent_active_frame: Panel
-var _player_active_frame: Panel
 var _phase_indicator: PanelContainer
 var _phase_step_chips: Array[PanelContainer] = []
 var _phase_step_labels: Array[Label] = []
 var _phase_steps: Array = []
+var _turn_direction_frame: PanelContainer
+var _turn_direction_arrow: Node2D
+var _turn_direction_tween: Tween
+var _turn_direction_active_player_id := ""
 var _information_panels := {}
 var _opponent_front: Control
 var _opponent_deck_area: Control
@@ -111,6 +113,23 @@ func _apply_reference_board_composition():
 	stack_container.custom_minimum_size.x = 180
 	stack_container.size_flags_horizontal = Control.SIZE_FILL
 	stack_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var selection_text = _find_board_node("SelectionText") as Label
+	if selection_text:
+		selection_text.reparent(stack_container)
+		stack_container.move_child(selection_text, stack_container.get_node("Buttons").get_index())
+		selection_text.custom_minimum_size.y = 64
+		selection_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		selection_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var message_style = StyleBoxFlat.new()
+		message_style.bg_color = Color("#111416e8")
+		message_style.border_color = Color("#72685b")
+		message_style.set_border_width_all(1)
+		message_style.set_corner_radius_all(4)
+		message_style.content_margin_left = 8
+		message_style.content_margin_right = 8
+		message_style.content_margin_top = 6
+		message_style.content_margin_bottom = 6
+		selection_text.add_theme_stylebox_override("normal", message_style)
 	old_layout.queue_free()
 
 	var hud_layer = CanvasLayer.new()
@@ -148,8 +167,8 @@ func _apply_reference_board_composition():
 	old_display_area.queue_free()
 	_prepare_information_panels()
 	_setup_deck_count_hover()
-	_create_active_player_frames()
 	_create_phase_indicator()
+	_create_turn_direction_indicator()
 	var divider = _find_board_node("PlayAreaSeparator")
 	if divider:
 		divider.hide()
@@ -187,54 +206,10 @@ func _set_deck_count_visibility(count: Control, visible: bool):
 	if is_instance_valid(count):
 		count.visible = visible
 
-func _create_active_player_frames():
-	if not is_instance_valid(_board_hud_root):
-		return
-	_opponent_active_frame = _new_active_player_frame("OpponentActiveFrame")
-	_player_active_frame = _new_active_player_frame("PlayerActiveFrame")
-	_board_hud_root.add_child(_opponent_active_frame)
-	_board_hud_root.add_child(_player_active_frame)
-
-func _new_active_player_frame(frame_name: String) -> Panel:
-	var frame = Panel.new()
-	frame.name = frame_name
-	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	frame.visible = false
-	frame.z_index = 15
-	var style = StyleBoxFlat.new()
-	style.bg_color = Color.TRANSPARENT
-	style.draw_center = false
-	style.border_color = Color("#67DDF5")
-	style.set_border_width_all(4)
-	style.corner_radius_top_left = 6
-	style.corner_radius_top_right = 6
-	style.corner_radius_bottom_left = 6
-	style.corner_radius_bottom_right = 6
-	frame.add_theme_stylebox_override("panel", style)
-	return frame
-
-func _update_active_player_indicator(state):
-	if not state or not is_instance_valid(_player_active_frame) or not is_instance_valid(_opponent_active_frame):
-		return
-	var active_player_id = state.get_activePlayer()
-	if active_player_id.is_empty():
-		active_player_id = state.get_turnPlayer()
-	var player = state.get_player()
-	var opponent = state.get_opponent()
-	var player_is_active = player and player.get_id() == active_player_id
-	var opponent_is_active = opponent and opponent.get_id() == active_player_id
-	if not player_is_active and not opponent_is_active:
-		player_is_active = player and player.get_id() == GS.playerId
-		if not player_is_active:
-			opponent_is_active = opponent != null
-	_player_active_frame.visible = player_is_active
-	_opponent_active_frame.visible = opponent_is_active
-
 func _create_phase_indicator():
 	if not is_instance_valid(_board_hud_root) or is_instance_valid(_phase_indicator):
 		return
 	_phase_steps = [
-		{"phase": GS.Types.Phase.REDRAW, "label": "REDRAW", "name": "Redraw"},
 		{"phase": GS.Types.Phase.BEGIN, "label": "BEGIN", "name": "Begin"},
 		{"phase": GS.Types.Phase.MAIN_BEFORE, "label": "MAIN 1", "name": "Main Before"},
 		{"phase": GS.Types.Phase.ATTACK, "label": "ATTACK", "name": "Attack"},
@@ -246,7 +221,7 @@ func _create_phase_indicator():
 	]
 	_phase_indicator = PanelContainer.new()
 	_phase_indicator.name = "GamePhaseIndicator"
-	_phase_indicator.custom_minimum_size = Vector2(0, 80)
+	_phase_indicator.custom_minimum_size = Vector2(0, 46)
 	_phase_indicator.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_phase_indicator.z_index = 10
 	var shell = StyleBoxFlat.new()
@@ -268,19 +243,13 @@ func _create_phase_indicator():
 	margins.add_theme_constant_override("margin_right", 6)
 	margins.add_theme_constant_override("margin_bottom", 4)
 	_phase_indicator.add_child(margins)
-	var rows = VBoxContainer.new()
-	rows.add_theme_constant_override("separation", 2)
-	margins.add_child(rows)
-	var row: HBoxContainer
+	var row = HBoxContainer.new()
+	row.add_theme_constant_override("separation", 4)
+	margins.add_child(row)
 	for index in range(_phase_steps.size()):
-		if index % 3 == 0:
-			row = HBoxContainer.new()
-			row.add_theme_constant_override("separation", 2)
-			row.size_flags_vertical = Control.SIZE_EXPAND_FILL
-			rows.add_child(row)
 		var step = _phase_steps[index]
 		var chip = PanelContainer.new()
-		chip.custom_minimum_size = Vector2(0, 20)
+		chip.custom_minimum_size = Vector2(0, 34)
 		chip.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		chip.tooltip_text = step["name"]
@@ -290,12 +259,58 @@ func _create_phase_indicator():
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		label.add_theme_font_override("font", preload("res://assets/fonts/BarlowCondensed-SemiBold-Tracked.tres"))
-		label.add_theme_font_size_override("font_size", 14)
+		label.add_theme_font_size_override("font_size", 16)
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		chip.add_child(label)
 		row.add_child(chip)
 		_phase_step_chips.append(chip)
 		_phase_step_labels.append(label)
+
+func _create_turn_direction_indicator() -> void:
+	_turn_direction_frame = PanelContainer.new()
+	_turn_direction_frame.name = "TurnDirectionIndicator"
+	_turn_direction_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_turn_direction_frame.z_index = 10
+	_turn_direction_frame.add_theme_stylebox_override("panel", _phase_indicator.get_theme_stylebox("panel").duplicate())
+	_board_hud_root.add_child(_turn_direction_frame)
+	_turn_direction_arrow = Node2D.new()
+	_turn_direction_arrow.name = "ActivePlayerTriangle"
+	_turn_direction_arrow.position = Vector2(23, 23)
+	_turn_direction_frame.add_child(_turn_direction_arrow)
+	var glow = Polygon2D.new()
+	glow.polygon = PackedVector2Array([Vector2(0, -16), Vector2(16, 12), Vector2(-16, 12)])
+	glow.color = Color(0.40, 0.87, 0.96, 0.22)
+	_turn_direction_arrow.add_child(glow)
+	var triangle = Polygon2D.new()
+	triangle.polygon = PackedVector2Array([Vector2(0, -12), Vector2(12, 9), Vector2(-12, 9)])
+	triangle.color = Color("#67DDF5")
+	_turn_direction_arrow.add_child(triangle)
+
+func _update_turn_direction_indicator(state) -> void:
+	if not state or not is_instance_valid(_turn_direction_arrow):
+		return
+	var player = state.get_player()
+	var opponent = state.get_opponent()
+	if not player or not opponent:
+		return
+	var active_player_id = state.get_activePlayer()
+	if active_player_id.is_empty():
+		active_player_id = state.get_turnPlayer()
+	if active_player_id != player.get_id() and active_player_id != opponent.get_id():
+		return
+	if active_player_id == _turn_direction_active_player_id:
+		return
+	var target_rotation = 0.0 if active_player_id == opponent.get_id() else PI
+	if _turn_direction_active_player_id.is_empty():
+		_turn_direction_arrow.rotation = target_rotation
+	else:
+		if _turn_direction_tween and _turn_direction_tween.is_running():
+			_turn_direction_tween.kill()
+		var destination = _turn_direction_arrow.rotation + wrapf(target_rotation - _turn_direction_arrow.rotation, -PI, PI)
+		_turn_direction_tween = create_tween()
+		_turn_direction_tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+		_turn_direction_tween.tween_property(_turn_direction_arrow, "rotation", destination, 0.45)
+	_turn_direction_active_player_id = active_player_id
 
 func _update_phase_indicator(state):
 	if not is_instance_valid(_phase_indicator) or state == null:
@@ -455,16 +470,18 @@ func _layout_board_hud():
 		Vector2(front_x, opponent_info_y), Vector2(front_width, front_height), front_scale)
 	_place_board_hud_control(_player_front,
 		Vector2(front_x, player_info_y), Vector2(front_width, front_height), front_scale)
-	var info_frame_size = Vector2(front_width, front_height) * front_scale
-	_place_board_hud_control(_opponent_active_frame,
-		Vector2(front_x, opponent_info_y), info_frame_size)
-	_place_board_hud_control(_player_active_frame,
-		Vector2(front_x, player_info_y), info_frame_size)
 	if is_instance_valid(_phase_indicator):
-		var phase_size = Vector2(front_width * front_scale, 80.0 * front_scale)
+		var phase_width = minf(1080.0, maxf(0.0, front_x - 86.0))
+		var phase_size = Vector2(phase_width, 46.0)
+		var phase_x = minf((front_x - phase_width) * 0.5, front_x - phase_width - 62.0)
+		var phase_y = (viewport_size.y - phase_size.y) * 0.5
 		_place_board_hud_control(_phase_indicator,
-			Vector2(front_x, maxf(8.0, player_info_y - phase_size.y - 8.0)),
+			Vector2(phase_x, phase_y),
 			phase_size)
+		_place_board_hud_control(_turn_direction_frame,
+			Vector2(phase_x + phase_width + 8.0, phase_y), Vector2(46, 46))
+		for label in _phase_step_labels:
+			label.add_theme_font_size_override("font_size", 16 if phase_width >= 780.0 else 13)
 	var opponent_hand_width = viewport_size.x * 0.76
 	var opponent_card_height = viewport_size.y * O.card_height
 	var opponent_visible_height = opponent_card_height * 0.5
@@ -536,7 +553,7 @@ func update_game_state(new_state):
 	var origins = _capture_card_origins() if not _zone_bytes.is_empty() else {}
 	GS.gameState = new_state
 	_update_phase_indicator(new_state)
-	_update_active_player_indicator(new_state)
+	_update_turn_direction_indicator(new_state)
 	_snapshot_game_clocks(new_state)
 	_state_revision += 1
 	if new_state.get_activePlayer() != GS.playerId:

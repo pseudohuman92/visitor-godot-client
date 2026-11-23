@@ -69,20 +69,4 @@ func _process(delta):
 			else:
 				border.set_border_color(Color.TRANSPARENT)
 
-		elif name.contains("PlayerDisplayFront"):
-			var player = GS.gameState.get_player()
-			if player and player.get_id() == GS.gameState.get_activePlayer():
-				border.set_border_color(Color("#67DDF5"))
-				border.set_border_width_all(5)
-			else:
-				border.set_border_color(Color.TRANSPARENT)
-
-		elif name.contains("OpponentDisplayFront"):
-			var opponent = GS.gameState.get_opponent()
-			if opponent and opponent.get_id() == GS.gameState.get_activePlayer():
-				border.set_border_color(Color("#67DDF5"))
-				border.set_border_width_all(5)
-			else:
-				border.set_border_color(Color.TRANSPARENT)
-
 		add_theme_stylebox_override("panel", border)
