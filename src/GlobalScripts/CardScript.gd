@@ -34,7 +34,7 @@ const EDGE_ICON_SIZE = 28.0
 const EDGE_ICON_STEP = 30.0
 const EDGE_ICON_TOP = 42.0
 const CARD_FRAME_DIR = "res://assets/card-components/Borders/"
-const SHOW_CARD_BORDERS := false
+const SHOW_CARD_BORDERS := true
 const CARD_FRAME_BY_COLOR = {
 	"B": "Parallax",
 	"G": "Strain",

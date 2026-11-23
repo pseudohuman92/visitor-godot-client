@@ -10,10 +10,13 @@ var hover = false
 var _hover_lift
 var _deferred_hover_exit = false
 var _disable_hover_lift := false
+var _in_player_hand := false
 var _drag_source: WeakRef
 var _drag_source_modulate := Color.WHITE
+const UNPLAYABLE_HAND_MODULATE := Color(0.55, 0.55, 0.55)
 
 func _ready():
+	_in_player_hand = find_parent("PlayerHand") != null
 	var in_discard_pile = find_parent("PlayerDiscard") != null or find_parent("OpponentDiscard") != null
 	_disable_hover_lift = in_discard_pile or find_parent("OpponentHand") != null
 	if in_discard_pile:
@@ -148,6 +151,8 @@ func _on_mouse_exited():
 		hover = false
 
 func _process(delta):
+	if _in_player_hand and card:
+		modulate = Color.WHITE if card.get_canPlay() else UNPLAYABLE_HAND_MODULATE
 	if _deferred_hover_exit and not get_parent().get_global_rect().has_point(get_global_mouse_position()) and not get_global_rect().has_point(get_global_mouse_position()):
 		_on_mouse_exited()
 	if _hover_lift != null:

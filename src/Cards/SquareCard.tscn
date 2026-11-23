@@ -390,6 +390,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_vertical = 1
 
 [node name="Control2" type="Control" parent="InternalContainer/CardImage/Contents"]
 layout_mode = 2
@@ -398,26 +399,19 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Control2" type="Control" parent="InternalContainer/CardImage/Contents/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 9.0
-mouse_filter = 1
-
 [node name="CostArea" type="VBoxContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.2
+size_flags_horizontal = 0
 script = ExtResource("4_020j0")
 
 [node name="CostSlot" type="MarginContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-theme_override_constants/margin_left = -5
-theme_override_constants/margin_top = -5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = -10
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 
 [node name="CostBG" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/CostArea/CostSlot"]
 custom_minimum_size = Vector2(36, 36)
@@ -527,38 +521,41 @@ vertical_alignment = 1
 [node name="VBoxContainer2" type="MarginContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 8.0
-theme_override_constants/margin_top = -5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="NameSlot" type="MarginContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="NameSlot" type="Control" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 7.0
+size_flags_vertical = 0
 mouse_filter = 2
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_bottom = -5
 
 [node name="Name" type="Label" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer/NameSlot"]
-layout_mode = 2
-size_flags_vertical = 0
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 7.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("6_llt0u")
 theme_override_styles/normal = SubResource("StyleBoxTexture_ir4dl")
 text = "CardName"
 label_settings = SubResource("LabelSettings_k2rkx")
 horizontal_alignment = 1
-vertical_alignment = 0
+vertical_alignment = 1
 clip_text = true
 text_overrun_behavior = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_3nbvu")
 
 [node name="TypeIcon" type="TextureRect" parent="InternalContainer/CardImage/Contents/HBoxContainer/VBoxContainer2/HBoxContainer/PanelContainer"]
