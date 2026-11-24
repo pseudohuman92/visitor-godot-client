@@ -3456,6 +3456,10 @@ class Player:
 		service = PBServiceField.new()
 		service.field = __freePlayCredits
 		data[__freePlayCredits.tag] = service
+		__studiesLeft = PBField.new("studiesLeft", PB_DATA_TYPE.INT32, PB_RULE.OPTIONAL, 16, true, DEFAULT_VALUES_3[PB_DATA_TYPE.INT32])
+		service = PBServiceField.new()
+		service.field = __studiesLeft
+		data[__studiesLeft.tag] = service
 
 	var data = {}
 	
@@ -3603,6 +3607,15 @@ class Player:
 		__freePlayCredits.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT32]
 	func set_freePlayCredits(value : int) -> void:
 		__freePlayCredits.value = value
+
+	var __studiesLeft: PBField
+	func get_studiesLeft() -> int:
+		return __studiesLeft.value
+	func clear_studiesLeft() -> void:
+		data[16].state = PB_SERVICE_STATE.UNFILLED
+		__studiesLeft.value = DEFAULT_VALUES_3[PB_DATA_TYPE.INT32]
+	func set_studiesLeft(value : int) -> void:
+		__studiesLeft.value = value
 
 	func _to_string() -> String:
 		return PBPacker.message_to_string(data)

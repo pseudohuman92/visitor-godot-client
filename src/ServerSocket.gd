@@ -31,11 +31,8 @@ func joinQueue(type):
 func decode_proto_message(data):
 	var message = GS.ServerMessages.ServerMessage.new()
 	var result_code = message.from_bytes(data)
-	if result_code == GS.ServerMessages.PB_ERR.NO_ERRORS:
-		print("OK")
-	else:
-		print("ERR: ", result_code)
-		print("ERR: ", message.to_string())
+	if result_code != GS.ServerMessages.PB_ERR.NO_ERRORS:
+		_fail("Could not read server response (protocol error %d)." % result_code)
 		return
 
 	GS.is_waiting = false

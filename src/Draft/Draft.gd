@@ -145,6 +145,9 @@ func _on_pick_pressed(card_id: String, card_name: String) -> void:
 		button.disabled = true
 	status_label.text = "Picked %s" % card_name
 	instructions_label.text = "Waiting for the other player to pick."
+	var pending_count := _count_picks(_draft_state.get_decklist()) + 1
+	picked_count.text = "%d / %d cards (pending)" % [pending_count, TOTAL_PICKS]
+	_add_deck_line("Pending: %s" % card_name, true)
 
 func _on_draft_completed(draft_state) -> void:
 	_draft_state = draft_state
@@ -202,11 +205,16 @@ func _render_completed_cards() -> void:
 	for child in completed_cards.get_children():
 		child.queue_free()
 	for card in _picked_cards:
+		var slot := Control.new()
+		slot.custom_minimum_size = Vector2(180, 252)
+		completed_cards.add_child(slot)
 		var view = GS.CardScene.instantiate()
-		view.custom_minimum_size = Vector2(180, 252)
 		view.setup(card)
 		_set_mouse_filter_ignore_recursive(view)
-		completed_cards.add_child(view)
+		slot.add_child(view)
+		view.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		view.position = Vector2.ZERO
+		view.size = slot.custom_minimum_size
 	completed_cards.visible = not _picked_cards.is_empty()
 
 func _on_play_match_pressed() -> void:

@@ -137,11 +137,8 @@ func select_from():
 func decode_proto_message(data):
 	var message = GS.ServerGameMessages.ServerGameMessage.new()
 	var result_code = message.from_bytes(data)
-	if result_code == GS.ServerGameMessages.PB_ERR.NO_ERRORS:
-		print("GAME OK")
-	else:
-		print("GAME ERROR: ", result_code)
-		print("GAME ERROR: ", message.to_string())
+	if result_code != GS.ServerGameMessages.PB_ERR.NO_ERRORS:
+		_fail("Could not read match update (protocol error %d)." % result_code)
 		return
 
 	GS.is_waiting = GS.is_spectating_ai_match

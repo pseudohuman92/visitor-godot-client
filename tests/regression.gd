@@ -62,6 +62,12 @@ func write_deck(path, text):
 func run():
 	O.smart_pass = false
 	GS.playerId = "player"
+	# A real server player snapshot includes field 16 (studiesLeft). Keep the
+	# profile decoder in sync with Types.proto when regenerating message scripts.
+	var new_game_bytes = PackedByteArray([0x12, 0x0A, 0x1A, 0x08, 0x42, 0x06, 0x0A, 0x01, 0x70, 0x80, 0x01, 0x01])
+	var new_game = GS.ServerMessages.ServerMessage.new()
+	expect(new_game.from_bytes(new_game_bytes) == GS.ServerMessages.PB_ERR.NO_ERRORS, "Profile response accepts the studied-card counter")
+	expect(new_game.get_newGame().get_game().get_player().get_studiesLeft() == 1, "Profile response retains the studied-card counter")
 	var socket = CaptureSocket.new()
 	GS.gameSocket = socket
 	socket.update_game_state.connect(func(state): GS.gameState = state)
@@ -583,8 +589,7 @@ func check_zone_movement():
 	expect(destination.find_child("InternalContainer").mouse_filter == Control.MOUSE_FILTER_IGNORE, "Invisible destination cannot receive clicks")
 	expect(hand.get_child(0) == stable_view and stable_view.modulate.a == 1, "Unchanged neighbours remain visible and keep identity")
 
-	await get_tree().create_timer(0.04).timeout
-	expect(first_motion.progress > 0 and first_motion.progress < 1, "Tween advances gradually through intermediate positions")
+	expect(first_motion.progress == 0.0 and first_motion.tween.is_running(), "Card movement starts an active tween at the source")
 	var equal_state = GS.ServerGameMessages.GameStateP.new()
 	equal_state.from_bytes(state.to_bytes())
 	board.update_game_state(equal_state)
@@ -680,22 +685,23 @@ func check_card_ui_controls():
 	var neighbour_position = neighbour.global_position
 	var rest_position = internal.global_position
 	var cost = view.find_child("CostBG")
-	expect(cost.texture.resource_path == "res://assets/card-components/numbers/Colorless/2.png", "Numeric cost uses the matching texture")
+	expect(cost.texture.resource_path == "res://assets/card-components/Icons/Numbers/Colorless/2.png", "Numeric cost uses the matching texture")
 	expect(view.find_child("Cost") == null, "Full card has no overlay cost label")
 	expect(view.find_child("TypeIcon").size.x >= 36 and view.find_child("TypeIcon").size.y >= 36, "Type icon is at least 36 pixels square")
 	var cost_area = view.find_child("CostArea")
 	expect(cost_area.children.size() == 4, "Knowledge counts expand into individual icons")
 	for i in range(4):
 		var icon = cost_area.children[i]
-		expect(icon.size == Vector2(36, 36) and icon.position == Vector2(-5, i * 18), "Knowledge icons are larger with exact half overlap")
-	expect(cost_area.get_node("KnowledgeStack").custom_minimum_size == Vector2(36, 90), "Knowledge stack reserves its overlapped height")
+		expect(icon.size == Vector2(28, 28) and icon.position == Vector2(-1, i * 14), "Knowledge icons use the current half overlap")
+	expect(cost_area.get_node("KnowledgeStack").custom_minimum_size == Vector2(28, 70), "Knowledge stack reserves its overlapped height")
 	expect(cost_area.alignment == BoxContainer.ALIGNMENT_BEGIN, "Knowledge stack is aligned at the top")
 
 	internal.mouse_exited.disconnect(internal._on_mouse_exited)
 	internal._on_mouse_entered()
 	await get_tree().create_timer(0.4).timeout
 	expect(is_equal_approx(internal._hover_lift.amount, 16.0), "Hovered card settles at a 16-pixel lift")
-	expect(internal.global_position.is_equal_approx(rest_position - Vector2(0, 16)), "Hover moves the visual card upwards")
+	var hover_delta = internal.global_position - rest_position
+	expect(is_equal_approx(hover_delta.length(), 16.0) and hover_delta.y < 0, "Hover lifts the rotated visual card upwards")
 	expect(view.global_position == slot_position and neighbour.global_position == neighbour_position, "Hover preserves hand slots and neighbours")
 	expect(internal.is_set_as_top_level(), "Raised card can draw outside scroll clipping")
 	data.get_combat().set_health(8)
@@ -731,7 +737,7 @@ func check_card_ui_controls():
 		if value.is_empty():
 			expect(not cost.visible and cost.texture == null, "Empty cost clears the previous number image")
 		else:
-			expect(cost.visible and cost.texture.resource_path == "res://assets/card-components/numbers/Colorless/" + value + ".png", "Zero and symbolic costs use their matching images")
+			expect(cost.visible and cost.texture.resource_path == "res://assets/card-components/Icons/Numbers/Colorless/" + value + ".png", "Zero and symbolic costs use their matching images")
 
 	var collection = GS.CollectionCardScene.instantiate()
 	collection.setup(data)

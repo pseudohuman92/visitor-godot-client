@@ -8,6 +8,7 @@ func _ready():
 
 func _input(event):
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+		get_viewport().set_input_as_handled()
 		var scene = get_tree().current_scene
 		var options: Control = null
 		if scene:
@@ -16,4 +17,3 @@ func _input(event):
 			options.visible = not options.visible
 		else:
 			get_tree().change_scene_to_file("res://src/MainMenu/MainMenu.tscn")
-		get_viewport().set_input_as_handled()

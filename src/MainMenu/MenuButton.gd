@@ -42,4 +42,25 @@ func _show_deck_dialog():
 		# exported sample decks remain available through Godot's resource dialog.
 		dialog.access = FileDialog.ACCESS_RESOURCES
 		dialog.current_dir = "res://decks"
+	else:
+		var has_saved_deck := false
+		for filename in DirAccess.get_files_at("user://"):
+			if filename.get_extension().to_lower() == "deck":
+				has_saved_deck = true
+				break
+		if not has_saved_deck:
+			var prompt := ConfirmationDialog.new()
+			prompt.title = "No saved decks"
+			prompt.dialog_text = "Build and save a deck before starting a match."
+			prompt.ok_button_text = "Open Deck Builder"
+			prompt.cancel_button_text = "Back"
+			find_parent("MainMenu").add_child(prompt)
+			prompt.confirmed.connect(func(): get_tree().change_scene_to_file("res://src/DeckBuilder/DeckBuilder.tscn"))
+			prompt.canceled.connect(prompt.queue_free)
+			prompt.popup_centered()
+			return
+		dialog.access = FileDialog.ACCESS_USERDATA
+		dialog.current_dir = "user://"
+	dialog.clear_filters()
+	dialog.add_filter("*.deck", "OMEN decks")
 	dialog.show()
