@@ -355,7 +355,6 @@ func setup_card(n, card=null):
 		if n.find_child("Ability"):
 			n.find_child("AbilityPanel").set_visible(true)
 			n.find_child("Ability").set_text_custom(ability_text, card.get_name())
-			CS.change_stylebox_override("panel", n.find_child("AbilityPanel"), func(b): b.set_bg_color(to_knowledge_color(card.get_knowledgeCost())-Color(0,0,0,0.4)))
 	else:
 		CS.set_card_art(n.find_child("Artwork"), load(GS.card_back_path))
 		n.find_child("Contents").set_visible(false)

@@ -746,7 +746,33 @@ func check_card_ui_controls():
 	await get_tree().process_frame
 	expect(collection.find_child("TypeIcon").size.x >= 36, "Collection cards use the larger type icon")
 	collection.queue_free()
+	var text_card = GS.CardScene.instantiate()
+	text_card.setup(sample_card())
+	add_child(text_card)
+	text_card.custom_minimum_size = Vector2(350, 490)
+	text_card.size = Vector2(350, 490)
+	var text_panel = text_card.find_child("AbilityPanel")
+	var text_label = text_card.find_child("Ability")
+	text_label.set_text_custom("Deal 2 damage.", "Sample")
+	for i in range(16):
+		await get_tree().process_frame
+	expect(text_panel.get_theme_stylebox("panel").texture.resource_path.ends_with("card_text_ivory.png"), "Brief card text uses the narrow parchment")
+	text_label.set_text_custom("When this enters play, choose a unit. Deal 2 damage to it. If it dies this turn, gain 1 energy and draw a card.", "Sample")
+	for i in range(20):
+		await get_tree().process_frame
+	expect(text_panel.get_theme_stylebox("panel").texture.resource_path.ends_with("card_text_antique.png"), "Long card text uses the tall parchment")
+	text_card.custom_minimum_size = Vector2(160, 224)
+	text_card.size = Vector2(160, 224)
+	for i in range(24):
+		await get_tree().process_frame
+	expect(text_label.get_content_height() <= text_label.size.y - 2.0, "Card text refits after the card shrinks")
+	expect(text_label.get_theme_color("default_color") == Color.BLACK, "Card text is black on parchment")
+	text_label.set_text_custom("Deal 2 damage.", "Sample")
+	for i in range(16):
+		await get_tree().process_frame
+	expect(text_panel.get_theme_stylebox("panel").texture.resource_path.ends_with("card_text_ivory.png"), "A shortened description restores the narrow parchment")
+	text_card.queue_free()
 	board.queue_free()
-	await get_tree().process_frame
-	await get_tree().process_frame
+	for i in range(6):
+		await get_tree().process_frame
 	_ui_checks_completed = true

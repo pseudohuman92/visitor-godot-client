@@ -9,12 +9,23 @@ const LABEL_BASE_SIZE_META := "card_base_label_font_size"
 const LAST_SCALE_META := "card_last_font_scale"
 const ABILITY_AREA_RATIO := 0.30
 const MIN_ABILITY_FONT_SIZE := 5
+const SHORT_PANEL_VERTICAL_MARGIN_RATIO := 0.28
+const LONG_PANEL_VERTICAL_MARGIN_RATIO := 0.10
+const PANEL_HORIZONTAL_MARGIN_RATIO := 0.06
+const LONG_ABILITY_STYLE = preload("res://src/Themes/AbilityBox.tres")
+const SHORT_ABILITY_STYLE = preload("res://src/Themes/AbilityBoxShort.tres")
+enum AbilityFitStage { IDLE, PREPARE, SELECT_PANEL, FIT_TEXT }
 var _title_label: Label
 var _ability_panel: PanelContainer
 var _ability_label: RichTextLabel
-var _ability_fit_queued := false
+var _ability_fit_stage := AbilityFitStage.IDLE
+var _ability_fit_font_size := 0
+var _ability_fit_revision := 0
+var _long_ability_style: StyleBoxTexture
+var _short_ability_style: StyleBoxTexture
 
 func _ready():
+	set_process(false)
 	resized.connect(_apply_card_font_scale)
 	_title_label = find_child("Name", true, false) as Label
 	if _title_label:
@@ -22,12 +33,17 @@ func _ready():
 	_ability_panel = find_child("AbilityPanel", true, false) as PanelContainer
 	_ability_label = _ability_panel.find_child("Ability", true, false) as RichTextLabel if _ability_panel else null
 	if _ability_panel and _ability_label:
+		_long_ability_style = LONG_ABILITY_STYLE.duplicate()
+		_short_ability_style = SHORT_ABILITY_STYLE.duplicate()
 		_ability_panel.size_flags_vertical = Control.SIZE_FILL
 		_ability_panel.resized.connect(_queue_ability_fit)
 		_ability_label.fit_content = false
 		_ability_label.threaded = false
 		_ability_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_ability_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		_ability_label.clip_contents = true
+		_ability_label.add_theme_color_override("default_color", Color.BLACK)
+		_ability_label.resized.connect(_queue_ability_fit)
 		if _ability_label.has_signal("content_changed"):
 			_ability_label.connect("content_changed", _queue_ability_fit)
 	call_deferred("_apply_card_font_scale")
@@ -47,26 +63,67 @@ func _apply_card_font_scale():
 	_fit_title_to_line(scale_factor)
 
 func _queue_ability_fit() -> void:
-	if _ability_fit_queued:
+	if not is_inside_tree():
 		return
-	_ability_fit_queued = true
-	call_deferred("_fit_ability_to_box")
+	_ability_fit_revision += 1
+	_ability_fit_stage = AbilityFitStage.PREPARE
+	set_process(true)
 
-func _fit_ability_to_box() -> void:
-	_ability_fit_queued = false
-	if not is_instance_valid(_ability_label) or _ability_label.size.x <= 0.0 or _ability_label.size.y <= 0.0:
+func _process(_delta: float) -> void:
+	if not is_instance_valid(_ability_panel) or not is_instance_valid(_ability_label):
+		_stop_ability_fit()
 		return
-	var scale_factor = clampf(size.x / BASE_CARD_WIDTH, MIN_FONT_SCALE, MAX_FONT_SCALE)
-	var base_size: int = _ability_label.get_meta("card_base_normal_font_size", 16)
-	var font_size = maxi(MIN_ABILITY_FONT_SIZE, roundi(base_size * scale_factor))
-	while font_size >= MIN_ABILITY_FONT_SIZE:
-		for size_name in ["normal_font_size", "bold_font_size", "italics_font_size", "bold_italics_font_size", "mono_font_size"]:
-			_ability_label.add_theme_font_size_override(size_name, font_size)
-		if _ability_label.has_method("set_icon_size"):
-			_ability_label.set_icon_size(roundi(font_size * INLINE_ICON_SCALE))
-		if _ability_label.get_content_height() <= _ability_label.size.y - 2.0:
-			break
-		font_size -= 1
+	match _ability_fit_stage:
+		AbilityFitStage.PREPARE:
+			if _ability_panel.size.x <= 0.0 or _ability_panel.size.y <= 0.0:
+				return
+			var revision = _ability_fit_revision
+			_update_ability_style_margins(_short_ability_style, SHORT_PANEL_VERTICAL_MARGIN_RATIO)
+			_update_ability_style_margins(_long_ability_style, LONG_PANEL_VERTICAL_MARGIN_RATIO)
+			var scale_factor = clampf(size.x / BASE_CARD_WIDTH, MIN_FONT_SCALE, MAX_FONT_SCALE)
+			var base_size: int = _ability_label.get_meta("card_base_normal_font_size", 16)
+			_ability_fit_font_size = maxi(MIN_ABILITY_FONT_SIZE, roundi(base_size * scale_factor))
+			_set_ability_font_size(_ability_fit_font_size)
+			if revision == _ability_fit_revision:
+				_ability_fit_stage = AbilityFitStage.SELECT_PANEL
+		AbilityFitStage.SELECT_PANEL:
+			if _ability_label.size.x <= 0.0 or _ability_label.size.y <= 0.0:
+				return
+			var use_short_panel = _ability_label.get_content_height() <= _ability_panel.size.y * (1.0 - 2.0 * SHORT_PANEL_VERTICAL_MARGIN_RATIO) - 2.0
+			var style = _short_ability_style if use_short_panel else _long_ability_style
+			if _ability_panel.get_theme_stylebox("panel") != style:
+				_ability_panel.add_theme_stylebox_override("panel", style)
+				_ability_fit_stage = AbilityFitStage.PREPARE
+			else:
+				_ability_fit_stage = AbilityFitStage.FIT_TEXT
+		AbilityFitStage.FIT_TEXT:
+			if _ability_label.size.y <= 0.0:
+				_ability_fit_stage = AbilityFitStage.PREPARE
+			elif _ability_label.get_content_height() <= _ability_label.size.y - 2.0 or _ability_fit_font_size <= MIN_ABILITY_FONT_SIZE:
+				_stop_ability_fit()
+			else:
+				_ability_fit_font_size -= 1
+				_set_ability_font_size(_ability_fit_font_size)
+
+func _stop_ability_fit() -> void:
+	_ability_fit_stage = AbilityFitStage.IDLE
+	set_process(false)
+
+func _update_ability_style_margins(style: StyleBoxTexture, vertical_ratio: float) -> void:
+	var horizontal_margin = roundf(_ability_panel.size.x * PANEL_HORIZONTAL_MARGIN_RATIO)
+	var vertical_margin = roundf(_ability_panel.size.y * vertical_ratio)
+	for side in [SIDE_LEFT, SIDE_RIGHT]:
+		if not is_equal_approx(style.get_content_margin(side), horizontal_margin):
+			style.set_content_margin(side, horizontal_margin)
+	for side in [SIDE_TOP, SIDE_BOTTOM]:
+		if not is_equal_approx(style.get_content_margin(side), vertical_margin):
+			style.set_content_margin(side, vertical_margin)
+
+func _set_ability_font_size(font_size: int) -> void:
+	for size_name in ["normal_font_size", "bold_font_size", "italics_font_size", "bold_italics_font_size", "mono_font_size"]:
+		_ability_label.add_theme_font_size_override(size_name, font_size)
+	if _ability_label.has_method("set_icon_size"):
+		_ability_label.set_icon_size(roundi(font_size * INLINE_ICON_SCALE))
 
 func _queue_title_fit():
 	call_deferred("_fit_title_to_line", clampf(size.x / BASE_CARD_WIDTH, MIN_FONT_SCALE, MAX_FONT_SCALE))
