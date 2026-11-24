@@ -1,6 +1,7 @@
 extends Control
 
-const TOTAL_PICKS := 6
+const TOTAL_ROUNDS := 20
+const TOTAL_PICKS := TOTAL_ROUNDS * 2
 const CARD_BUTTON_SIZE := Vector2(244, 390)
 const CARD_VIEW_SIZE := Vector2(220, 308)
 const PICK_STYLE = preload("res://assets/ui/styles/button_secondary_default.tres")
@@ -13,13 +14,15 @@ const PICK_FONT = preload("res://assets/fonts/BarlowCondensed-SemiBold-Tracked.t
 @onready var instructions_label: Label = $Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout/Instructions
 @onready var error_label: Label = $Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout/Error
 @onready var candidate_cards: HBoxContainer = $Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout/ChoicesCenter/CandidateCards
-@onready var completed_cards: GridContainer = $Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout/ChoicesCenter/CompletedCards
+@onready var completed_scroll: ScrollContainer = $Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout/ChoicesCenter/CompletedScroll
+@onready var completed_cards: GridContainer = $Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout/ChoicesCenter/CompletedScroll/CompletedCards
 @onready var picked_count: Label = $Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout/PickedCount
 @onready var deck_list: VBoxContainer = $Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout/DeckScroll/DeckList
 @onready var play_match_button: Button = $Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout/PlayDraftMatch
 @onready var retry_button: Button = $Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout/Retry
 
 var _draft_state
+var _ai_draft := false
 var _submitted := false
 var _pick_buttons: Array[Button] = []
 var _candidate_by_id := {}
@@ -28,12 +31,21 @@ var _picked_card_ids: Array[String] = []
 
 func _ready() -> void:
 	GS.close_connections()
-	GS.queue_type = GS.Types.GameType.P2_DRAFT
+	_resize_completed_gallery()
+	get_window().size_changed.connect(_resize_completed_gallery)
+	_ai_draft = GS.queue_type == GS.Types.GameType.AI_DRAFT
+	GS.queue_type = GS.Types.GameType.AI_DRAFT if _ai_draft else GS.Types.GameType.P2_DRAFT
 	GS.game_decklist = []
 	GS.draft_id = ""
 	GS.is_waiting = true
+	if _ai_draft:
+		status_label.text = "Preparing AI draft"
+	progress_label.text = "20 rounds, two picks per round"
 	_render_decklist([])
 	_connect_profile()
+
+func _resize_completed_gallery() -> void:
+	completed_scroll.custom_minimum_size.y = clampf(get_window().size.y * 0.52, 330.0, 560.0)
 
 func _process(delta: float) -> void:
 	if is_instance_valid(GS.socket):
@@ -44,7 +56,7 @@ func _process(delta: float) -> void:
 func _connect_profile() -> void:
 	var socket = Websocket.new()
 	GS.socket = socket
-	socket.got_login_response.connect(func(): socket.joinQueue(GS.Types.GameType.P2_DRAFT))
+	socket.got_login_response.connect(func(): socket.joinQueue(GS.queue_type))
 	socket.draft_started.connect(_on_draft_started)
 	socket.connection_failed.connect(_on_profile_failed)
 	socket.connect_to_server()
@@ -54,8 +66,8 @@ func _on_draft_started(draft_state) -> void:
 	GS.draft_id = draft_state.get_id()
 	GS.gameId = GS.draft_id
 	GS.playerId = draft_state.get_playerId()
-	GS.gameType = GS.Types.GameType.P2_DRAFT
-	status_label.text = "Opponent found"
+	GS.gameType = GS.queue_type
+	status_label.text = "Draft AI ready" if _ai_draft else "Opponent found"
 	progress_label.text = "Connecting to the draft table"
 	instructions_label.text = "Your first choices are on their way."
 	error_label.text = ""
@@ -80,12 +92,12 @@ func _on_pick_requested(draft_state, candidates, message: String) -> void:
 	var round_number := floori(float(count) / 2.0) + 1
 	var pick_number := count % 2 + 1
 	status_label.text = "Choose a card"
-	progress_label.text = "ROUND %d / 3     PICK %d / 2" % [round_number, pick_number]
+	progress_label.text = "ROUND %d / %d     PICK %d / 2" % [round_number, TOTAL_ROUNDS, pick_number]
 	instructions_label.text = message if not message.is_empty() else "Choose one of the cards below."
 	_render_decklist(draft_state.get_decklist())
 	_clear_candidates()
 	candidate_cards.show()
-	completed_cards.hide()
+	completed_scroll.hide()
 	for card in candidates:
 		_add_candidate(card)
 	if candidates.is_empty():
@@ -144,7 +156,7 @@ func _on_pick_pressed(card_id: String, card_name: String) -> void:
 	for button in _pick_buttons:
 		button.disabled = true
 	status_label.text = "Picked %s" % card_name
-	instructions_label.text = "Waiting for the other player to pick."
+	instructions_label.text = "Waiting for the next offer." if _ai_draft else "Waiting for the other player to pick."
 	var pending_count := _count_picks(_draft_state.get_decklist()) + 1
 	picked_count.text = "%d / %d cards (pending)" % [pending_count, TOTAL_PICKS]
 	_add_deck_line("Pending: %s" % card_name, true)
@@ -156,7 +168,7 @@ func _on_draft_completed(draft_state) -> void:
 	_render_completed_cards()
 	_render_decklist(draft_state.get_decklist())
 	status_label.text = "Draft complete"
-	progress_label.text = "ALL THREE ROUNDS COMPLETE"
+	progress_label.text = "ALL %d ROUNDS COMPLETE" % TOTAL_ROUNDS
 	instructions_label.text = "Your deck is ready. Join the draft match when you are ready."
 	error_label.text = ""
 	retry_button.hide()
@@ -216,13 +228,15 @@ func _render_completed_cards() -> void:
 		view.position = Vector2.ZERO
 		view.size = slot.custom_minimum_size
 	completed_cards.visible = not _picked_cards.is_empty()
+	completed_scroll.visible = completed_cards.visible
+	completed_scroll.scroll_vertical = 0
 
 func _on_play_match_pressed() -> void:
 	if _draft_state == null or not _draft_state.get_completed():
 		return
 	GS.game_decklist = _draft_state.get_decklist().duplicate()
 	GS.draft_id = _draft_state.get_id()
-	GS.queue_type = GS.Types.GameType.P2_DRAFT_GAME
+	GS.queue_type = GS.Types.GameType.AI_DRAFT_GAME if _ai_draft else GS.Types.GameType.P2_DRAFT_GAME
 	get_tree().change_scene_to_file("res://src/GameBoard/GameBoard.tscn")
 
 func _on_back_pressed() -> void:

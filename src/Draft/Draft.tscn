@@ -103,7 +103,7 @@ text = "Finding an opponent"
 [node name="Progress" type="Label" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "A draft has three rounds with two picks per round."
+text = "A draft has 20 rounds with two picks per round."
 
 [node name="Instructions" type="Label" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout"]
 layout_mode = 2
@@ -123,8 +123,13 @@ size_flags_vertical = 3
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="CompletedCards" type="GridContainer" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout/ChoicesCenter"]
+[node name="CompletedScroll" type="ScrollContainer" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout/ChoicesCenter"]
 visible = false
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="CompletedCards" type="GridContainer" parent="Margins/Layout/Body/ChoicesPanel/ChoicesMargin/ChoicesLayout/ChoicesCenter/CompletedScroll"]
 layout_mode = 2
 theme_override_constants/h_separation = 18
 theme_override_constants/v_separation = 12
@@ -162,7 +167,7 @@ text = "YOUR PICKS"
 [node name="PickedCount" type="Label" parent="Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "0 / 6 cards"
+text = "0 / 40 cards"
 
 [node name="DeckSeparator" type="HSeparator" parent="Margins/Layout/Body/DeckPanel/DeckMargin/DeckLayout"]
 layout_mode = 2

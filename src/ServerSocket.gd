@@ -23,7 +23,7 @@ func joinQueue(type):
 	var jq = cm.new_joinQueue()
 	GS.gameType = type
 	jq.set_gameType(type)
-	if type == GS.Types.GameType.P2_DRAFT_GAME:
+	if type == GS.Types.GameType.P2_DRAFT_GAME or type == GS.Types.GameType.AI_DRAFT_GAME:
 		jq.set_draftId(GS.draft_id)
 	GS.game_decklist.map(func(c): jq.add_decklist(c))
 	send_message(cm)

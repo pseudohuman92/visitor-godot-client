@@ -1546,7 +1546,9 @@ enum GameType {
 	P2_DRAFT = 2,
 	P2_DRAFT_GAME = 3,
 	AI_BO1_CONSTRUCTED = 4,
-	AI_VS_AI = 5
+	AI_VS_AI = 5,
+	AI_DRAFT = 6,
+	AI_DRAFT_GAME = 7
 }
 
 class Table:

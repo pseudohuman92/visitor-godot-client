@@ -20,6 +20,10 @@ func _on_pressed():
 		"LearnToPlay":
 			get_tree().change_scene_to_file("res://src/Tutorial/Tutorial.tscn")
 		"PlayDraft":
+			GS.queue_type = GS.Types.GameType.P2_DRAFT
+			get_tree().change_scene_to_file("res://src/Draft/Draft.tscn")
+		"PlayDraftAI":
+			GS.queue_type = GS.Types.GameType.AI_DRAFT
 			get_tree().change_scene_to_file("res://src/Draft/Draft.tscn")
 		"PlayMulti":
 			GS.queue_type = GS.Types.GameType.BO1_CONSTRUCTED

@@ -139,7 +139,11 @@ func get_game_URL():
 			return base+"/games/"+playerId+"/"+gameId
 		Types.GameType.P2_DRAFT_GAME:
 			return base+"/games/"+playerId+"/"+gameId
+		Types.GameType.AI_DRAFT_GAME:
+			return base+"/ai/"+playerId+"/"+gameId+"/"+aiId
 		Types.GameType.P2_DRAFT:
+			return base+"/drafts/"+playerId+"/"+gameId
+		Types.GameType.AI_DRAFT:
 			return base+"/drafts/"+playerId+"/"+gameId
 
 func get_phase_name():
