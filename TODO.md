@@ -1,0 +1,23 @@
+# TODO
+
+- [ ] Fix units shifting forward when they attack, but not returning to their places afterwards.
+- [ ] Switch the button label "Submit" to "Skip Attack" if no attackers are selected.
+- [ ] Make cards bigger in the draft screen and add a right-click enlarged preview, just like cards in the collection, to them.
+- [ ] Remove `Pick <cardname>` text under the cards in the draft screen.
+- [ ] Unify different card scenes while preserving their functionality.
+- [ ] Make the highlighting card borders in-game more visible.
+- [ ] Remove the dimming of unplayable cards in the hand.
+- [ ] Add a delay to auto-pass to make parsing the game state easier.
+- [ ] Add a delay before AI actions to make parsing the game flow easier.
+- [ ] Remove highlighting of the game area for the play drop target.
+- [ ] Remove the highlighting of the player information display as the study drop target.
+- [ ] Fix right-click preview for square cards.
+- [ ] Make in-game submit, pass, etc. buttons fill the entire row.
+- [ ] Trim transparent margins from the assets.
+- [ ] Make button and text box styles consistent in the client.
+- [ ] Add a deck builder after the draft is completed.
+- [ ] Use single line cards, sorted by color, to show your picks in draft.
+- [ ] Rename base2 to base for cards across the server and the client.
+- [ ] Remove test queue functionality.
+- [ ] Add deck selection for AIs in Solitaire and AI vs AI modes.
+- [ ] Declutter top left "Learn to play" panel in learn to play screen.
